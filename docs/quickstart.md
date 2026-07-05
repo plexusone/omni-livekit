@@ -64,8 +64,11 @@ export TTS_PROVIDER="openai"
 export TTS_API_KEY="your-openai-key"
 export ANTHROPIC_API_KEY="your-anthropic-key"
 
+# Optional: Show avatar image in video tile
+export AGENT_AVATAR="true"
+
 # Run the voice agent
-go run ./cmd/voice-agent
+go run -tags opus ./cmd/voice-agent
 ```
 
 This agent:

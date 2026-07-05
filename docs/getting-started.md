@@ -104,21 +104,50 @@ docker exec <container> ./livekit-server generate-keys
 
 ## Environment Variables
 
-Set these environment variables:
+### Required (LiveKit Connection)
+
+| Variable | Description |
+|----------|-------------|
+| `LIVEKIT_URL` | LiveKit server URL (e.g., `wss://your-project.livekit.cloud`) |
+| `LIVEKIT_API_KEY` | API key from LiveKit dashboard |
+| `LIVEKIT_API_SECRET` | API secret from LiveKit dashboard |
+
+### Voice Agent Providers
+
+| Variable | Description |
+|----------|-------------|
+| `STT_PROVIDER` | Speech-to-text provider: `deepgram`, `openai`, `google` |
+| `TTS_PROVIDER` | Text-to-speech provider: `openai`, `elevenlabs`, `google` |
+| `LLM_PROVIDER` | LLM provider: `openai`, `anthropic` |
+| `LLM_MODEL` | LLM model name (default: `gpt-4o`) |
+| `DEEPGRAM_API_KEY` | Deepgram API key (if using Deepgram STT) |
+| `OPENAI_API_KEY` | OpenAI API key (if using OpenAI TTS/LLM) |
+| `ANTHROPIC_API_KEY` | Anthropic API key (if using Claude) |
+| `ELEVENLABS_API_KEY` | ElevenLabs API key (if using ElevenLabs TTS) |
+
+### Agent Appearance
+
+| Variable | Description |
+|----------|-------------|
+| `AGENT_AVATAR` | Enable static image avatar. Values: `true` (default icon), or path to `.h264` file |
+
+### Example `.envrc`
 
 ```bash
-export LIVEKIT_URL="wss://your-project.livekit.cloud"
-export LIVEKIT_API_KEY="your-api-key"
-export LIVEKIT_API_SECRET="your-api-secret"
-```
-
-Or create a `.envrc` file:
-
-```bash
-# .envrc
+# .envrc - LiveKit credentials
 export LIVEKIT_URL="wss://your-project.livekit.cloud"
 export LIVEKIT_API_KEY="APIxxxxxxxx"
 export LIVEKIT_API_SECRET="your-secret-here"
+
+# Voice providers
+export STT_PROVIDER="deepgram"
+export DEEPGRAM_API_KEY="your-deepgram-key"
+export TTS_PROVIDER="openai"
+export OPENAI_API_KEY="your-openai-key"
+export ANTHROPIC_API_KEY="your-anthropic-key"
+
+# Optional: Enable avatar
+export AGENT_AVATAR="true"
 ```
 
 ## Verify Installation
