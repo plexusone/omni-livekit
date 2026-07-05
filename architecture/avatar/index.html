@@ -1,0 +1,2215 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="LiveKit provider for OmniMeet and OmniVoice">
+      
+      
+        <meta name="author" content="PlexusOne">
+      
+      
+        <link rel="canonical" href="https://plexusone.github.io/omni-livekit/architecture/avatar/">
+      
+      
+        <link rel="prev" href="../voice-pipeline/">
+      
+      
+        <link rel="next" href="../../api/gateway/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Static Image Avatar - omni-livekit Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://plexusone.dev/css/plexusone-mkdocs.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#static-image-avatar" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+<!-- PlexusOne Unified Navigation -->
+<div id="plexus-nav-root"></div>
+<script src="https://plexusone.dev/js/plexus-nav.js"></script>
+
+
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="omni-livekit Documentation" class="md-header__button md-logo" aria-label="omni-livekit Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            omni-livekit Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Static Image Avatar
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/plexusone/omni-livekit" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    plexusone/omni-livekit
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="omni-livekit Documentation" class="md-nav__button md-logo" aria-label="omni-livekit Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    omni-livekit Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/plexusone/omni-livekit" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    plexusone/omni-livekit
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/human-participation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Human Participation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/voice-agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Voice Agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/omnimeet-integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OmniMeet Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../voice-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Voice Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Static Image Avatar
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Static Image Avatar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-approaches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two Approaches
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Two Approaches">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-encoded-approach-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-encoded Approach (Recommended)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtime-encoding-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Encoding Approach
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Rationale
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design Rationale">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-h264" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why H.264?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-pre-encode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Pre-encode?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interface-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build Tags
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Details
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-encoded-image-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-encoded Image Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtime-encoding-pipeline-cgo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Encoding Pipeline (CGO)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#h264-encoding-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        H.264 Encoding Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frame-rate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frame Rate
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-sizes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Sizes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="File Sizes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#input-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Input Images
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#encoded-h264" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Encoded H.264
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mediamode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MediaMode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imageconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ImageConfig
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selection-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Selection Priority
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-avatar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Default Avatar
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternative-approaches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alternative Approaches
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Alternative Approaches">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-1-client-side-placeholder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option 1: Client-Side Placeholder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-2-pre-encoded-video-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option 2: Pre-Encoded Video Loop
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-encode-avatar-tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The encode-avatar Tool
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The encode-avatar Tool">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#basic-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basic Usage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#169-canvas-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16:9 Canvas (Recommended)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependencies
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dependencies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-runtime-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Runtime Encoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-pre-encoded-runtime-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Pre-encoded Runtime (Recommended)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/gateway/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/room/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Room Client
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-approaches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two Approaches
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Two Approaches">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-encoded-approach-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-encoded Approach (Recommended)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtime-encoding-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Encoding Approach
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Rationale
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design Rationale">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-h264" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why H.264?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-pre-encode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Pre-encode?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interface-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build Tags
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Details
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-encoded-image-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-encoded Image Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtime-encoding-pipeline-cgo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Encoding Pipeline (CGO)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#h264-encoding-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        H.264 Encoding Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frame-rate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frame Rate
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-sizes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Sizes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="File Sizes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#input-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Input Images
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#encoded-h264" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Encoded H.264
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mediamode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MediaMode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imageconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ImageConfig
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selection-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Selection Priority
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-avatar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Default Avatar
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternative-approaches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alternative Approaches
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Alternative Approaches">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-1-client-side-placeholder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option 1: Client-Side Placeholder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-2-pre-encoded-video-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Option 2: Pre-Encoded Video Loop
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-encode-avatar-tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The encode-avatar Tool
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The encode-avatar Tool">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#basic-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basic Usage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#169-canvas-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16:9 Canvas (Recommended)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependencies
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dependencies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-runtime-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Runtime Encoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-pre-encoded-runtime-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Pre-encoded Runtime (Recommended)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="static-image-avatar">Static Image Avatar<a class="headerlink" href="#static-image-avatar" title="Permanent link">&para;</a></h1>
+<p>This document describes the static image avatar feature for voice agents.</p>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>Voice agents can display a static image (avatar) instead of a blank video tile. This makes the agent more visually present in meetings.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────┐
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│           Meeting View              │
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├─────────────┬───────────────────────┤
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│             │                       │
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│   Avatar    │   Human Participant   │
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│   Image     │   (Camera Feed)       │
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│             │                       │
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>└─────────────┴───────────────────────┘
+</code></pre></div>
+<h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
+<p>Enable avatar via environment variable:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Use the default embedded OmniAgent icon</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AGENT_AVATAR</span><span class="o">=</span><span class="s2">&quot;true&quot;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Or use a custom pre-encoded avatar</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AGENT_AVATAR</span><span class="o">=</span><span class="s2">&quot;/path/to/avatar.h264&quot;</span>
+</code></pre></div>
+<p>For usage details, see the <a href="../../guides/voice-agent/#avatar">Voice Agent Guide</a>.</p>
+<h2 id="two-approaches">Two Approaches<a class="headerlink" href="#two-approaches" title="Permanent link">&para;</a></h2>
+<p>There are two ways to use avatars, with different CGO requirements:</p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>CGO Required</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pre-encoded</strong> (Recommended)</td>
+<td>Build time only</td>
+<td>Use <code>encode-avatar</code> tool once, then run without CGO</td>
+</tr>
+<tr>
+<td><strong>Runtime encoding</strong></td>
+<td>Runtime</td>
+<td>Encode PNG/JPEG to H.264 on every startup</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pre-encoded-approach-recommended">Pre-encoded Approach (Recommended)<a class="headerlink" href="#pre-encoded-approach-recommended" title="Permanent link">&para;</a></h3>
+<p>The pre-encoded approach separates encoding from runtime:</p>
+<ol>
+<li><strong>Build time</strong>: Run <code>encode-avatar</code> tool (requires CGO + x264)</li>
+<li><strong>Runtime</strong>: Load the <code>.h264</code> file (no CGO required)</li>
+</ol>
+<p>This is ideal for:</p>
+<ul>
+<li>Production deployments where minimizing dependencies matters</li>
+<li>Container images that shouldn't include x264/CGO</li>
+<li>Cross-compilation scenarios</li>
+<li>Consistent, repeatable builds</li>
+</ul>
+<h3 id="runtime-encoding-approach">Runtime Encoding Approach<a class="headerlink" href="#runtime-encoding-approach" title="Permanent link">&para;</a></h3>
+<p>The runtime approach encodes the image each time the agent starts:</p>
+<ol>
+<li><strong>Runtime</strong>: Load PNG/JPEG → encode to H.264 (requires CGO + x264)</li>
+</ol>
+<p>This is useful for:</p>
+<ul>
+<li>Development where you're iterating on avatar images</li>
+<li>Dynamic avatars that change per-user</li>
+</ul>
+<h2 id="design-rationale">Design Rationale<a class="headerlink" href="#design-rationale" title="Permanent link">&para;</a></h2>
+<h3 id="why-h264">Why H.264?<a class="headerlink" href="#why-h264" title="Permanent link">&para;</a></h3>
+<p>We chose H.264 over VP8 for static images:</p>
+<table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>H.264</th>
+<th>VP8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Browser support</td>
+<td>Universal (baseline profile)</td>
+<td>Broad</td>
+</tr>
+<tr>
+<td>Go library stability</td>
+<td>x264-go (mature)</td>
+<td>pion/mediadevices (build issues)</td>
+</tr>
+<tr>
+<td>Encoder quality</td>
+<td>Excellent for static images</td>
+<td>Good</td>
+</tr>
+<tr>
+<td>CGO dependency</td>
+<td>Yes (x264)</td>
+<td>Yes (libvpx)</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>x264-go</code> library with <code>tune=stillimage</code> and <code>keyint=1</code> produces efficient keyframes optimized for static content.</p>
+<h3 id="why-pre-encode">Why Pre-encode?<a class="headerlink" href="#why-pre-encode" title="Permanent link">&para;</a></h3>
+<p>The key insight is that a static avatar doesn't change at runtime. Encoding it every time the agent starts wastes resources and adds a CGO dependency to production binaries.</p>
+<p>By pre-encoding:</p>
+<ul>
+<li><strong>No CGO at runtime</strong>: Production binary links only to standard Go libraries</li>
+<li><strong>Smaller containers</strong>: No x264 libraries needed in the image</li>
+<li><strong>Faster startup</strong>: No encoding delay</li>
+<li><strong>Reproducible</strong>: Same bytes every time</li>
+</ul>
+<h3 id="interface-design">Interface Design<a class="headerlink" href="#interface-design" title="Permanent link">&para;</a></h3>
+<p>The <code>ImageWriter</code> interface abstracts over different implementations:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">type</span><span class="w"> </span><span class="nx">ImageWriter</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="nx">UpdateImage</span><span class="p">(</span><span class="nx">data</span><span class="w"> </span><span class="p">[]</span><span class="kt">byte</span><span class="p">)</span><span class="w"> </span><span class="kt">error</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nx">Close</span><span class="p">()</span><span class="w"> </span><span class="kt">error</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">}</span>
+</code></pre></div>
+<p>Two implementations exist:</p>
+<ul>
+<li><code>preencodedImageWriter</code> - Reads pre-encoded H.264, no CGO at runtime</li>
+<li><code>h264ImageWriter</code> - Encodes at runtime, requires CGO (build tag: <code>cgo</code>)</li>
+</ul>
+<h3 id="build-tags">Build Tags<a class="headerlink" href="#build-tags" title="Permanent link">&para;</a></h3>
+<p>The codebase uses Go build tags to select implementations:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>image_preencoded.go  - Always built (no tag), uses pre-encoded H.264
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>image_h264.go        - //go:build cgo - runtime H.264 encoding
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>image.go             - //go:build !cgo - fallback (limited browser support)
+</code></pre></div>
+<h2 id="implementation-details">Implementation Details<a class="headerlink" href="#implementation-details" title="Permanent link">&para;</a></h2>
+<h3 id="pre-encoded-image-pipeline">Pre-encoded Image Pipeline<a class="headerlink" href="#pre-encoded-image-pipeline" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>┌──────────────────────────────────────────────────────────────┐
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>│                    Build Time (CGO required)                  │
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>│                                                              │
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>│  avatar.png ──► decode ──► x264 encode ──► avatar.h264      │
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>│                   │           │                              │
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>│               image.RGBA   H.264 keyframe                    │
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>│                          (baseline profile)                   │
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>└──────────────────────────────────────────────────────────────┘
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>                              │
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>                              ▼ commit to repo
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>┌──────────────────────────────────────────────────────────────┐
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>│                    Runtime (NO CGO)                          │
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>│                                                              │
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>│  avatar.h264 ──► os.ReadFile ──► preencodedImageWriter      │
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>│                     │                    │                   │
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>│               raw bytes              write every 1s          │
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>│                                     (repeating keyframe)     │
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>│                                          │                   │
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>│                                          ▼                   │
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>│                                    LiveKit Track             │
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>└──────────────────────────────────────────────────────────────┘
+</code></pre></div>
+<h3 id="runtime-encoding-pipeline-cgo">Runtime Encoding Pipeline (CGO)<a class="headerlink" href="#runtime-encoding-pipeline-cgo" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>┌──────────────────────────────────────────────────────────────┐
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>│                      Runtime (CGO required)                   │
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>│                                                              │
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>│  avatar.png ──► decode ──► x264 encode ──► h264ImageWriter  │
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>│                   │           │                 │            │
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>│               image.RGBA   H.264 keyframe   write every 1s   │
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>│                          (baseline profile)      │           │
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>│                                                  ▼           │
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>│                                            LiveKit Track     │
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>└──────────────────────────────────────────────────────────────┘
+</code></pre></div>
+<h3 id="h264-encoding-settings">H.264 Encoding Settings<a class="headerlink" href="#h264-encoding-settings" title="Permanent link">&para;</a></h3>
+<p>The encoder is configured for static images:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nx">opts</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">x264</span><span class="p">.</span><span class="nx">Options</span><span class="p">{</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="nx">Width</span><span class="p">:</span><span class="w">     </span><span class="mi">640</span><span class="p">,</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nx">Height</span><span class="p">:</span><span class="w">    </span><span class="mi">480</span><span class="p">,</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nx">FrameRate</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nx">KeyInt</span><span class="p">:</span><span class="w">    </span><span class="mi">1</span><span class="p">,</span><span class="w">       </span><span class="c1">// Every frame is a keyframe</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nx">Tune</span><span class="p">:</span><span class="w">      </span><span class="s">&quot;stillimage&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="nx">Preset</span><span class="p">:</span><span class="w">    </span><span class="s">&quot;medium&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="nx">Profile</span><span class="p">:</span><span class="w">   </span><span class="s">&quot;baseline&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// Maximum browser compatibility</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="p">}</span>
+</code></pre></div>
+<p>Key settings:</p>
+<ul>
+<li><strong>KeyInt=1</strong>: Forces every frame to be a keyframe (I-frame). Essential for static content where there's no motion to predict.</li>
+<li><strong>Tune=stillimage</strong>: Optimizes for content that doesn't change.</li>
+<li><strong>Profile=baseline</strong>: Maximum browser compatibility. Avoids advanced features that some decoders don't support.</li>
+<li><strong>FrameRate=1</strong>: One frame per second is sufficient for static content, minimizing bandwidth.</li>
+</ul>
+<h3 id="frame-rate">Frame Rate<a class="headerlink" href="#frame-rate" title="Permanent link">&para;</a></h3>
+<p>For static images, use <strong>1 FPS</strong> (default):</p>
+<ul>
+<li>Saves bandwidth (no motion = no need for high FPS)</li>
+<li>Reduces CPU usage</li>
+<li>Keyframes are re-sent periodically to handle packet loss</li>
+</ul>
+<h2 id="file-sizes">File Sizes<a class="headerlink" href="#file-sizes" title="Permanent link">&para;</a></h2>
+<h3 id="input-images">Input Images<a class="headerlink" href="#input-images" title="Permanent link">&para;</a></h3>
+<p>Store avatar images as PNG/JPEG in your repository:</p>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Typical Size</th>
+<th>Git-Friendly</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PNG</td>
+<td>10-100 KB</td>
+<td>✓ Yes</td>
+</tr>
+<tr>
+<td>JPEG</td>
+<td>5-50 KB</td>
+<td>✓ Yes</td>
+</tr>
+<tr>
+<td>Raw RGBA</td>
+<td>1.2 MB</td>
+<td>✗ No</td>
+</tr>
+</tbody>
+</table>
+<h3 id="encoded-h264">Encoded H.264<a class="headerlink" href="#encoded-h264" title="Permanent link">&para;</a></h3>
+<p>The pre-encoded <code>.h264</code> file is typically:</p>
+<table>
+<thead>
+<tr>
+<th>Resolution</th>
+<th>Typical Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>320x240</td>
+<td>5-15 KB</td>
+</tr>
+<tr>
+<td>640x480</td>
+<td>15-40 KB</td>
+</tr>
+<tr>
+<td>1280x720</td>
+<td>40-100 KB</td>
+</tr>
+</tbody>
+</table>
+<p>These files are small enough to commit to Git alongside your source code.</p>
+<h2 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h2>
+<h3 id="mediamode">MediaMode<a class="headerlink" href="#mediamode" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kd">type</span><span class="w"> </span><span class="nx">MediaMode</span><span class="w"> </span><span class="kt">string</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="kd">const</span><span class="w"> </span><span class="p">(</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="nx">AudioOnly</span><span class="w">      </span><span class="nx">MediaMode</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;audio_only&quot;</span><span class="w">       </span><span class="c1">// Audio track only (default)</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="nx">AudioWithImage</span><span class="w"> </span><span class="nx">MediaMode</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;audio_with_image&quot;</span><span class="w"> </span><span class="c1">// Audio + static image</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="nx">AudioWithVideo</span><span class="w"> </span><span class="nx">MediaMode</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;audio_with_video&quot;</span><span class="w"> </span><span class="c1">// Audio + video frames</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="p">)</span>
+</code></pre></div>
+<h3 id="imageconfig">ImageConfig<a class="headerlink" href="#imageconfig" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kd">type</span><span class="w"> </span><span class="nx">ImageConfig</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="c1">// Pre-encoded H.264 (recommended - no CGO at runtime)</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="nx">H264Path</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="c1">// Path to pre-encoded .h264 file</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="nx">H264Data</span><span class="w"> </span><span class="p">[]</span><span class="kt">byte</span><span class="w"> </span><span class="c1">// Pre-encoded H.264 bytes (alternative to H264Path)</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="c1">// Runtime encoding (requires CGO)</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">    </span><span class="nx">Path</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="c1">// Path to image file (PNG, JPEG, GIF)</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="nx">Data</span><span class="w"> </span><span class="p">[]</span><span class="kt">byte</span><span class="w"> </span><span class="c1">// Raw image bytes (alternative to Path)</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">    </span><span class="c1">// Resize options (only for runtime encoding)</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">    </span><span class="nx">Width</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="c1">// Target width (0 = original)</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">    </span><span class="nx">Height</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="c1">// Target height (0 = original)</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">    </span><span class="c1">// Track options</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">    </span><span class="nx">FrameRate</span><span class="w"> </span><span class="kt">int</span><span class="w">    </span><span class="c1">// Video track frame rate (default: 1)</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="w">    </span><span class="nx">TrackName</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="c1">// Track name (default: &quot;video&quot;)</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="selection-priority">Selection Priority<a class="headerlink" href="#selection-priority" title="Permanent link">&para;</a></h3>
+<p>The agent selects the image source in this order:</p>
+<ol>
+<li><code>H264Data</code> - Pre-encoded bytes (fastest, no I/O)</li>
+<li><code>H264Path</code> - Pre-encoded file (no CGO at runtime)</li>
+<li><code>Data</code> - Runtime encoding from bytes (requires CGO)</li>
+<li><code>Path</code> - Runtime encoding from file (requires CGO)</li>
+<li><strong>Default</strong> - Embedded OmniAgent icon (no CGO, no configuration)</li>
+</ol>
+<h3 id="default-avatar">Default Avatar<a class="headerlink" href="#default-avatar" title="Permanent link">&para;</a></h3>
+<p>When <code>AudioWithImage</code> mode is enabled but no image is configured, the agent uses an embedded default avatar (the OmniAgent icon). This is stored in <code>agent/assets/default_avatar.h264</code> and embedded at compile time via <code>//go:embed</code>.</p>
+<p>The default avatar is:</p>
+<ul>
+<li>640x360 pixels (16:9 aspect ratio)</li>
+<li>360x360 icon centered on black background</li>
+<li>~27 KB (H.264 encoded)</li>
+<li>No runtime dependencies</li>
+</ul>
+<p>The 16:9 aspect ratio ensures proper display in LiveKit video slots without cropping.</p>
+<h2 id="alternative-approaches">Alternative Approaches<a class="headerlink" href="#alternative-approaches" title="Permanent link">&para;</a></h2>
+<h3 id="option-1-client-side-placeholder">Option 1: Client-Side Placeholder<a class="headerlink" href="#option-1-client-side-placeholder" title="Permanent link">&para;</a></h3>
+<p>The web client can display a placeholder image when no video is available:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1">// In your LiveKit client</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nx">participant</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;trackSubscribed&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">track</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">track</span><span class="p">.</span><span class="nx">kind</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;video&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="c1">// Show video</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">    </span><span class="c1">// Show avatar placeholder from participant metadata</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="p">});</span>
+</code></pre></div>
+<p>This avoids video encoding entirely but requires client-side changes.</p>
+<h3 id="option-2-pre-encoded-video-loop">Option 2: Pre-Encoded Video Loop<a class="headerlink" href="#option-2-pre-encoded-video-loop" title="Permanent link">&para;</a></h3>
+<p>For animated avatars, use a short looping video:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Convert image to 1-second H.264 video</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>ffmpeg<span class="w"> </span>-loop<span class="w"> </span><span class="m">1</span><span class="w"> </span>-i<span class="w"> </span>avatar.png<span class="w"> </span>-c:v<span class="w"> </span>libx264<span class="w"> </span>-t<span class="w"> </span><span class="m">1</span><span class="w"> </span>-r<span class="w"> </span><span class="m">1</span><span class="w"> </span>-pix_fmt<span class="w"> </span>yuv420p<span class="w"> </span>avatar.mp4
+</code></pre></div>
+<h2 id="the-encode-avatar-tool">The encode-avatar Tool<a class="headerlink" href="#the-encode-avatar-tool" title="Permanent link">&para;</a></h2>
+<h3 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h3>
+<p>The <code>encode-avatar</code> tool requires CGO and x264:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># macOS</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>brew<span class="w"> </span>install<span class="w"> </span>x264
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1"># Ubuntu/Debian</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>libx264-dev
+</code></pre></div>
+<p>Build the tool:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>go<span class="w"> </span>build<span class="w"> </span>-tags<span class="w"> </span>cgo<span class="w"> </span>./cmd/encode-avatar
+</code></pre></div>
+<h3 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Encode at original dimensions</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>./encode-avatar<span class="w"> </span>-input<span class="w"> </span>avatar.png<span class="w"> </span>-output<span class="w"> </span>avatar.h264
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1"># Resize to specific dimensions</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>./encode-avatar<span class="w"> </span>-input<span class="w"> </span>avatar.png<span class="w"> </span>-output<span class="w"> </span>avatar.h264<span class="w"> </span>-width<span class="w"> </span><span class="m">320</span><span class="w"> </span>-height<span class="w"> </span><span class="m">320</span>
+</code></pre></div>
+<h3 id="169-canvas-recommended">16:9 Canvas (Recommended)<a class="headerlink" href="#169-canvas-recommended" title="Permanent link">&para;</a></h3>
+<p>LiveKit UIs typically expect 16:9 video and may crop square content. The <code>-canvas</code> option embeds your avatar in a 16:9 frame:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Use a preset (recommended)</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>./encode-avatar<span class="w"> </span>-input<span class="w"> </span>avatar.png<span class="w"> </span>-output<span class="w"> </span>avatar.h264<span class="w"> </span>-canvas<span class="w"> </span>h360
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="c1"># Custom dimensions</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>./encode-avatar<span class="w"> </span>-input<span class="w"> </span>avatar.png<span class="w"> </span>-output<span class="w"> </span>avatar.h264<span class="w"> </span>-canvas<span class="w"> </span>640x360<span class="w"> </span>-bg<span class="w"> </span>black
+</code></pre></div>
+<p><strong>Canvas presets:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Preset</th>
+<th>Resolution</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>h180</td>
+<td>320x180</td>
+<td>Thumbnails, minimal bandwidth</td>
+</tr>
+<tr>
+<td>h360</td>
+<td>640x360</td>
+<td><strong>Recommended</strong> for most uses</td>
+</tr>
+<tr>
+<td>h540</td>
+<td>960x540</td>
+<td>Higher quality</td>
+</tr>
+<tr>
+<td>h720</td>
+<td>1280x720</td>
+<td>Full HD displays</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Background colors:</strong> <code>black</code> (default), <code>white</code>, <code>gray</code>, <code>transparent</code>, or hex (<code>#rrggbb</code>)</p>
+<p>The avatar is automatically centered and scaled to fit within the canvas while maintaining aspect ratio.</p>
+<h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h2>
+<h3 id="for-runtime-encoding">For Runtime Encoding<a class="headerlink" href="#for-runtime-encoding" title="Permanent link">&para;</a></h3>
+<p>Same dependencies as above, plus your production binary must link against x264.</p>
+<h3 id="for-pre-encoded-runtime-recommended">For Pre-encoded Runtime (Recommended)<a class="headerlink" href="#for-pre-encoded-runtime-recommended" title="Permanent link">&para;</a></h3>
+<p><strong>No additional dependencies.</strong> The production binary reads raw bytes from the <code>.h264</code> file.</p>
+<h2 id="related">Related<a class="headerlink" href="#related" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../guides/voice-agent/#avatar">Voice Agent Guide</a> - Usage guide with examples</li>
+<li><a href="../voice-pipeline/">Voice Pipeline Architecture</a> - Audio processing</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/plexusone" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
