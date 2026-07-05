@@ -18,11 +18,13 @@ IDEATION_CHAT*.md
 *.dll
 *.so
 *.dylib
-agent-demo
-audio-test
-meeting-pm-voice
-omniagent-voice
-voice-agent
+
+# Built binaries (root level only)
+/agent-demo
+/audio-test
+/meeting-pm-voice
+/omniagent-voice
+/voice-agent
 
 # Test artifacts and logs
 *.test
