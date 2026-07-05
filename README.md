@@ -48,6 +48,18 @@ apt-get install libopus-dev libopusfile-dev libsoxr-dev
 dnf install opus-devel opusfile-devel soxr-devel
 ```
 
+### Build Tags
+
+Voice agents **must** be built with `-tags opus` to enable proper Opus codec support:
+
+```bash
+# Required for voice agents
+go run -tags opus ./cmd/voice-agent
+go build -tags opus ./cmd/voice-agent
+
+# Without -tags opus, audio won't be decoded properly and STT will fail
+```
+
 ## Quick Start
 
 ### Go Backend (AI Agent)

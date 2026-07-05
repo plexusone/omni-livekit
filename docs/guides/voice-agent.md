@@ -377,6 +377,81 @@ func (c *Conversation) trim() {
 4. **Use connection pooling** - Reuse HTTP clients
 5. **Buffer appropriately** - Balance latency vs accuracy
 
+## Troubleshooting
+
+### Agent speaks but doesn't hear/respond to me
+
+**Symptom**: The agent's TTS output works (you hear the greeting), but it doesn't respond to your speech.
+
+**Cause**: Built without `-tags opus`. The fallback code passes raw RTP packets instead of decoded PCM to STT.
+
+**Solution**: Always build with the opus tag:
+
+```bash
+# For go run
+go run -tags opus ./cmd/voice-agent
+
+# For go build
+go build -tags opus ./cmd/voice-agent
+```
+
+**Verify**: Check the build output - you should see debug messages like `[DEBUG] Receiving audio frames...` when you speak. Without opus, you may see frames but STT returns empty transcriptions.
+
+### No audio output (can't hear agent)
+
+**Symptom**: Agent joins but you don't hear anything.
+
+**Possible causes**:
+
+1. **Wrong Opus codec config**: WebRTC requires `ClockRate: 48000` and `Channels: 2` in SDP negotiation
+2. **TTS returning wrong format**: Ensure TTS outputs PCM (`linear16`) not encoded Opus
+3. **Sample rate mismatch**: Agent expects 48kHz; resample if TTS returns 24kHz
+
+### Audio choppy or cutting off
+
+**Symptom**: Agent speech is choppy, has jitter, or cuts off mid-sentence.
+
+**Possible causes**:
+
+1. **Concurrent speak calls**: Use a mutex to serialize TTS output
+2. **Missing frame pacing**: Sleep 20ms between 20ms audio frames
+3. **Network jitter**: LiveKit handles this, but ensure stable connection
+
+```go
+// Serialize speak calls
+var speakLock sync.Mutex
+
+func speak(text string) {
+    speakLock.Lock()
+    defer speakLock.Unlock()
+    // ... TTS and audio output
+}
+```
+
+### STT returns empty transcriptions
+
+**Symptom**: Debug shows audio received but STT returns `""`.
+
+**Possible causes**:
+
+1. **Audio not decoded** (see first issue)
+2. **Wrong audio format to STT**: Must be PCM16 little-endian, wrapped in WAV
+3. **Audio too short**: Minimum ~100ms of audio needed
+4. **Wrong sample rate**: Match STT provider requirements (usually 16kHz or 48kHz)
+
+### Library not found at runtime
+
+**Symptom**: `dyld: Library not loaded: libopus.dylib`
+
+**Solution** (macOS):
+
+```bash
+export DYLD_LIBRARY_PATH="/opt/homebrew/lib:$DYLD_LIBRARY_PATH"
+./voice-agent
+```
+
+Or link statically by using the appropriate CGO flags during build.
+
 ## See Also
 
 - [Human Participation](human-participation.md) - Frontend options

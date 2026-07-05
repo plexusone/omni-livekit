@@ -4,7 +4,19 @@
 
 - Go 1.21 or later
 - LiveKit account (Cloud or self-hosted)
-- Native audio libraries for Opus encoding/decoding
+- Native audio libraries for Opus encoding/decoding (required for voice agents)
+
+!!! warning "Voice Agent Build Requirement"
+    Voice agents **must** be built with `-tags opus` to enable Opus codec support for WebRTC audio. Without this tag, incoming audio from browsers won't be decoded properly and STT will fail silently.
+
+    ```bash
+    # Correct
+    go run -tags opus ./cmd/voice-agent
+    go build -tags opus ./cmd/voice-agent
+
+    # Incorrect - will use fallback without Opus decoding
+    go run ./cmd/voice-agent
+    ```
 
 ## Install Package
 
