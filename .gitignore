@@ -10,7 +10,7 @@
 .env.*
 
 # Ideation and planning docs (local only)
-IDEATION_CHAT*.md
+IDEATION_CHAT*
 
 # Build artifacts and binaries
 *.exe
@@ -22,9 +22,10 @@ IDEATION_CHAT*.md
 # Built binaries (root level only)
 /agent-demo
 /audio-test
-/facilitator-voice
+/encode-avatar
 /omniagent-voice
 /voice-agent
+/voice-facilitator
 
 # Test artifacts and logs
 *.test
