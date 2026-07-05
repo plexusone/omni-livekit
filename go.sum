@@ -207,8 +207,12 @@ github.com/plexusone/omni-telnyx v0.4.0 h1:Qa/8GB0MAk7ryA742Rb+fgsbc/SsG/GZs6Arg
 github.com/plexusone/omni-telnyx v0.4.0/go.mod h1:DvXKIErUst6r0CYmHQKMh+si8YKdlh0n7x1467x3dLo=
 github.com/plexusone/omni-twilio v0.9.0 h1:Bumm1HVnN7EYpPgRTKz9h16SUjAZam59XIHD+yayTs8=
 github.com/plexusone/omni-twilio v0.9.0/go.mod h1:CI1n6fwjgaBl3i1Dcx4x9lTgIxdEBVwwb18kC4weo3k=
-github.com/plexusone/omnillm-core v0.17.0 h1:mzM1yVt7sSFxHqNmyhoV6GxYsqfFOD/m1tWyv2qFpec=
-github.com/plexusone/omnillm-core v0.17.0/go.mod h1:180U/oa67fly3+T3h1sL/pBMvcjIKR+bvSEkAGnalMY=
+github.com/plexusone/omnillm-core v0.18.0 h1:JnONiIe08W+83hsyxyFHSouk0jkBY2o7/SzvJxF3mYI=
+github.com/plexusone/omnillm-core v0.18.0/go.mod h1:180U/oa67fly3+T3h1sL/pBMvcjIKR+bvSEkAGnalMY=
+github.com/plexusone/omnimeet-core v0.1.0 h1:Qalbz+IgdtgQp7TAEDMC9KQOijU2gHXzbji1y5eKWW4=
+github.com/plexusone/omnimeet-core v0.1.0/go.mod h1:Z+/fRn9zJHGbq2XRY88SFH0yPXHU9OGbyFNpplU+N14=
+github.com/plexusone/omniskill v0.10.0 h1:Nd/zfAGPNmnmRGyBhmMgXFS7lYcWbPtrT0k5cP8eOvY=
+github.com/plexusone/omniskill v0.10.0/go.mod h1:L0MW5av6S0EkgGByFMwDmTJBy/7h8ourBmQ5xxM2vQI=
 github.com/plexusone/omnivoice v0.12.0 h1:dhlmeFaRn4zge+TZXFMvkNMkIADzSBPzsKq4dIhLG8g=
 github.com/plexusone/omnivoice v0.12.0/go.mod h1:n9TGZYkxKEU1zu7pgGASpzPRM464BAftvdPXE4Xfk1o=
 github.com/plexusone/omnivoice-core v0.15.0 h1:lvzucRbP53bwzBhbZ/x15iRUfJexJqzEeLJvXo74GRM=

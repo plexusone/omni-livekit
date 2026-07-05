@@ -88,8 +88,8 @@ require (
 	github.com/plexusone/omni-openai v0.4.1 // indirect
 	github.com/plexusone/omni-telnyx v0.4.0 // indirect
 	github.com/plexusone/omni-twilio v0.9.0 // indirect
-	github.com/plexusone/omnillm-core v0.17.0 // indirect
-	github.com/plexusone/omniskill v0.9.0 // indirect
+	github.com/plexusone/omnillm-core v0.18.0 // indirect
+	github.com/plexusone/omniskill v0.10.0 // indirect
 	github.com/prometheus/client_golang v1.23.2 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
 	github.com/prometheus/common v0.69.0 // indirect
@@ -132,9 +132,3 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/klog/v2 v2.140.0 // indirect
 )
-
-replace github.com/plexusone/omnimeet-core => ../omnimeet-core
-
-replace github.com/plexusone/omniskill => ../omniskill
-
-replace github.com/plexusone/omnirole-facilitator => ../omnirole-facilitator
