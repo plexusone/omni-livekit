@@ -43,6 +43,7 @@ import (
 	"strings"
 
 	"github.com/gen2brain/x264-go"
+	xdraw "golang.org/x/image/draw" // High-quality image scaling
 )
 
 // LiveKit video presets (16:9 aspect ratio)
@@ -278,22 +279,13 @@ func compositeOnCanvas(avatar image.Image, canvasW, canvasH, avatarW, avatarH in
 	return canvas
 }
 
-// resizeImage resizes an image using nearest-neighbor scaling.
-// For better quality, consider using golang.org/x/image/draw.
+// resizeImage resizes an image using high-quality bicubic (Catmull-Rom) scaling.
 func resizeImage(img image.Image, width, height int) image.Image {
-	bounds := img.Bounds()
-	srcW := bounds.Dx()
-	srcH := bounds.Dy()
-
 	dst := image.NewRGBA(image.Rect(0, 0, width, height))
 
-	for y := 0; y < height; y++ {
-		for x := 0; x < width; x++ {
-			srcX := x * srcW / width
-			srcY := y * srcH / height
-			dst.Set(x, y, img.At(bounds.Min.X+srcX, bounds.Min.Y+srcY))
-		}
-	}
+	// Use CatmullRom for high-quality bicubic interpolation
+	// This produces much better results than nearest-neighbor for downscaling
+	xdraw.CatmullRom.Scale(dst, dst.Bounds(), img, img.Bounds(), xdraw.Over, nil)
 
 	return dst
 }
