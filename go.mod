@@ -10,7 +10,7 @@ require (
 	github.com/livekit/server-sdk-go/v2 v2.17.0
 	github.com/pion/webrtc/v4 v4.2.16
 	github.com/plexusone/omnimeet-core v0.1.0
-	github.com/plexusone/omnivoice v0.12.0
+	github.com/plexusone/omnivoice v0.12.1
 	github.com/plexusone/omnivoice-core v0.15.0
 	golang.org/x/image v0.43.0
 )

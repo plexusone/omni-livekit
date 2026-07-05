@@ -213,8 +213,8 @@ github.com/plexusone/omnimeet-core v0.1.0 h1:Qalbz+IgdtgQp7TAEDMC9KQOijU2gHXzbji
 github.com/plexusone/omnimeet-core v0.1.0/go.mod h1:Z+/fRn9zJHGbq2XRY88SFH0yPXHU9OGbyFNpplU+N14=
 github.com/plexusone/omniskill v0.10.0 h1:Nd/zfAGPNmnmRGyBhmMgXFS7lYcWbPtrT0k5cP8eOvY=
 github.com/plexusone/omniskill v0.10.0/go.mod h1:L0MW5av6S0EkgGByFMwDmTJBy/7h8ourBmQ5xxM2vQI=
-github.com/plexusone/omnivoice v0.12.0 h1:dhlmeFaRn4zge+TZXFMvkNMkIADzSBPzsKq4dIhLG8g=
-github.com/plexusone/omnivoice v0.12.0/go.mod h1:n9TGZYkxKEU1zu7pgGASpzPRM464BAftvdPXE4Xfk1o=
+github.com/plexusone/omnivoice v0.12.1 h1:DpFJ4/ujDudeTILsXpvrYUZav7kmBkysg5YN0rZZ7vA=
+github.com/plexusone/omnivoice v0.12.1/go.mod h1:4t4+2wiGzylR8jjMS7Vlbzbv3jPyxkpm1Z0VpykP5mI=
 github.com/plexusone/omnivoice-core v0.15.0 h1:lvzucRbP53bwzBhbZ/x15iRUfJexJqzEeLJvXo74GRM=
 github.com/plexusone/omnivoice-core v0.15.0/go.mod h1:SwFSgk9D1UH9XIyofLUU6BEEWEtHsS+PHKduMp+VucE=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 h1:Jamvg5psRIccs7FGNTlIRMkT8wgtp5eCXdBlqhYGL6U=
