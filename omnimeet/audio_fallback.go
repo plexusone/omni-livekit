@@ -23,8 +23,6 @@ const (
 	defaultSampleRate = 48000
 	// Default frame duration in milliseconds
 	defaultFrameDuration = 20
-	// Number of samples per frame at 48kHz with 20ms frames
-	samplesPerFrame = defaultSampleRate * defaultFrameDuration / 1000
 )
 
 // audioReader reads audio from a WebRTC track.
@@ -183,20 +181,4 @@ func (w *audioWriter) Close() error {
 	w.closed = true
 	w.mu.Unlock()
 	return nil
-}
-
-// audioTrackWriterWithEncoding implements provider.AudioWriter.
-// In fallback mode, no actual encoding is performed.
-type audioTrackWriterWithEncoding struct {
-	writer     *audioWriter
-	sampleRate int
-	channels   int
-}
-
-func (w *audioTrackWriterWithEncoding) Write(data []byte) (int, error) {
-	return w.writer.Write(data)
-}
-
-func (w *audioTrackWriterWithEncoding) Close() error {
-	return w.writer.Close()
 }

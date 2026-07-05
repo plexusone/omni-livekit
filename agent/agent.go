@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"sync"
 	"time"
 
@@ -182,7 +183,9 @@ func (a *Agent) Join(ctx context.Context, roomName string) error {
 		for _, rp := range room.GetRemoteParticipants() {
 			for _, pub := range rp.TrackPublications() {
 				if remotePub, ok := pub.(*lksdk.RemoteTrackPublication); ok {
-					remotePub.SetSubscribed(true)
+					if err := remotePub.SetSubscribed(true); err != nil {
+						slog.Default().Warn("failed to auto-subscribe to track", "error", err)
+					}
 				}
 			}
 		}
@@ -649,7 +652,9 @@ func (a *Agent) handleParticipantConnected(rp *lksdk.RemoteParticipant) {
 	if autoSub {
 		for _, pub := range rp.TrackPublications() {
 			if remotePub, ok := pub.(*lksdk.RemoteTrackPublication); ok {
-				remotePub.SetSubscribed(true)
+				if err := remotePub.SetSubscribed(true); err != nil {
+					slog.Default().Warn("failed to auto-subscribe to track", "error", err)
+				}
 			}
 		}
 	}
@@ -696,7 +701,9 @@ func (a *Agent) handleTrackPublished(pub *lksdk.RemoteTrackPublication, rp *lksd
 
 	// Auto-subscribe if enabled
 	if autoSub {
-		pub.SetSubscribed(true)
+		if err := pub.SetSubscribed(true); err != nil {
+			slog.Default().Warn("failed to auto-subscribe to track", "error", err)
+		}
 	}
 }
 

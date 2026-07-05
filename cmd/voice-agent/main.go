@@ -208,7 +208,7 @@ func main() {
 		fmt.Printf("[+] %s joined\n", p.Name)
 		// Greet the participant
 		go func() {
-			if err := va.speak(ctx, ag, fmt.Sprintf("Hello %s! I'm your AI assistant. How can I help you today?", p.Name)); err != nil {
+			if err := va.speak(ctx, fmt.Sprintf("Hello %s! I'm your AI assistant. How can I help you today?", p.Name)); err != nil {
 				log.Printf("Error greeting participant: %v", err)
 			}
 		}()
@@ -237,7 +237,7 @@ func main() {
 		log.Printf("Warning: Could not subscribe to audio: %v", err)
 	} else {
 		// Process incoming audio through STT → LLM → TTS pipeline
-		go va.processAudio(ctx, ag, audioCh)
+		go va.processAudio(ctx, audioCh)
 	}
 
 	fmt.Println()
@@ -278,7 +278,7 @@ type Message struct {
 }
 
 // processAudio handles incoming audio from participants
-func (va *VoiceAgent) processAudio(ctx context.Context, ag *agent.Agent, audioCh <-chan agent.AudioFrame) {
+func (va *VoiceAgent) processAudio(ctx context.Context, audioCh <-chan agent.AudioFrame) {
 	// Buffer for collecting audio before sending to STT
 	var audioBuffer []byte
 	var lastAudioTime time.Time
@@ -318,7 +318,7 @@ func (va *VoiceAgent) processAudio(ctx context.Context, ag *agent.Agent, audioCh
 
 				// Process in background
 				go func(audio []byte) {
-					if err := va.processUtterance(ctx, ag, audio); err != nil {
+					if err := va.processUtterance(ctx, audio); err != nil {
 						log.Printf("Error processing utterance: %v", err)
 					}
 				}(audioCopy)
@@ -328,7 +328,7 @@ func (va *VoiceAgent) processAudio(ctx context.Context, ag *agent.Agent, audioCh
 }
 
 // processUtterance handles a complete utterance: STT → LLM → TTS
-func (va *VoiceAgent) processUtterance(ctx context.Context, ag *agent.Agent, audio []byte) error {
+func (va *VoiceAgent) processUtterance(ctx context.Context, audio []byte) error {
 	// Minimum audio length check (avoid processing noise)
 	if len(audio) < 4800 { // Less than 100ms at 48kHz
 		return nil
@@ -356,7 +356,7 @@ func (va *VoiceAgent) processUtterance(ctx context.Context, ag *agent.Agent, aud
 
 	// 3. Text-to-Speech using omnivoice provider
 	fmt.Print("[TTS] Speaking... ")
-	if err := va.speak(ctx, ag, response); err != nil {
+	if err := va.speak(ctx, response); err != nil {
 		return fmt.Errorf("TTS: %w", err)
 	}
 	fmt.Println("done")
@@ -445,7 +445,7 @@ func (va *VoiceAgent) generateResponse(ctx context.Context, userText string) (st
 }
 
 // speak converts text to speech using the configured TTS provider and sends to LiveKit
-func (va *VoiceAgent) speak(ctx context.Context, ag *agent.Agent, text string) error {
+func (va *VoiceAgent) speak(ctx context.Context, text string) error {
 	va.speakingMu.Lock()
 	va.speaking = true
 	va.speakingMu.Unlock()
@@ -529,26 +529,30 @@ func buildMeetURL(serverURL, token string) string {
 
 func pcmToWav(pcm []byte, sampleRate, channels int) []byte {
 	var buf bytes.Buffer
-	w := func(data any) { _ = binary.Write(&buf, binary.LittleEndian, data) }
+	w := func(data any) {
+		if err := binary.Write(&buf, binary.LittleEndian, data); err != nil {
+			panic(fmt.Sprintf("binary.Write failed: %v", err))
+		}
+	}
 
 	// WAV header
 	buf.WriteString("RIFF")
-	w(uint32(36 + len(pcm)))
+	w(uint32(36 + len(pcm))) //nolint:gosec // G115: WAV size fits in uint32
 	buf.WriteString("WAVE")
 
 	// fmt chunk
 	buf.WriteString("fmt ")
 	w(uint32(16))                        // chunk size
 	w(uint16(1))                         // audio format (PCM)
-	w(uint16(channels))                  // channels
-	w(uint32(sampleRate))                // sample rate
-	w(uint32(sampleRate * channels * 2)) // byte rate
-	w(uint16(channels * 2))              // block align
+	w(uint16(channels))                  //nolint:gosec // G115: channels is 1 or 2
+	w(uint32(sampleRate))                //nolint:gosec // G115: sampleRate is 8000-48000
+	w(uint32(sampleRate * channels * 2)) //nolint:gosec // G115: byte rate is bounded
+	w(uint16(channels * 2))              //nolint:gosec // G115: block align is 2 or 4
 	w(uint16(16))                        // bits per sample
 
 	// data chunk
 	buf.WriteString("data")
-	w(uint32(len(pcm)))
+	w(uint32(len(pcm))) //nolint:gosec // G115: WAV size fits in uint32
 	buf.Write(pcm)
 
 	return buf.Bytes()
@@ -563,14 +567,14 @@ func resample24to48(audio []byte) []byte {
 	numSamples := len(audio) / 2
 	samples := make([]int16, numSamples)
 	for i := 0; i < numSamples; i++ {
-		samples[i] = int16(binary.LittleEndian.Uint16(audio[i*2:]))
+		samples[i] = int16(binary.LittleEndian.Uint16(audio[i*2:])) //nolint:gosec // G115: PCM16 uses uint16->int16 bit-cast
 	}
 
 	// 2x upsample with linear interpolation
 	resampled := make([]int16, numSamples*2)
 	for i := 0; i < numSamples-1; i++ {
 		resampled[i*2] = samples[i]
-		resampled[i*2+1] = int16((int32(samples[i]) + int32(samples[i+1])) / 2)
+		resampled[i*2+1] = int16((int32(samples[i]) + int32(samples[i+1])) / 2) //nolint:gosec // G115: average of two int16 fits in int16
 	}
 	resampled[(numSamples-1)*2] = samples[numSamples-1]
 	resampled[(numSamples-1)*2+1] = samples[numSamples-1]
@@ -578,7 +582,7 @@ func resample24to48(audio []byte) []byte {
 	// Convert back to bytes
 	result := make([]byte, len(resampled)*2)
 	for i, s := range resampled {
-		binary.LittleEndian.PutUint16(result[i*2:], uint16(s))
+		binary.LittleEndian.PutUint16(result[i*2:], uint16(s)) //nolint:gosec // G115: PCM16 uses int16->uint16 bit-cast
 	}
 	return result
 }

@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"sync"
 	"time"
 
@@ -613,7 +614,9 @@ func (a *AgentParticipant) handleTrackPublished(pub *lksdk.RemoteTrackPublicatio
 
 	// Auto-subscribe if enabled
 	if a.opts.AutoSubscribe {
-		pub.SetSubscribed(true)
+		if err := pub.SetSubscribed(true); err != nil {
+			slog.Default().Warn("failed to auto-subscribe to track", "error", err)
+		}
 	}
 }
 
@@ -636,11 +639,11 @@ func (a *AgentParticipant) handleTrackUnpublished(pub *lksdk.RemoteTrackPublicat
 	a.emitEvent(event.TypeTrackUnpublished, event.TrackData{Participant: *part, Track: *t})
 }
 
-func (a *AgentParticipant) handleTrackSubscribed(remoteTrack *webrtc.TrackRemote, pub *lksdk.RemoteTrackPublication, rp *lksdk.RemoteParticipant) {
+func (a *AgentParticipant) handleTrackSubscribed(_ *webrtc.TrackRemote, _ *lksdk.RemoteTrackPublication, _ *lksdk.RemoteParticipant) {
 	a.emitEvent(event.TypeTrackSubscribed, nil)
 }
 
-func (a *AgentParticipant) handleTrackUnsubscribed(remoteTrack *webrtc.TrackRemote, pub *lksdk.RemoteTrackPublication, rp *lksdk.RemoteParticipant) {
+func (a *AgentParticipant) handleTrackUnsubscribed(_ *webrtc.TrackRemote, _ *lksdk.RemoteTrackPublication, _ *lksdk.RemoteParticipant) {
 	a.emitEvent(event.TypeTrackUnsubscribed, nil)
 }
 

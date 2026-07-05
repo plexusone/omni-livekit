@@ -95,7 +95,7 @@ func (p *Provider) CreateMeeting(ctx context.Context, req meeting.CreateRequest)
 	}
 
 	if req.MaxParticipants > 0 {
-		lkReq.MaxParticipants = uint32(req.MaxParticipants)
+		lkReq.MaxParticipants = uint32(req.MaxParticipants) //nolint:gosec // G115: MaxParticipants is bounded by validation
 	}
 
 	if req.EmptyTimeout > 0 {

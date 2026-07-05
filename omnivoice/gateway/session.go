@@ -290,7 +290,7 @@ func (s *Session) handleTrackSubscribed(track *webrtc.TrackRemote) {
 }
 
 // handleTrackUnsubscribed cleans up when the participant's track is unsubscribed.
-func (s *Session) handleTrackUnsubscribed(track *webrtc.TrackRemote) {
+func (s *Session) handleTrackUnsubscribed(_ *webrtc.TrackRemote) {
 	if s.remoteTrack != nil {
 		s.remoteTrack.Close()
 		s.remoteTrack = nil

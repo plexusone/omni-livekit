@@ -2,6 +2,7 @@ package agent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"sync"
 	"time"
@@ -49,6 +50,16 @@ type videoWriter struct {
 
 // newVideoWriter creates a new video writer for publishing.
 func newVideoWriter(track *lksdk.LocalSampleTrack, width, height, frameRate int, codec string) (*videoWriter, error) {
+	if track == nil {
+		return nil, errors.New("track is required")
+	}
+	if width <= 0 || height <= 0 {
+		return nil, errors.New("width and height must be positive")
+	}
+	if frameRate <= 0 {
+		return nil, errors.New("frameRate must be positive")
+	}
+
 	frameDur := time.Second / time.Duration(frameRate)
 
 	return &videoWriter{
@@ -85,7 +96,7 @@ func (w *videoWriter) Close() error {
 }
 
 // startVideoLocked starts video publishing (must hold lock).
-func (a *Agent) startVideoLocked(ctx context.Context) (*videoWriter, error) {
+func (a *Agent) startVideoLocked(_ context.Context) (*videoWriter, error) {
 	// Determine codec
 	var mimeType string
 	switch a.opts.Video.Codec {

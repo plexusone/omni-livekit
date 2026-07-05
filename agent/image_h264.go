@@ -5,8 +5,10 @@ package agent
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
 	"image"
+	"log/slog"
 	"os"
 	"sync"
 	"time"
@@ -45,6 +47,16 @@ type h264ImageWriter struct {
 
 // newH264ImageWriter creates a new H.264-based image writer.
 func newH264ImageWriter(track *lksdk.LocalSampleTrack, width, height, frameRate int) (*h264ImageWriter, error) {
+	if track == nil {
+		return nil, errors.New("track is required")
+	}
+	if width <= 0 || height <= 0 {
+		return nil, errors.New("width and height must be positive")
+	}
+	if frameRate <= 0 {
+		return nil, errors.New("frameRate must be positive")
+	}
+
 	ctx, cancel := context.WithCancel(context.Background())
 
 	w := &h264ImageWriter{
@@ -167,10 +179,12 @@ func (w *h264ImageWriter) frameLoop() {
 
 			if len(keyframe) > 0 {
 				// Send the cached H.264 keyframe
-				w.track.WriteSample(
+				if err := w.track.WriteSample(
 					media.Sample{Data: keyframe, Duration: w.frameDur},
 					&lksdk.SampleWriteOptions{},
-				)
+				); err != nil {
+					slog.Default().Warn("failed to write H.264 sample", "error", err)
+				}
 			}
 		}
 	}

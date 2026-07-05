@@ -110,8 +110,12 @@ func main() {
 	fmt.Println("\nDid you hear the tones? Press Ctrl+C to exit...")
 	<-ctx.Done()
 
-	ag.Leave(ctx)
-	roomClient.DeleteRoom(context.Background(), roomName)
+	if err := ag.Leave(ctx); err != nil {
+		log.Printf("failed to leave room: %v", err)
+	}
+	if err := roomClient.DeleteRoom(context.Background(), roomName); err != nil {
+		log.Printf("failed to delete room: %v", err)
+	}
 }
 
 func playTone(w agent.AudioWriter, freq float64, duration time.Duration, sampleRate int) {
@@ -130,7 +134,7 @@ func playTone(w agent.AudioWriter, freq float64, duration time.Duration, sampleR
 			sampleIndex := frame*samplesPerFrame + i
 			t := float64(sampleIndex) / float64(sampleRate)
 			sample := int16(math.Sin(2*math.Pi*freq*t) * 16000)
-			binary.LittleEndian.PutUint16(pcm[i*2:], uint16(sample))
+			binary.LittleEndian.PutUint16(pcm[i*2:], uint16(sample)) //nolint:gosec // G115: PCM16 encoding requires int16->uint16 bit-cast
 		}
 
 		if _, err := w.Write(pcm); err != nil {
