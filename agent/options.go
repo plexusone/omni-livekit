@@ -75,18 +75,37 @@ type VideoConfig struct {
 // ImageConfig configures static image video publishing.
 type ImageConfig struct {
 	// Path to the image file (PNG, JPEG, etc.)
+	// Requires CGO for runtime encoding. For no-CGO deployment, use H264Path.
 	Path string
 	// Data is raw image data (alternative to Path)
+	// Requires CGO for runtime encoding. For no-CGO deployment, use H264Data.
 	Data []byte
-	// Width to resize to (0 = use original)
+
+	// H264Path is the path to a pre-encoded H.264 keyframe file.
+	// Use the encode-avatar tool to create this file.
+	// This is the recommended approach - no CGO required at runtime.
+	H264Path string
+	// H264Data is pre-encoded H.264 keyframe data (alternative to H264Path).
+	// Use the encode-avatar tool to create this data.
+	H264Data []byte
+
+	// Width to resize to (0 = use original). Only used with Path/Data.
 	Width int
-	// Height to resize to (0 = use original)
+	// Height to resize to (0 = use original). Only used with Path/Data.
 	Height int
 	// FrameRate for the static image video track (default: 1)
 	// Lower values use less bandwidth for static content.
 	FrameRate int
 	// TrackName for the published video track
 	TrackName string
+}
+
+// ImageWriter is the interface for static image video publishing.
+type ImageWriter interface {
+	// UpdateImage updates the image being published.
+	UpdateImage(data []byte) error
+	// Close stops the image writer.
+	Close() error
 }
 
 // applyDefaults fills in default values for Options.

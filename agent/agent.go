@@ -13,6 +13,7 @@ import (
 	"github.com/pion/webrtc/v4"
 	pionmedia "github.com/pion/webrtc/v4/pkg/media"
 
+	"github.com/plexusone/omni-livekit/agent/assets"
 	"github.com/plexusone/omnimeet-core/event"
 	"github.com/plexusone/omnimeet-core/meeting"
 	"github.com/plexusone/omnimeet-core/participant"
@@ -40,11 +41,11 @@ type Agent struct {
 	eventCh chan event.Event
 
 	// Media tracks
-	audioTrack *lksdk.LocalSampleTrack
-	videoTrack *lksdk.LocalSampleTrack
+	audioTrack  *lksdk.LocalSampleTrack
+	videoTrack  *lksdk.LocalSampleTrack
 	audioWriter *audioWriter
 	videoWriter *videoWriter
-	imageWriter *imageWriter
+	imageWriter ImageWriter // interface for static image publishing
 
 	// Event handlers
 	onParticipantJoined  func(participant.Participant)
@@ -188,9 +189,22 @@ func (a *Agent) Join(ctx context.Context, roomName string) error {
 
 	// Start video based on media mode
 	if a.opts.MediaMode == AudioWithImage {
-		if err := a.startImageVideoLocked(ctx); err != nil {
+		var err error
+		// Check for pre-encoded H.264 data first (no CGO required at runtime)
+		if len(a.opts.Image.H264Data) > 0 || a.opts.Image.H264Path != "" {
+			err = a.startPreencodedImageVideo(ctx)
+		} else if len(a.opts.Image.Data) > 0 || a.opts.Image.Path != "" {
+			// Runtime encoding from provided image (requires CGO)
+			err = a.startImageVideoLocked(ctx)
+		} else {
+			// No image configured - use embedded default avatar
+			a.opts.Image.H264Data = assets.DefaultAvatarH264
+			err = a.startPreencodedImageVideo(ctx)
+		}
+		if err != nil {
 			// Log but don't fail join - image video is optional
 			// Error is silently ignored; caller can check if video is available
+			_ = err
 		}
 	}
 
@@ -471,8 +485,15 @@ func (a *Agent) SubscribeToAudio(ctx context.Context, participantID string) (<-c
 		return nil, fmt.Errorf("not connected")
 	}
 
+	fmt.Printf("[AUDIO-DEBUG] SubscribeToAudio looking for participant: %s\n", participantID)
+	participants := room.GetRemoteParticipants()
+	fmt.Printf("[AUDIO-DEBUG] Found %d remote participants\n", len(participants))
+	for _, p := range participants {
+		fmt.Printf("[AUDIO-DEBUG]   - %s (identity: %s)\n", p.Name(), p.Identity())
+	}
+
 	var rp *lksdk.RemoteParticipant
-	for _, p := range room.GetRemoteParticipants() {
+	for _, p := range participants {
 		if p.Identity() == participantID {
 			rp = p
 			break
@@ -485,16 +506,22 @@ func (a *Agent) SubscribeToAudio(ctx context.Context, participantID string) (<-c
 	audioCh := make(chan AudioFrame, 100)
 
 	// Find and subscribe to audio track
-	for _, pub := range rp.TrackPublications() {
+	pubs := rp.TrackPublications()
+	fmt.Printf("[AUDIO-DEBUG] Participant %s has %d track publications\n", rp.Name(), len(pubs))
+	for _, pub := range pubs {
+		fmt.Printf("[AUDIO-DEBUG]   - Track %s kind=%s muted=%v\n", pub.SID(), pub.Kind(), pub.IsMuted())
 		if pub.Kind() == lksdk.TrackKindAudio {
 			remotePub, ok := pub.(*lksdk.RemoteTrackPublication)
 			if !ok {
+				fmt.Printf("[AUDIO-DEBUG]   - Not a RemoteTrackPublication, skipping\n")
 				continue
 			}
+			fmt.Printf("[AUDIO-DEBUG] Subscribing to audio track %s from %s\n", pub.SID(), rp.Name())
 			if err := remotePub.SetSubscribed(true); err != nil {
 				return nil, fmt.Errorf("failed to subscribe to audio: %w", err)
 			}
 
+			fmt.Printf("[AUDIO-DEBUG] Starting readAudioTrack goroutine for %s\n", rp.Name())
 			go a.readAudioTrack(ctx, remotePub, participantID, rp.Name(), audioCh)
 			return audioCh, nil
 		}

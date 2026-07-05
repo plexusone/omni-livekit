@@ -1,4 +1,17 @@
+//go:build !cgo
+
 package agent
+
+// Static Image Avatar Support (Fallback - No Encoding)
+//
+// This is a fallback implementation when CGO is not available.
+// It publishes raw image data which may not display correctly in browsers.
+//
+// For proper H.264 encoding, build with CGO enabled:
+//   go build ./...
+//
+// The H.264 implementation (image_h264.go) will be used automatically
+// when CGO is available.
 
 import (
 	"bytes"
@@ -178,10 +191,13 @@ func (a *Agent) startImageVideoLocked(ctx context.Context) error {
 	}
 
 	a.videoTrack = track
-	a.imageWriter = writer
+	a.imageWriter = writer // imageWriter implements ImageWriter
 
 	return nil
 }
+
+// Verify imageWriter implements ImageWriter
+var _ ImageWriter = (*imageWriter)(nil)
 
 // processImage decodes, optionally resizes, and re-encodes an image.
 func processImage(data []byte, targetWidth, targetHeight int) ([]byte, error) {
