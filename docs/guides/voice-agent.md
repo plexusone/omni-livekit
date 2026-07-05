@@ -120,6 +120,11 @@ export STT_API_KEY="your-deepgram-key"
 export TTS_PROVIDER="openai"
 export TTS_API_KEY="your-openai-key"
 
+# Optional: Enable avatar (displays image in video tile)
+export AGENT_AVATAR="true"  # Use default OmniAgent icon
+# Or use a custom pre-encoded avatar:
+# export AGENT_AVATAR="/path/to/avatar.h264"
+
 # Build with opus support (see Building section above)
 go build -tags opus ./cmd/voice-agent
 
@@ -291,7 +296,7 @@ func (b *AudioBuffer) Add(frame agent.AudioFrame) []byte {
 
 ## Voice Activity Detection (VAD)
 
-Detect when the user is speaking:
+Detect when the user is speaking. For detailed internals on how VAD works (RMS energy calculation, threshold tuning, silence detection), see the [Voice Pipeline Architecture](../architecture/voice-pipeline.md#voice-activity-detection-vad).
 
 ```go
 func (v *VoiceAgent) processWithVAD(ctx context.Context, frame agent.AudioFrame) {
@@ -452,8 +457,167 @@ export DYLD_LIBRARY_PATH="/opt/homebrew/lib:$DYLD_LIBRARY_PATH"
 
 Or link statically by using the appropriate CGO flags during build.
 
+## Avatar
+
+Display a static image instead of a blank video tile, making your agent more visually present in meetings.
+
+### Enable via Environment Variable
+
+The simplest way to enable avatar is with the `AGENT_AVATAR` environment variable:
+
+```bash
+# Use the default OmniAgent icon
+export AGENT_AVATAR="true"
+
+# Or use a custom pre-encoded avatar
+export AGENT_AVATAR="/path/to/avatar.h264"
+```
+
+Then run your agent normally:
+
+```bash
+go run -tags opus ./cmd/voice-facilitator
+```
+
+| Value | Behavior |
+|-------|----------|
+| `true` or `1` | Uses embedded default OmniAgent icon |
+| `/path/to/file.h264` | Uses custom pre-encoded avatar |
+| *(not set)* | Audio only, no video tile |
+
+### Enable via Go Code
+
+For programmatic control, set `MediaMode` to `AudioWithImage`:
+
+```go
+agent, err := livekitagent.New(livekitagent.Options{
+    APIKey:    apiKey,
+    APISecret: apiSecret,
+    ServerURL: serverURL,
+    MediaMode: livekitagent.AudioWithImage,  // Uses default avatar
+})
+```
+
+To use a custom avatar:
+
+```go
+agent, err := livekitagent.New(livekitagent.Options{
+    MediaMode: livekitagent.AudioWithImage,
+    Image: livekitagent.ImageConfig{
+        H264Path: "avatar.h264",  // Custom pre-encoded avatar
+    },
+})
+```
+
+### Creating Custom Avatars (Pre-encoded)
+
+The recommended approach uses a pre-encoded H.264 file. No CGO is required at runtime.
+
+**Step 1: Install x264 (one-time)**
+
+=== "macOS"
+
+    ```bash
+    brew install x264
+    ```
+
+=== "Ubuntu/Debian"
+
+    ```bash
+    sudo apt-get install libx264-dev
+    ```
+
+**Step 2: Pre-encode your avatar**
+
+```bash
+# Build the encode-avatar tool
+go build ./cmd/encode-avatar
+
+# Encode your avatar image
+./encode-avatar -input avatar.png -output avatar.h264
+
+# Optional: resize during encoding
+./encode-avatar -input avatar.png -output avatar.h264 -width 640 -height 480
+```
+
+**Step 3: Commit the `.h264` file**
+
+```bash
+git add avatar.h264
+git commit -m "feat: add agent avatar"
+```
+
+**Step 4: Use it**
+
+Via environment variable:
+
+```bash
+export AGENT_AVATAR="./avatar.h264"
+```
+
+Or via Go code (see "Enable via Go Code" above).
+
+Your production binary now works without CGO or x264 installed.
+
+### Runtime Encoding (Alternative)
+
+If you need dynamic avatars that change per-user, you can encode at runtime. This requires CGO and x264 on the production system.
+
+```go
+agent, err := livekitagent.New(livekitagent.Options{
+    APIKey:    apiKey,
+    APISecret: apiSecret,
+    ServerURL: serverURL,
+    MediaMode: livekitagent.AudioWithImage,
+    Image: livekitagent.ImageConfig{
+        Path:   "/path/to/avatar.png",  // Encode at runtime
+        Width:  640,                     // Optional resize
+        Height: 480,
+    },
+})
+```
+
+Build with CGO enabled (default):
+
+```bash
+go build ./cmd/voice-agent
+```
+
+### Embedding H.264 Data
+
+For single-binary deployments, embed the pre-encoded data:
+
+```go
+import _ "embed"
+
+//go:embed assets/avatar.h264
+var avatarH264 []byte
+
+func main() {
+    agent, err := livekitagent.New(livekitagent.Options{
+        MediaMode: livekitagent.AudioWithImage,
+        Image: livekitagent.ImageConfig{
+            H264Data: avatarH264,  // Embedded bytes
+        },
+    })
+}
+```
+
+### Avatar Best Practices
+
+| Recommendation | Why |
+|----------------|-----|
+| Use 640x480 or smaller | Larger resolutions waste bandwidth for static content |
+| Keep frame rate at 1 FPS | Default is optimal for static images |
+| Use PNG for quality | JPEG artifacts are visible at low frame rates |
+| Pre-encode for production | No CGO dependency, faster startup |
+
+For technical details on how avatar encoding works, see [Avatar Architecture](../architecture/avatar.md).
+
 ## See Also
 
+- [Avatar Architecture](../architecture/avatar.md) - How avatar encoding works internally
+- [Voice Pipeline Architecture](../architecture/voice-pipeline.md) - How the audio pipeline works internally
 - [Human Participation](human-participation.md) - Frontend options
 - [OmniMeet Integration](omnimeet-integration.md) - Meeting abstraction
 - [OmniVoice Documentation](https://github.com/plexusone/omnivoice) - Provider details

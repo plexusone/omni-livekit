@@ -59,6 +59,9 @@ nav:
       - Human Participation: guides/human-participation.md
       - Voice Agent: guides/voice-agent.md
       - OmniMeet Integration: guides/omnimeet-integration.md
+  - Architecture:
+      - Voice Pipeline: architecture/voice-pipeline.md
+      - Static Image Avatar: architecture/avatar.md
   - API Reference:
       - Gateway: api/gateway.md
       - Room Client: api/room.md
