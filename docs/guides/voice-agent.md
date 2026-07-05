@@ -476,7 +476,7 @@ export AGENT_AVATAR="/path/to/avatar.h264"
 Then run your agent normally:
 
 ```bash
-go run -tags opus ./cmd/voice-facilitator
+go run -tags opus ./cmd/voice-agent
 ```
 
 | Value | Behavior |
@@ -531,14 +531,21 @@ The recommended approach uses a pre-encoded H.264 file. No CGO is required at ru
 
 ```bash
 # Build the encode-avatar tool
-go build ./cmd/encode-avatar
+go build -tags cgo ./cmd/encode-avatar
 
-# Encode your avatar image
-./encode-avatar -input avatar.png -output avatar.h264
+# Encode with 16:9 canvas (recommended for LiveKit)
+./encode-avatar -input avatar.png -output avatar.h264 -canvas h360
 
-# Optional: resize during encoding
-./encode-avatar -input avatar.png -output avatar.h264 -width 640 -height 480
+# Or encode at specific dimensions
+./encode-avatar -input avatar.png -output avatar.h264 -width 320 -height 320
+
+# Custom canvas with background color
+./encode-avatar -input avatar.png -output avatar.h264 -canvas 640x360 -bg "#1a1a1a"
 ```
+
+**Canvas presets (16:9):** `h180` (320x180), `h360` (640x360), `h540` (960x540), `h720` (1280x720)
+
+Using a 16:9 canvas prevents cropping in LiveKit video slots.
 
 **Step 3: Commit the `.h264` file**
 
@@ -607,7 +614,8 @@ func main() {
 
 | Recommendation | Why |
 |----------------|-----|
-| Use 640x480 or smaller | Larger resolutions waste bandwidth for static content |
+| Use 16:9 canvas (`-canvas h360`) | Prevents cropping in LiveKit video slots |
+| Use 640x360 or smaller | Larger resolutions waste bandwidth for static content |
 | Keep frame rate at 1 FPS | Default is optimal for static images |
 | Use PNG for quality | JPEG artifacts are visible at low frame rates |
 | Pre-encode for production | No CGO dependency, faster startup |

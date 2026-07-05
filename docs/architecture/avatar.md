@@ -267,9 +267,12 @@ When `AudioWithImage` mode is enabled but no image is configured, the agent uses
 
 The default avatar is:
 
-- 640x640 pixels
-- ~47 KB (H.264 encoded)
+- 640x360 pixels (16:9 aspect ratio)
+- 360x360 icon centered on black background
+- ~27 KB (H.264 encoded)
 - No runtime dependencies
+
+The 16:9 aspect ratio ensures proper display in LiveKit video slots without cropping.
 
 ## Alternative Approaches
 
@@ -299,9 +302,9 @@ For animated avatars, use a short looping video:
 ffmpeg -loop 1 -i avatar.png -c:v libx264 -t 1 -r 1 -pix_fmt yuv420p avatar.mp4
 ```
 
-## Dependencies
+## The encode-avatar Tool
 
-### For Pre-encoding (encode-avatar tool)
+### Installation
 
 The `encode-avatar` tool requires CGO and x264:
 
@@ -316,8 +319,45 @@ sudo apt-get install libx264-dev
 Build the tool:
 
 ```bash
-go build ./cmd/encode-avatar
+go build -tags cgo ./cmd/encode-avatar
 ```
+
+### Basic Usage
+
+```bash
+# Encode at original dimensions
+./encode-avatar -input avatar.png -output avatar.h264
+
+# Resize to specific dimensions
+./encode-avatar -input avatar.png -output avatar.h264 -width 320 -height 320
+```
+
+### 16:9 Canvas (Recommended)
+
+LiveKit UIs typically expect 16:9 video and may crop square content. The `-canvas` option embeds your avatar in a 16:9 frame:
+
+```bash
+# Use a preset (recommended)
+./encode-avatar -input avatar.png -output avatar.h264 -canvas h360
+
+# Custom dimensions
+./encode-avatar -input avatar.png -output avatar.h264 -canvas 640x360 -bg black
+```
+
+**Canvas presets:**
+
+| Preset | Resolution | Use Case |
+|--------|------------|----------|
+| h180 | 320x180 | Thumbnails, minimal bandwidth |
+| h360 | 640x360 | **Recommended** for most uses |
+| h540 | 960x540 | Higher quality |
+| h720 | 1280x720 | Full HD displays |
+
+**Background colors:** `black` (default), `white`, `gray`, `transparent`, or hex (`#rrggbb`)
+
+The avatar is automatically centered and scaled to fit within the canvas while maintaining aspect ratio.
+
+## Dependencies
 
 ### For Runtime Encoding
 

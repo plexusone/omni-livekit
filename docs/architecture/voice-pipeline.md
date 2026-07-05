@@ -57,7 +57,7 @@ LiveKit transmits audio using the Opus codec at 48kHz. The agent decodes incomin
 The Opus decoder requires the `opus` build tag:
 
 ```bash
-go build -tags opus ./cmd/voice-facilitator
+go build -tags opus ./cmd/voice-agent
 ```
 
 ## Voice Activity Detection (VAD)
