@@ -144,6 +144,16 @@ func (a *Agent) startPreencodedImageVideo(_ context.Context) error {
 		frameRate = 1
 	}
 
+	// Get video dimensions (default to 320x320 for embedded avatar)
+	width := a.opts.Image.Width
+	height := a.opts.Image.Height
+	if width == 0 {
+		width = 320
+	}
+	if height == 0 {
+		height = 320
+	}
+
 	// Create H.264 video track
 	track, err := lksdk.NewLocalSampleTrack(webrtc.RTPCodecCapability{
 		MimeType:  webrtc.MimeTypeH264,
@@ -153,10 +163,12 @@ func (a *Agent) startPreencodedImageVideo(_ context.Context) error {
 		return fmt.Errorf("failed to create video track: %w", err)
 	}
 
-	// Publish the track
+	// Publish the track with dimensions so LiveKit knows the video size
 	_, err = a.room.LocalParticipant.PublishTrack(track, &lksdk.TrackPublicationOptions{
-		Name:   a.opts.Image.TrackName,
-		Source: livekit.TrackSource_CAMERA,
+		Name:        a.opts.Image.TrackName,
+		Source:      livekit.TrackSource_CAMERA,
+		VideoWidth:  width,
+		VideoHeight: height,
 	})
 	if err != nil {
 		return fmt.Errorf("failed to publish video track: %w", err)
