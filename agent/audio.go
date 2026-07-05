@@ -193,16 +193,21 @@ func newAudioReader(
 // readLoop reads RTP packets from the track and decodes them.
 func (r *audioReader) readLoop() {
 	defer func() {
+		fmt.Printf("[AUDIO-DEBUG] readLoop ending for %s\n", r.participantName)
 		r.decoder.Close()
 		r.mu.Lock()
 		r.closed = true
 		r.mu.Unlock()
 	}()
 
+	fmt.Printf("[AUDIO-DEBUG] readLoop started for %s (track: %s)\n", r.participantName, r.track.ID())
+
 	buf := make([]byte, 1500)
+	packetCount := 0
 	for {
 		select {
 		case <-r.ctx.Done():
+			fmt.Printf("[AUDIO-DEBUG] readLoop context done for %s after %d packets\n", r.participantName, packetCount)
 			return
 		default:
 		}
@@ -211,13 +216,23 @@ func (r *audioReader) readLoop() {
 		n, _, err := r.track.Read(buf)
 		if err != nil {
 			if err == io.EOF || r.ctx.Err() != nil {
+				fmt.Printf("[AUDIO-DEBUG] readLoop EOF/cancel for %s after %d packets: %v\n", r.participantName, packetCount, err)
 				return
 			}
+			fmt.Printf("[AUDIO-DEBUG] readLoop read error for %s: %v\n", r.participantName, err)
 			continue
 		}
 
 		if n == 0 {
 			continue
+		}
+
+		packetCount++
+		if packetCount == 1 {
+			fmt.Printf("[AUDIO-DEBUG] First RTP packet received from %s (%d bytes)\n", r.participantName, n)
+		}
+		if packetCount%500 == 0 {
+			fmt.Printf("[AUDIO-DEBUG] Received %d RTP packets from %s\n", packetCount, r.participantName)
 		}
 
 		// Extract Opus payload from RTP packet
@@ -297,6 +312,14 @@ func (w *pcmFrameWriter) WriteSample(data media.PCM16Sample) error {
 	}
 
 	w.seqNum++
+
+	if w.seqNum == 1 {
+		fmt.Printf("[AUDIO-DEBUG] First decoded PCM frame from %s (%d bytes, %d samples)\n", w.participantName, len(pcmBytes), len(data))
+	}
+	if w.seqNum%500 == 0 {
+		fmt.Printf("[AUDIO-DEBUG] Decoded %d PCM frames from %s\n", w.seqNum, w.participantName)
+	}
+
 	frame := AudioFrame{
 		ParticipantID:   w.participantID,
 		ParticipantName: w.participantName,
@@ -311,6 +334,9 @@ func (w *pcmFrameWriter) WriteSample(data media.PCM16Sample) error {
 	case w.outputCh <- frame:
 	default:
 		// Channel full, drop frame
+		if w.seqNum%100 == 0 {
+			fmt.Printf("[AUDIO-DEBUG] WARNING: Dropping frames from %s (channel full, seq=%d)\n", w.participantName, w.seqNum)
+		}
 	}
 
 	return nil
@@ -320,19 +346,29 @@ func (w *pcmFrameWriter) WriteSample(data media.PCM16Sample) error {
 func (a *Agent) readAudioTrack(ctx context.Context, pub *lksdk.RemoteTrackPublication, participantID, participantName string, audioCh chan<- AudioFrame) {
 	defer close(audioCh)
 
+	fmt.Printf("[AUDIO-DEBUG] readAudioTrack starting for %s (track SID: %s)\n", participantName, pub.SID())
+
 	// Wait for the track to be subscribed
 	track := pub.TrackRemote()
 	if track == nil {
 		// Track not yet subscribed, wait for it
+		fmt.Printf("[AUDIO-DEBUG] Waiting for track to be subscribed for %s...\n", participantName)
 		ticker := time.NewTicker(100 * time.Millisecond)
 		defer ticker.Stop()
+		waitCount := 0
 		for {
 			select {
 			case <-ctx.Done():
+				fmt.Printf("[AUDIO-DEBUG] Context cancelled while waiting for track from %s\n", participantName)
 				return
 			case <-ticker.C:
+				waitCount++
+				if waitCount%50 == 0 {
+					fmt.Printf("[AUDIO-DEBUG] Still waiting for track from %s (%d ticks)...\n", participantName, waitCount)
+				}
 				track = pub.TrackRemote()
 				if track != nil {
+					fmt.Printf("[AUDIO-DEBUG] Track became available for %s after %d ticks\n", participantName, waitCount)
 					goto startReading
 				}
 			}
@@ -340,15 +376,21 @@ func (a *Agent) readAudioTrack(ctx context.Context, pub *lksdk.RemoteTrackPublic
 	}
 
 startReading:
+	fmt.Printf("[AUDIO-DEBUG] Creating audio reader for %s (codec: %s)\n", participantName, track.Codec().MimeType)
+
 	// Create audio reader with Opus decoding
 	reader, err := newAudioReader(ctx, track, participantID, participantName, audioCh)
 	if err != nil {
+		fmt.Printf("[AUDIO-DEBUG] Failed to create audio reader for %s: %v\n", participantName, err)
 		return
 	}
 	defer reader.Close()
 
+	fmt.Printf("[AUDIO-DEBUG] Audio reader created successfully for %s\n", participantName)
+
 	// Wait for context cancellation
 	<-ctx.Done()
+	fmt.Printf("[AUDIO-DEBUG] readAudioTrack ending for %s\n", participantName)
 }
 
 // Verify interface compliance
