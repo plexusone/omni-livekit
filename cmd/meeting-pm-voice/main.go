@@ -36,7 +36,7 @@ import (
 	livekitagent "github.com/plexusone/omni-livekit/agent"
 	"github.com/plexusone/omni-livekit/room"
 	omniagent "github.com/plexusone/omniagent/agent"
-	meetingpm "github.com/plexusone/omniagent-role-meeting-pm"
+	"github.com/plexusone/omnirole-facilitator"
 	"github.com/plexusone/omnimeet-core/participant"
 	"github.com/plexusone/omnimeet-core/track"
 	"github.com/plexusone/omnivoice"
@@ -109,7 +109,7 @@ func main() {
 	}
 
 	// Create Meeting PM role
-	pmRole := meetingpm.New(meetingpm.Config{
+	pmRole := facilitator.New(facilitator.Config{
 		DefaultConfluenceSpace: confluenceSpace,
 		DefaultAhaProduct:      ahaProduct,
 		EnableTranscription:    true,

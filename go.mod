@@ -9,7 +9,7 @@ require (
 	github.com/livekit/server-sdk-go/v2 v2.17.0
 	github.com/pion/webrtc/v4 v4.2.16
 	github.com/plexusone/omniagent v0.18.0
-	github.com/plexusone/omniagent-role-meeting-pm v0.0.0-00010101000000-000000000000
+	github.com/plexusone/omnirole-facilitator v0.0.0-00010101000000-000000000000
 	github.com/plexusone/omnimeet-core v0.1.0
 	github.com/plexusone/omnivoice v0.12.0
 	github.com/plexusone/omnivoice-core v0.15.0
@@ -198,4 +198,4 @@ replace github.com/plexusone/omniagent => ../omniagent
 
 replace github.com/plexusone/omniskill => ../omniskill
 
-replace github.com/plexusone/omniagent-role-meeting-pm => ../omniagent-role-meeting-pm
+replace github.com/plexusone/omnirole-facilitator => ../omnirole-facilitator
