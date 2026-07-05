@@ -174,7 +174,7 @@ func main() {
 	}
 
 	// Write output
-	if err := os.WriteFile(*output, h264Data, 0644); err != nil {
+	if err := os.WriteFile(*output, h264Data, 0o600); err != nil {
 		fmt.Fprintf(os.Stderr, "Error writing output: %v\n", err)
 		os.Exit(1)
 	}

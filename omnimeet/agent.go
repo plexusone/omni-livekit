@@ -32,12 +32,12 @@ type AgentParticipant struct {
 	audioWriter *legacyAudioTrackWriter
 
 	// Event handlers
-	onParticipantJoined  func(participant.Participant)
-	onParticipantLeft    func(participant.Participant)
-	onTrackPublished     func(participant.Participant, track.Track)
-	onTrackUnpublished   func(participant.Participant, track.Track)
-	onActiveSpeaker      func([]participant.Participant)
-	onDataMessage        func(provider.DataMessage)
+	onParticipantJoined func(participant.Participant)
+	onParticipantLeft   func(participant.Participant)
+	onTrackPublished    func(participant.Participant, track.Track)
+	onTrackUnpublished  func(participant.Participant, track.Track)
+	onActiveSpeaker     func([]participant.Participant)
+	onDataMessage       func(provider.DataMessage)
 
 	mu sync.RWMutex
 }

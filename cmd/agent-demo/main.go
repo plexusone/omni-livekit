@@ -21,9 +21,10 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/plexusone/omnimeet-core/participant"
+
 	"github.com/plexusone/omni-livekit/agent"
 	"github.com/plexusone/omni-livekit/room"
-	"github.com/plexusone/omnimeet-core/participant"
 )
 
 func main() {
@@ -182,4 +183,3 @@ func buildMeetURL(serverURL, token string) string {
 	u.RawQuery = q.Encode()
 	return u.String()
 }
-

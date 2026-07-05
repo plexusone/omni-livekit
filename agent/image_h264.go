@@ -33,8 +33,8 @@ type h264ImageWriter struct {
 	frameDur  time.Duration
 
 	// Cached encoded keyframe
-	keyframe    []byte
-	keyframeMu  sync.RWMutex
+	keyframe   []byte
+	keyframeMu sync.RWMutex
 
 	ctx    context.Context
 	cancel context.CancelFunc

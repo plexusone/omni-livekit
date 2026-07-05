@@ -13,22 +13,23 @@ import (
 	"github.com/pion/webrtc/v4"
 	pionmedia "github.com/pion/webrtc/v4/pkg/media"
 
-	"github.com/plexusone/omni-livekit/agent/assets"
 	"github.com/plexusone/omnimeet-core/event"
 	"github.com/plexusone/omnimeet-core/meeting"
 	"github.com/plexusone/omnimeet-core/participant"
 	"github.com/plexusone/omnimeet-core/track"
+
+	"github.com/plexusone/omni-livekit/agent/assets"
 )
 
 // ConnectionState represents the agent's connection state.
 type ConnectionState string
 
 const (
-	StateDisconnected  ConnectionState = "disconnected"
-	StateConnecting    ConnectionState = "connecting"
-	StateConnected     ConnectionState = "connected"
-	StateReconnecting  ConnectionState = "reconnecting"
-	StateFailed        ConnectionState = "failed"
+	StateDisconnected ConnectionState = "disconnected"
+	StateConnecting   ConnectionState = "connecting"
+	StateConnected    ConnectionState = "connected"
+	StateReconnecting ConnectionState = "reconnecting"
+	StateFailed       ConnectionState = "failed"
 )
 
 // Agent is a full-featured LiveKit agent with audio and video capabilities.
@@ -48,13 +49,13 @@ type Agent struct {
 	imageWriter ImageWriter // interface for static image publishing
 
 	// Event handlers
-	onParticipantJoined  func(participant.Participant)
-	onParticipantLeft    func(participant.Participant)
-	onTrackPublished     func(participant.Participant, track.Track)
-	onTrackUnpublished   func(participant.Participant, track.Track)
-	onActiveSpeaker      func([]participant.Participant)
-	onDataMessage        func(DataMessage)
-	onAudioFrame         func(AudioFrame)
+	onParticipantJoined func(participant.Participant)
+	onParticipantLeft   func(participant.Participant)
+	onTrackPublished    func(participant.Participant, track.Track)
+	onTrackUnpublished  func(participant.Participant, track.Track)
+	onActiveSpeaker     func([]participant.Participant)
+	onDataMessage       func(DataMessage)
+	onAudioFrame        func(AudioFrame)
 
 	mu sync.RWMutex
 }

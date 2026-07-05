@@ -471,6 +471,6 @@ func (p *Provider) mapTrack(participantID string, pub *livekit.TrackInfo) *track
 
 // Verify interface compliance
 var (
-	_ provider.MeetingProvider       = (*Provider)(nil)
+	_ provider.MeetingProvider         = (*Provider)(nil)
 	_ provider.AgentParticipantFactory = (*Provider)(nil)
 )
