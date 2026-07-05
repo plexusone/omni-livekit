@@ -1,7 +1,7 @@
-// Command meeting-pm-voice demonstrates an OmniAgent-powered Meeting Program Manager
+// Command facilitator-voice demonstrates an OmniAgent-powered Facilitator
 // with voice capabilities via LiveKit.
 //
-// The agent uses the Meeting PM role for persona-driven behavior:
+// The agent uses the Facilitator role for omnichannel collaboration:
 //   - Facilitates meetings with structured agendas
 //   - Tracks action items, decisions, and questions
 //   - Generates meeting notes and summaries
@@ -16,7 +16,7 @@
 //	export DEEPGRAM_API_KEY="your-key"
 //	export TTS_PROVIDER="openai"
 //
-//	go run ./cmd/meeting-pm-voice
+//	go run -tags opus ./cmd/facilitator-voice
 package main
 
 import (

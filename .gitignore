@@ -22,7 +22,7 @@ IDEATION_CHAT*.md
 # Built binaries (root level only)
 /agent-demo
 /audio-test
-/meeting-pm-voice
+/facilitator-voice
 /omniagent-voice
 /voice-agent
 
