@@ -144,14 +144,14 @@ func (a *Agent) startPreencodedImageVideo(_ context.Context) error {
 		frameRate = 1
 	}
 
-	// Get video dimensions (default to 640x360 for embedded avatar - 16:9 aspect ratio)
+	// Get video dimensions (default to 1280x720 for embedded avatar - 16:9 aspect ratio)
 	width := a.opts.Image.Width
 	height := a.opts.Image.Height
 	if width == 0 {
-		width = 640
+		width = 1280
 	}
 	if height == 0 {
-		height = 360
+		height = 720
 	}
 
 	// Create H.264 video track
