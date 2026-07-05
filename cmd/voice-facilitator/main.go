@@ -1,4 +1,4 @@
-// Command facilitator-voice demonstrates an OmniAgent-powered Facilitator
+// Command voice-facilitator demonstrates an OmniAgent-powered Facilitator
 // with voice capabilities via LiveKit.
 //
 // The agent uses the Facilitator role for omnichannel collaboration:
@@ -16,7 +16,11 @@
 //	export DEEPGRAM_API_KEY="your-key"
 //	export TTS_PROVIDER="openai"
 //
-//	go run -tags opus ./cmd/facilitator-voice
+//	# Optional: Enable avatar (static image in video tile)
+//	export AGENT_AVATAR="true"            # Use default OmniAgent icon
+//	export AGENT_AVATAR="/path/to/avatar.h264"  # Use custom pre-encoded avatar
+//
+//	go run -tags opus ./cmd/voice-facilitator
 package main
 
 import (
@@ -25,6 +29,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"log"
+	"math"
 	"net/url"
 	"os"
 	"os/signal"
@@ -66,6 +71,11 @@ func main() {
 	// Role configuration
 	confluenceSpace := getEnvOrDefault("CONFLUENCE_SPACE", "MEETINGS")
 	ahaProduct := getEnvOrDefault("AHA_PRODUCT", "")
+
+	// Avatar configuration
+	// AGENT_AVATAR: "true" or "1" to enable avatar (uses default OmniAgent icon)
+	// AGENT_AVATAR: path to .h264 file for custom pre-encoded avatar
+	avatarConfig := os.Getenv("AGENT_AVATAR")
 
 	// Resolve API keys
 	sttAPIKey := resolveAPIKey(sttProviderName)
@@ -240,8 +250,8 @@ You are participating in a voice meeting via LiveKit. Keep these guidelines in m
 		sampleRate:  48000,
 	}
 
-	// Create LiveKit agent
-	lkAgent, err := livekitagent.New(livekitagent.Options{
+	// Build agent options
+	agentOpts := livekitagent.Options{
 		APIKey:        apiKey,
 		APISecret:     apiSecret,
 		ServerURL:     serverURL,
@@ -253,7 +263,22 @@ You are participating in a voice meeting via LiveKit. Keep these guidelines in m
 			Channels:   1,
 			TrackName:  "agent-audio",
 		},
-	})
+	}
+
+	// Enable avatar if configured
+	if avatarConfig != "" {
+		agentOpts.MediaMode = livekitagent.AudioWithImage
+		// If it's a path to a file, use it as custom avatar
+		if avatarConfig != "true" && avatarConfig != "1" {
+			agentOpts.Image.H264Path = avatarConfig
+			fmt.Printf("Using custom avatar: %s\n", avatarConfig)
+		} else {
+			fmt.Println("Using default OmniAgent avatar")
+		}
+	}
+
+	// Create LiveKit agent
+	lkAgent, err := livekitagent.New(agentOpts)
 	if err != nil {
 		log.Fatalf("Failed to create agent: %v", err)
 	}
@@ -388,17 +413,34 @@ type VoiceAgent struct {
 // processAudio handles incoming audio from participants
 func (va *VoiceAgent) processAudio(ctx context.Context, ag *livekitagent.Agent, audioCh <-chan livekitagent.AudioFrame) {
 	var audioBuffer []byte
-	var lastAudioTime time.Time
-	silenceThreshold := 500 * time.Millisecond
+	var lastSpeechTime time.Time
+	silenceThreshold := 800 * time.Millisecond // Time after last speech to trigger processing
 	frameCount := 0
+	skippedWhileSpeaking := 0
+	speechFrames := 0
+
+	// Energy threshold for VAD (voice activity detection)
+	// Frames below this RMS energy are considered silence/noise
+	const energyThreshold = 500
 
 	ticker := time.NewTicker(100 * time.Millisecond)
 	defer ticker.Stop()
+
+	// Heartbeat to confirm processAudio is still running
+	heartbeat := time.NewTicker(5 * time.Second)
+	defer heartbeat.Stop()
 
 	for {
 		select {
 		case <-ctx.Done():
 			return
+
+		case <-heartbeat.C:
+			va.speakingMu.Lock()
+			speaking := va.speaking
+			va.speakingMu.Unlock()
+			fmt.Printf("[HEARTBEAT] processAudio alive: frames=%d, speech=%d, buffer=%d bytes, speaking=%v, skipped=%d\n",
+				frameCount, speechFrames, len(audioBuffer), speaking, skippedWhileSpeaking)
 
 		case frame, ok := <-audioCh:
 			if !ok {
@@ -410,28 +452,43 @@ func (va *VoiceAgent) processAudio(ctx context.Context, ag *livekitagent.Agent, 
 			if frameCount == 1 {
 				fmt.Println("[DEBUG] Receiving audio frames...")
 			}
-			if frameCount%100 == 0 {
-				fmt.Printf("[DEBUG] Received %d audio frames, buffer size: %d bytes\n", frameCount, len(audioBuffer))
-			}
 
 			// Skip if we're currently speaking (avoid echo)
 			va.speakingMu.Lock()
 			speaking := va.speaking
 			va.speakingMu.Unlock()
 			if speaking {
+				skippedWhileSpeaking++
 				continue
 			}
 
-			audioBuffer = append(audioBuffer, frame.Data...)
-			lastAudioTime = time.Now()
+			// Simple VAD: calculate RMS energy of the frame
+			energy := calculateRMSEnergy(frame.Data)
+			isSpeech := energy > energyThreshold
+
+			if isSpeech {
+				speechFrames++
+				audioBuffer = append(audioBuffer, frame.Data...)
+				lastSpeechTime = time.Now()
+				if speechFrames == 1 {
+					fmt.Printf("[VAD] Speech started (energy=%d)\n", energy)
+				}
+			}
+
+			if frameCount%100 == 0 {
+				fmt.Printf("[DEBUG] Received %d frames, speech=%d, buffer=%d bytes, energy=%d\n",
+					frameCount, speechFrames, len(audioBuffer), energy)
+			}
 
 		case <-ticker.C:
-			// Check for silence (end of speech)
-			if len(audioBuffer) > 0 && time.Since(lastAudioTime) > silenceThreshold {
-				fmt.Printf("[DEBUG] Silence detected, processing %d bytes of audio\n", len(audioBuffer))
+			// Check for silence (end of speech) - only if we have speech and enough silence has passed
+			if len(audioBuffer) > 0 && !lastSpeechTime.IsZero() && time.Since(lastSpeechTime) > silenceThreshold {
+				fmt.Printf("[VAD] Silence detected after speech, processing %d bytes (%d speech frames)\n", len(audioBuffer), speechFrames)
 				audioCopy := make([]byte, len(audioBuffer))
 				copy(audioCopy, audioBuffer)
 				audioBuffer = nil
+				speechFrames = 0
+				lastSpeechTime = time.Time{} // Reset to zero value
 
 				go func(audio []byte) {
 					if err := va.processUtterance(ctx, ag, audio); err != nil {
@@ -441,6 +498,28 @@ func (va *VoiceAgent) processAudio(ctx context.Context, ag *livekitagent.Agent, 
 			}
 		}
 	}
+}
+
+// calculateRMSEnergy calculates the root mean square energy of PCM16 audio data.
+// Returns a value indicating the "loudness" of the audio frame.
+func calculateRMSEnergy(data []byte) int {
+	if len(data) < 2 {
+		return 0
+	}
+
+	var sumSquares int64
+	numSamples := len(data) / 2
+
+	for i := 0; i < numSamples; i++ {
+		// Read little-endian int16
+		sample := int16(binary.LittleEndian.Uint16(data[i*2:]))
+		sumSquares += int64(sample) * int64(sample)
+	}
+
+	// RMS = sqrt(sum of squares / n)
+	meanSquare := sumSquares / int64(numSamples)
+	rms := int(math.Sqrt(float64(meanSquare)))
+	return rms
 }
 
 // processUtterance handles a complete utterance: STT → OmniAgent → TTS
@@ -506,10 +585,12 @@ func (va *VoiceAgent) speak(ctx context.Context, ag *livekitagent.Agent, text st
 	va.speakingMu.Lock()
 	va.speaking = true
 	va.speakingMu.Unlock()
+	fmt.Println("[SPEAK] speaking=true (starting)")
 	defer func() {
 		va.speakingMu.Lock()
 		va.speaking = false
 		va.speakingMu.Unlock()
+		fmt.Println("[SPEAK] speaking=false (finished)")
 	}()
 
 	fmt.Printf("[SPEAK] Starting TTS for: %q\n", text)
