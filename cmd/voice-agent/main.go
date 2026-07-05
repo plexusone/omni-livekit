@@ -20,7 +20,11 @@
 //	# LLM provider
 //	export ANTHROPIC_API_KEY="your-key"
 //
-//	go run ./cmd/voice-agent
+//	# Optional: Enable avatar (static image in video tile)
+//	export AGENT_AVATAR="true"            # Use default OmniAgent icon
+//	export AGENT_AVATAR="/path/to/avatar.h264"  # Use custom pre-encoded avatar
+//
+//	go run -tags opus ./cmd/voice-agent
 //
 // Then open the printed URL in your browser to join and talk to the agent.
 package main
@@ -81,6 +85,11 @@ func main() {
 	if anthropicKey == "" {
 		log.Fatal("Required: ANTHROPIC_API_KEY for LLM")
 	}
+
+	// Avatar configuration
+	// AGENT_AVATAR: "true" or "1" to enable avatar (uses default OmniAgent icon)
+	// AGENT_AVATAR: path to .h264 file for custom pre-encoded avatar
+	avatarConfig := os.Getenv("AGENT_AVATAR")
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -161,8 +170,8 @@ func main() {
 		sampleRate:   48000,
 	}
 
-	// Create and start agent
-	ag, err := agent.New(agent.Options{
+	// Build agent options
+	agentOpts := agent.Options{
 		APIKey:        apiKey,
 		APISecret:     apiSecret,
 		ServerURL:     serverURL,
@@ -174,7 +183,22 @@ func main() {
 			Channels:   1,
 			TrackName:  "agent-audio",
 		},
-	})
+	}
+
+	// Enable avatar if configured
+	if avatarConfig != "" {
+		agentOpts.MediaMode = agent.AudioWithImage
+		// If it's a path to a file, use it as custom avatar
+		if avatarConfig != "true" && avatarConfig != "1" {
+			agentOpts.Image.H264Path = avatarConfig
+			fmt.Printf("Using custom avatar: %s\n", avatarConfig)
+		} else {
+			fmt.Println("Using default OmniAgent avatar")
+		}
+	}
+
+	// Create and start agent
+	ag, err := agent.New(agentOpts)
 	if err != nil {
 		log.Fatalf("Failed to create agent: %v", err)
 	}
