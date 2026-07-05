@@ -1,4 +1,4 @@
-# omni-livekit
+# Omni-LiveKit
 
 LiveKit voice gateway for WebRTC-based voice AI applications.
 
@@ -185,7 +185,7 @@ Client (Browser/Mobile)
 │                ▼                      │
 │  ┌─────────────────────────────────┐  │
 │  │  Voice Pipeline                 │  │
-│  │  STT → LLM → TTS               │  │
+│  │  STT → LLM → TTS                │  │
 │  └─────────────┬───────────────────┘  │
 │                ▼                      │
 │  ┌─────────────────────────────────┐  │
