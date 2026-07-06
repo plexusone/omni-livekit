@@ -1,0 +1,51 @@
+{
+  "irVersion": "1.0",
+  "project": "omni-livekit",
+  "repository": "https://github.com/plexusone/omni-livekit",
+  "versioning": "semver",
+  "commitConvention": "conventional",
+  "maintainers": ["plexusone"],
+  "releases": [
+    {
+      "version": "v0.1.0",
+      "date": "2026-07-05",
+      "highlights": [
+        { "description": "Initial release of omni-livekit - LiveKit voice gateway for WebRTC-based voice AI applications" },
+        { "description": "OmniMeet provider implementation for LiveKit meeting abstraction" },
+        { "description": "OmniVoice gateway for voice AI pipeline integration" },
+        { "description": "Static image avatar support for voice agents with 16:9 canvas" }
+      ],
+      "added": [
+        { "description": "LiveKit agent package with WebRTC audio track handling", "commit": "109218b" },
+        { "description": "Room management for creating rooms and generating client tokens", "commit": "a97e6f5" },
+        { "description": "OmniMeet provider implementing `meeting.Provider` interface", "commit": "f445405" },
+        { "description": "OmniVoice gateway implementing `WebRTCGateway` interface", "commit": "7a15e25" },
+        { "description": "Static image avatar support for voice agents", "commit": "2cd92d5" },
+        { "description": "`encode-avatar` tool for pre-encoding avatar images to H.264", "commit": "955ef25" },
+        { "description": "Embedded default OmniAgent avatar", "commit": "6069730" },
+        { "description": "`AGENT_AVATAR` environment variable for avatar configuration", "commit": "8e519d0" },
+        { "description": "16:9 canvas support for LiveKit UI compatibility", "commit": "b171fbf" },
+        { "description": "High-quality bicubic scaling for avatar encoding", "commit": "fbe3e35" }
+      ],
+      "documentation": [
+        { "description": "Getting started guide and quick start tutorial", "commit": "ee30a05" },
+        { "description": "Opus build tag requirements and troubleshooting guide", "commit": "66da57f" },
+        { "description": "Voice pipeline architecture documentation", "commit": "b16ea76" },
+        { "description": "Avatar architecture and usage documentation", "commit": "127c106" },
+        { "description": "Comprehensive environment variables reference", "commit": "751cc08" },
+        { "description": "Human participation guide for LiveKit Meet integration", "commit": "ee30a05" },
+        { "description": "API reference for Gateway, Room, and Agent packages", "commit": "ee30a05" }
+      ],
+      "fixed": [
+        { "description": "CI workflow with native dependencies (libopus, libsoxr)", "commit": "8a53efe" },
+        { "description": "Default avatar dimensions for LiveKit UI fit", "commit": "a598517" }
+      ],
+      "dependencies": [
+        { "description": "github.com/livekit/server-sdk-go/v2 v2.17.0" },
+        { "description": "github.com/plexusone/omnimeet-core v0.8.0" },
+        { "description": "github.com/plexusone/omnivoice v0.13.0" },
+        { "description": "github.com/plexusone/omnivoice-core v0.15.0" }
+      ]
+    }
+  ]
+}
