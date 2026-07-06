@@ -66,6 +66,9 @@ nav:
       - Gateway: api/gateway.md
       - Room Client: api/room.md
       - Agent: api/agent.md
+  - Releases:
+      - Overview: releases/index.md
+      - v0.1.0: releases/v0.1.0.md
 
 extra:
   social:
