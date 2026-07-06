@@ -212,6 +212,7 @@ Client (Browser/Mobile)
 │  ┌─────────────────────────────────┐  │
 │  │  Voice Pipeline                 │  │
 │  │  STT → LLM → TTS                │  │
+│  │  (or Voice-to-Voice)            │  │
 │  └─────────────┬───────────────────┘  │
 │                ▼                      │
 │  ┌─────────────────────────────────┐  │
@@ -367,6 +368,51 @@ tts, _ := omnivoice.GetTTSProvider("elevenlabs", omnivoice.WithAPIKey(apiKey))
 
 // LiveKit gateway receives audio → STT → LLM → TTS → sends audio
 ```
+
+### Voice Pipeline Modes
+
+**Standard Pipeline (STT → LLM → TTS):**
+
+```
+Audio In → STT → Text → LLM → Text → TTS → Audio Out
+```
+
+This mode uses separate providers for speech-to-text, language model, and text-to-speech.
+
+**Voice-to-Voice (Lower Latency):**
+
+```
+Audio In → Voice Model → Audio Out
+```
+
+OmniVoice supports direct voice-to-voice with:
+
+- **Deepgram** - Nova-3 Voice Agent
+- **Google** - Gemini Live
+- **OpenAI** - Realtime API
+
+Voice-to-voice eliminates the text intermediate step, reducing latency for real-time conversations.
+
+## Lip-Sync Avatars
+
+For realistic talking head video, integrate with [Tavus](https://tavus.io/) using the [tavus-go](https://github.com/plexusone/tavus-go) SDK:
+
+```go
+import "github.com/plexusone/omni-livekit/avatar/tavus"
+
+client, _ := tavus.NewClient(tavus.ClientConfig{
+    APIKey: os.Getenv("TAVUS_API_KEY"),
+})
+
+// Create conversation with LiveKit transport
+resp, _ := client.CreateConversation(ctx, tavus.CreateConversationRequest{
+    PalID:        "your-pal-id",
+    LiveKitURL:   os.Getenv("LIVEKIT_URL"),
+    LiveKitToken: avatarToken,
+})
+```
+
+The avatar joins the LiveKit room as a participant with synchronized lip movements.
 
 ## OmniMeet Integration
 

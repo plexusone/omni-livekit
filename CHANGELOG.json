@@ -7,6 +7,31 @@
   "maintainers": ["plexusone"],
   "releases": [
     {
+      "version": "v0.2.0",
+      "date": "2026-07-06",
+      "commit": "946ab25",
+      "highlights": [
+        { "description": "Lip-sync avatar support via Tavus CVI integration" },
+        { "description": "tavus-go SDK integration for type-safe Tavus API access" },
+        { "description": "Voice-to-voice support for lower latency with Deepgram, Google, and OpenAI" }
+      ],
+      "added": [
+        { "description": "Avatar package with session interface and audio streaming", "commit": "946ab25" },
+        { "description": "Tavus provider implementation using tavus-go SDK", "commit": "946ab25" },
+        { "description": "DataStreamAudioOutput for LiveKit ByteStream integration", "commit": "946ab25" },
+        { "description": "QueueAudioOutput for local testing", "commit": "946ab25" },
+        { "description": "Token generation with `lk.publish_on_behalf` capability", "commit": "946ab25" },
+        { "description": "Error types and metrics collection for avatar sessions", "commit": "946ab25" }
+      ],
+      "documentation": [
+        { "description": "Voice pipeline documentation with STT → LLM → TTS architecture", "commit": "946ab25" },
+        { "description": "Voice-to-voice option documentation for lower latency", "commit": "946ab25" }
+      ],
+      "dependencies": [
+        { "description": "github.com/plexusone/tavus-go v0.2.0" }
+      ]
+    },
+    {
       "version": "v0.1.0",
       "date": "2026-07-05",
       "highlights": [
