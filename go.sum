@@ -217,6 +217,8 @@ github.com/plexusone/omnivoice v0.13.0 h1:HU1Q2Qt740sJt+FgP1vSJI6Xpue1pA67Z5e6c4
 github.com/plexusone/omnivoice v0.13.0/go.mod h1:RwS7s/xOW7y+Gs6+6hB1JJHRn/MZnit7zlk4/NyR3Es=
 github.com/plexusone/omnivoice-core v0.15.0 h1:lvzucRbP53bwzBhbZ/x15iRUfJexJqzEeLJvXo74GRM=
 github.com/plexusone/omnivoice-core v0.15.0/go.mod h1:SwFSgk9D1UH9XIyofLUU6BEEWEtHsS+PHKduMp+VucE=
+github.com/plexusone/tavus-go v0.2.0 h1:iESPhcM1yCucE27SOZEV9txm9z9iIERqHLU2++ZpVlw=
+github.com/plexusone/tavus-go v0.2.0/go.mod h1:w2S8sEH1p88AQVmQiYni0RDZGs7+dhZhPoeaw6CuPgA=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 h1:Jamvg5psRIccs7FGNTlIRMkT8wgtp5eCXdBlqhYGL6U=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/prometheus/client_golang v1.23.2 h1:Je96obch5RDVy3FDMndoUsjAhG5Edi49h0RJWRi/o0o=
