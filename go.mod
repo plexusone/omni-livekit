@@ -12,6 +12,7 @@ require (
 	github.com/plexusone/omnimeet-core v0.1.0
 	github.com/plexusone/omnivoice v0.13.0
 	github.com/plexusone/omnivoice-core v0.15.0
+	github.com/plexusone/tavus-go v0.0.0-00010101000000-000000000000
 	golang.org/x/image v0.43.0
 )
 
@@ -132,3 +133,5 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/klog/v2 v2.140.0 // indirect
 )
+
+replace github.com/plexusone/tavus-go => ../tavus-go
