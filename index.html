@@ -383,6 +383,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#voice-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voice Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#next-steps" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -615,6 +626,34 @@
     
   
     Voice Agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides/tavus-avatars/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tavus Avatars
   
 
     
@@ -997,6 +1036,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture/avatars/PHASE0_GAP_ANALYSIS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gap Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1137,6 +1204,34 @@
     
   
     Agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/avatar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Avatar
   
 
     
@@ -1384,6 +1479,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#voice-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voice Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#next-steps" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1426,6 +1532,9 @@
 <h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>WebRTC Audio</strong>: Low-latency voice communication (&lt;200ms)</li>
+<li><strong>Lip-Sync Avatars</strong>: Real-time talking head video via Tavus integration</li>
+<li><strong>Voice Pipeline</strong>: STT → LLM → TTS with flexible provider options</li>
+<li><strong>Voice-to-Voice</strong>: Lower latency mode with Deepgram, Google, or OpenAI</li>
 <li><strong>OmniMeet Provider</strong>: Full meeting abstraction support</li>
 <li><strong>OmniVoice Gateway</strong>: Voice AI pipeline integration</li>
 <li><strong>Multi-Platform</strong>: Web, mobile, and desktop clients</li>
@@ -1506,11 +1615,26 @@
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    └── OmniVoice (voice AI)
 <a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>            └── omni-livekit/omnivoice/gateway
 </code></pre></div>
+<h2 id="voice-pipeline">Voice Pipeline<a class="headerlink" href="#voice-pipeline" title="Permanent link">&para;</a></h2>
+<p>omni-livekit supports two voice processing modes:</p>
+<p><strong>Standard Pipeline (STT → LLM → TTS):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Audio In → Speech-to-Text → LLM → Text-to-Speech → Audio Out
+</code></pre></div>
+<p><strong>Voice-to-Voice (Lower Latency):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Audio In → Voice Model → Audio Out
+</code></pre></div>
+<p>Voice-to-voice eliminates the text intermediate step. Supported providers:</p>
+<ul>
+<li>Deepgram Nova-3 Voice Agent</li>
+<li>Google Gemini Live</li>
+<li>OpenAI Realtime API</li>
+</ul>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="getting-started/">Installation</a> - Set up omni-livekit</li>
 <li><a href="quickstart/">Quick Start</a> - Create your first voice agent</li>
 <li><a href="guides/human-participation/">Human Participation</a> - How humans join meetings</li>
+<li><a href="guides/tavus-avatars/">Tavus Avatars</a> - Add lip-sync video to your agent</li>
 </ul>
 
 
