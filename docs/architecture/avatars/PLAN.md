@@ -1,7 +1,7 @@
 # Lip-Sync Avatar Feature - Implementation Plan
 
 **Feature**: Real-Time Lip-Sync Avatars for Voice Agents
-**Status**: In Progress
+**Status**: Phase 0-2 Complete (v0.2.0), Phases 3-6 Future Work
 **Author**: PlexusOne
 **Created**: 2025-07-06
 **Last Updated**: 2026-07-06
@@ -338,27 +338,27 @@ Finalize documentation and developer experience.
 
 ### Phase 2: Tavus Provider ✅
 
-- [x] P2-1: Implement Tavus API client
+- [x] P2-1: Implement Tavus API client (via [tavus-go](https://github.com/plexusone/tavus-go) SDK v0.2.0)
 - [x] P2-2: Implement TavusAvatarSession
 - [x] P2-3: Write unit tests
-- [ ] P2-4: Write integration test (requires TAVUS_API_KEY)
+- [x] P2-4: Write integration test (skips without TAVUS_API_KEY)
 - [x] P2-5: Document Tavus configuration
 
-### Phase 3: Anam Provider
+### Phase 3: Anam Provider (Future Work)
 
 - [ ] P3-1: Implement Anam API client
 - [ ] P3-2: Implement AnamAvatarSession
 - [ ] P3-3: Write tests
 - [ ] P3-4: Document Anam configuration
 
-### Phase 4: Simli Provider
+### Phase 4: Simli Provider (Future Work)
 
 - [ ] P4-1: Implement Simli API client
 - [ ] P4-2: Implement SimliAvatarSession
 - [ ] P4-3: Write tests
 - [ ] P4-4: Document Simli configuration
 
-### Phase 5: Agent Integration
+### Phase 5: Agent Integration (Future Work)
 
 - [ ] P5-1: Add AvatarConfig to agent options
 - [ ] P5-2: Implement StartAvatar/StopAvatar
@@ -366,13 +366,13 @@ Finalize documentation and developer experience.
 - [ ] P5-4: Create example application
 - [ ] P5-5: Write integration test
 
-### Phase 6: Documentation
+### Phase 6: Documentation (Partial - v0.2.0)
 
 - [ ] P6-1: Update voice-agent guide
 - [ ] P6-2: Create lip-sync-avatars guide
 - [ ] P6-3: Create avatar API reference
-- [ ] P6-4: Update mkdocs.yml
-- [ ] P6-5: Update README
+- [x] P6-4: Update mkdocs.yml (v0.2.0 release notes added)
+- [x] P6-5: Update README (voice pipeline, Tavus avatars section added)
 
 ---
 

@@ -1,10 +1,10 @@
 # Lip-Sync Avatar Feature - Technical Requirements Document
 
 **Feature**: Real-Time Lip-Sync Avatars for Voice Agents
-**Status**: Draft
+**Status**: Implemented (v0.2.0)
 **Author**: PlexusOne
 **Created**: 2025-07-06
-**Last Updated**: 2025-07-06
+**Last Updated**: 2026-07-06
 
 ## Overview
 
@@ -53,7 +53,7 @@ omni-livekit/
 │   ├── audio.go
 │   └── ...
 │
-├── avatar/                   # NEW: Avatar core
+├── avatar/                   # ✅ IMPLEMENTED: Avatar core
 │   ├── session.go           # AvatarSession interface
 │   ├── datastream.go        # DataStreamAudioOutput
 │   ├── queue.go             # QueueAudioOutput (testing)
@@ -61,22 +61,22 @@ omni-livekit/
 │   ├── metrics.go           # Avatar metrics
 │   └── doc.go
 │
-├── avatar/tavus/            # NEW: Tavus provider
-│   ├── client.go            # Tavus API client
+├── avatar/tavus/            # ✅ IMPLEMENTED: Tavus provider (via tavus-go SDK)
+│   ├── client.go            # Wraps tavus-go SDK
 │   ├── session.go           # TavusAvatarSession
 │   └── doc.go
 │
-├── avatar/anam/             # NEW: Anam provider
+├── avatar/anam/             # FUTURE: Anam provider
 │   ├── client.go
 │   ├── session.go
 │   └── doc.go
 │
-├── avatar/simli/            # NEW: Simli provider
+├── avatar/simli/            # FUTURE: Simli provider
 │   ├── client.go
 │   ├── session.go
 │   └── doc.go
 │
-└── avatar/did/              # NEW: D-ID provider (future)
+└── avatar/did/              # FUTURE: D-ID provider
     ├── client.go
     ├── session.go
     └── doc.go
@@ -651,21 +651,19 @@ require (
 | Anam | `https://api.anam.ai` | API key header |
 | Simli | `https://api.simli.ai` | API key header |
 
-## Open Technical Questions
+## Technical Questions (Resolved)
 
-1. **ByteStream in Go SDK**: Does `livekit/server-sdk-go` support `StreamBytes()`? If not, how to implement?
+1. **ByteStream in Go SDK**: ✅ Resolved - Used `DataStreamAudioOutput` abstraction that can use LiveKit's data stream APIs when available, with fallback options.
 
-2. **RPC in Go SDK**: Does `livekit/server-sdk-go` support `PerformRPC()` and `RegisterRPCMethod()`?
+2. **RPC in Go SDK**: ✅ Resolved - Playback callbacks handled via session events rather than RPC for initial implementation.
 
-3. **Audio chain replacement**: How should we integrate with existing `AudioWriter` interface? Options:
-   - Replace audio output at runtime
-   - Tee audio to both local track and avatar
-   - New `AudioDestination` that wraps both
+3. **Audio chain replacement**: ✅ Resolved - Created `AudioDestination` interface with multiple implementations:
+   - `DataStreamAudioOutput` for remote avatar streaming
+   - `QueueAudioOutput` for local testing
 
-4. **Metrics collection**: Where should avatar metrics be exposed? Options:
-   - Prometheus metrics
-   - OpenTelemetry spans
-   - Event callbacks only
+4. **Metrics collection**: ✅ Resolved - Event callbacks via `SessionCallbacks` for initial implementation. Prometheus/OTel can be added later.
+
+5. **Tavus API Integration**: ✅ Resolved - Used [tavus-go](https://github.com/plexusone/tavus-go) SDK v0.2.0 for type-safe API access instead of raw HTTP client.
 
 ## Related Documents
 
