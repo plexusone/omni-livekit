@@ -197,8 +197,8 @@ github.com/plexusone/elevenlabs-go v0.13.0 h1:KrgrhJjLfNbIRFp8F880QmxW1/VSkfpUcX
 github.com/plexusone/elevenlabs-go v0.13.0/go.mod h1:iNDRYo/Ya4oLYuIXKRtGRzNY9fdN/ALaQI2nEb5O540=
 github.com/plexusone/ogen-tools v0.3.0 h1:UVNRxobvfcG8h/dD+Zy/KedtaCveT+V9w50MAEYy2tM=
 github.com/plexusone/ogen-tools v0.3.0/go.mod h1:fj6ekLGUiVQkS6NRSfxMvQTCJtK/xVRarCroMA0iCK0=
-github.com/plexusone/omni-deepgram v0.6.1 h1:it+NVzGDEFkpir1MvSiCdzyefJiaW9U9cBxZI6OQNp4=
-github.com/plexusone/omni-deepgram v0.6.1/go.mod h1:9x8nOXRsQKS5H+6nVLNg7jsvNsNCSQ5vYkQno82gw08=
+github.com/plexusone/omni-deepgram v0.7.0 h1:5CAdKlT5nBMVCSYt259B24sR2zcsM2Q8qtUWJ4mVZUc=
+github.com/plexusone/omni-deepgram v0.7.0/go.mod h1:T/1ADMGTnA+Fert63+KgE3wxaQvoUOyqz1TeVqgYqbQ=
 github.com/plexusone/omni-google v0.7.0 h1:RIYB80bHdW5z26+ncvNzHzhVADT4UyPKqeCYa7pAiJk=
 github.com/plexusone/omni-google v0.7.0/go.mod h1:gsA32NcWqjQ4caUI71+TjkXwo1HZPkGti3T0g40ILk0=
 github.com/plexusone/omni-openai v0.5.0 h1:Np+k0cgMMnp7P9x9V9SvNr/ZKsb+Y7bp99CMam0tG50=
@@ -213,8 +213,8 @@ github.com/plexusone/omnimeet-core v0.1.0 h1:Qalbz+IgdtgQp7TAEDMC9KQOijU2gHXzbji
 github.com/plexusone/omnimeet-core v0.1.0/go.mod h1:Z+/fRn9zJHGbq2XRY88SFH0yPXHU9OGbyFNpplU+N14=
 github.com/plexusone/omniskill v0.10.0 h1:Nd/zfAGPNmnmRGyBhmMgXFS7lYcWbPtrT0k5cP8eOvY=
 github.com/plexusone/omniskill v0.10.0/go.mod h1:L0MW5av6S0EkgGByFMwDmTJBy/7h8ourBmQ5xxM2vQI=
-github.com/plexusone/omnivoice v0.12.1 h1:DpFJ4/ujDudeTILsXpvrYUZav7kmBkysg5YN0rZZ7vA=
-github.com/plexusone/omnivoice v0.12.1/go.mod h1:4t4+2wiGzylR8jjMS7Vlbzbv3jPyxkpm1Z0VpykP5mI=
+github.com/plexusone/omnivoice v0.13.0 h1:HU1Q2Qt740sJt+FgP1vSJI6Xpue1pA67Z5e6c4Wvs+A=
+github.com/plexusone/omnivoice v0.13.0/go.mod h1:RwS7s/xOW7y+Gs6+6hB1JJHRn/MZnit7zlk4/NyR3Es=
 github.com/plexusone/omnivoice-core v0.15.0 h1:lvzucRbP53bwzBhbZ/x15iRUfJexJqzEeLJvXo74GRM=
 github.com/plexusone/omnivoice-core v0.15.0/go.mod h1:SwFSgk9D1UH9XIyofLUU6BEEWEtHsS+PHKduMp+VucE=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 h1:Jamvg5psRIccs7FGNTlIRMkT8wgtp5eCXdBlqhYGL6U=

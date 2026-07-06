@@ -10,7 +10,7 @@ require (
 	github.com/livekit/server-sdk-go/v2 v2.17.0
 	github.com/pion/webrtc/v4 v4.2.16
 	github.com/plexusone/omnimeet-core v0.1.0
-	github.com/plexusone/omnivoice v0.12.1
+	github.com/plexusone/omnivoice v0.13.0
 	github.com/plexusone/omnivoice-core v0.15.0
 	golang.org/x/image v0.43.0
 )
@@ -83,7 +83,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/plexusone/elevenlabs-go v0.13.0 // indirect
 	github.com/plexusone/ogen-tools v0.3.0 // indirect
-	github.com/plexusone/omni-deepgram v0.6.1 // indirect
+	github.com/plexusone/omni-deepgram v0.7.0 // indirect
 	github.com/plexusone/omni-google v0.7.0 // indirect
 	github.com/plexusone/omni-openai v0.5.0 // indirect
 	github.com/plexusone/omni-telnyx v0.4.0 // indirect
