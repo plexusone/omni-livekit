@@ -1,4 +1,4 @@
-# omni-livekit
+# Omni-LiveKit
 
 **LiveKit provider for OmniMeet and OmniVoice**
 
