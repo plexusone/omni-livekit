@@ -29,7 +29,7 @@ LiveKit voice gateway for WebRTC-based voice AI applications.
 
 ## Overview
 
-Unlike PSTN-based gateways (Twilio, Telnyx, Vonage, Plivo) that handle phone calls, the LiveKit gateway enables voice AI for web and mobile applications via WebRTC.
+LiveKit provides pure WebRTC voice without phone network involvement. While PSTN gateways (Twilio, Telnyx, Vonage, Plivo) also offer WebRTC SDKs, they primarily bridge browser/app connections to the phone network. LiveKit is designed for direct browser-to-browser and app-to-app communication.
 
 ```
 ┌───────────────┐        ┌─────────────────┐        ┌───────────────────┐
@@ -40,13 +40,14 @@ Unlike PSTN-based gateways (Twilio, Telnyx, Vonage, Plivo) that handle phone cal
 
 ## Use Cases
 
-| Use Case | PSTN (Twilio, etc.) | WebRTC (LiveKit) |
-|----------|---------------------|------------------|
-| Phone calls | Yes | No |
-| Web browser | No | Yes |
-| Mobile apps | Via phone | Native WebRTC |
-| Latency | 500ms+ | <200ms |
-| Cost | Per-minute charges | Lower infra cost |
+| Use Case | PSTN Gateways | LiveKit |
+|----------|---------------|---------|
+| Phone calls (PSTN) | Yes | No |
+| Browser WebRTC | Yes (bridges to PSTN) | Yes (native) |
+| Mobile apps | WebRTC SDK available | WebRTC SDK available |
+| Browser-to-browser | Via PSTN bridge | Direct WebRTC |
+| Latency | 300-500ms (PSTN hop) | <200ms |
+| Cost model | Per-minute telephony | Infrastructure only |
 
 ## Installation
 
@@ -222,13 +223,14 @@ Client (Browser/Mobile)
 
 ### Key Differences from PSTN Gateways
 
-| Aspect | PSTN (Twilio, etc.) | WebRTC (LiveKit) |
-|--------|---------------------|------------------|
-| Connection | Phone number | Room name |
-| Signaling | HTTP webhooks | WebRTC/WebSocket |
-| Audio format | mulaw 8kHz | Opus (any rate) |
-| Identity | Phone number | Participant ID |
-| Direction | Inbound/Outbound calls | Participants join rooms |
+| Aspect | PSTN Gateways | LiveKit |
+|--------|---------------|---------|
+| Primary use | Phone network access | Browser/app-to-app |
+| Connection model | Phone number dialing | Room-based participation |
+| Signaling | HTTP webhooks + WebRTC | WebRTC/WebSocket |
+| Audio format | mulaw 8kHz (PSTN), Opus (WebRTC) | Opus (configurable rate) |
+| Identity | Phone number or SIP URI | Participant ID |
+| Session model | Call legs (inbound/outbound) | Room participants |
 
 ## Human Participation
 
