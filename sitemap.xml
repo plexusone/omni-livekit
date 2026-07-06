@@ -44,4 +44,12 @@
          <loc>https://plexusone.github.io/omni-livekit/guides/voice-agent/</loc>
          <lastmod>2026-07-06</lastmod>
     </url>
+    <url>
+         <loc>https://plexusone.github.io/omni-livekit/releases/</loc>
+         <lastmod>2026-07-06</lastmod>
+    </url>
+    <url>
+         <loc>https://plexusone.github.io/omni-livekit/releases/v0.1.0/</loc>
+         <lastmod>2026-07-06</lastmod>
+    </url>
 </urlset>
