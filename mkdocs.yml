@@ -62,6 +62,12 @@ nav:
   - Architecture:
       - Voice Pipeline: architecture/voice-pipeline.md
       - Static Image Avatar: architecture/avatar.md
+  - Design:
+      - Lip-Sync Avatars:
+          - Product Requirements: architecture/avatars/PRD.md
+          - Technical Design: architecture/avatars/TRD.md
+          - Implementation Plan: architecture/avatars/PLAN.md
+          - Roadmap: architecture/avatars/ROADMAP.md
   - API Reference:
       - Gateway: api/gateway.md
       - Room Client: api/room.md
