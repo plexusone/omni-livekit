@@ -58,6 +58,7 @@ nav:
   - Guides:
       - Human Participation: guides/human-participation.md
       - Voice Agent: guides/voice-agent.md
+      - Tavus Avatars: guides/tavus-avatars.md
       - OmniMeet Integration: guides/omnimeet-integration.md
   - Architecture:
       - Voice Pipeline: architecture/voice-pipeline.md
@@ -68,10 +69,12 @@ nav:
           - Technical Design: architecture/avatars/TRD.md
           - Implementation Plan: architecture/avatars/PLAN.md
           - Roadmap: architecture/avatars/ROADMAP.md
+          - Gap Analysis: architecture/avatars/PHASE0_GAP_ANALYSIS.md
   - API Reference:
       - Gateway: api/gateway.md
       - Room Client: api/room.md
       - Agent: api/agent.md
+      - Avatar: api/avatar.md
   - Releases:
       - Overview: releases/index.md
       - v0.2.0: releases/v0.2.0.md
