@@ -33,6 +33,26 @@
          <lastmod>2026-07-06</lastmod>
     </url>
     <url>
+         <loc>https://plexusone.github.io/omni-livekit/architecture/avatars/PHASE0_GAP_ANALYSIS/</loc>
+         <lastmod>2026-07-06</lastmod>
+    </url>
+    <url>
+         <loc>https://plexusone.github.io/omni-livekit/architecture/avatars/PLAN/</loc>
+         <lastmod>2026-07-06</lastmod>
+    </url>
+    <url>
+         <loc>https://plexusone.github.io/omni-livekit/architecture/avatars/PRD/</loc>
+         <lastmod>2026-07-06</lastmod>
+    </url>
+    <url>
+         <loc>https://plexusone.github.io/omni-livekit/architecture/avatars/ROADMAP/</loc>
+         <lastmod>2026-07-06</lastmod>
+    </url>
+    <url>
+         <loc>https://plexusone.github.io/omni-livekit/architecture/avatars/TRD/</loc>
+         <lastmod>2026-07-06</lastmod>
+    </url>
+    <url>
          <loc>https://plexusone.github.io/omni-livekit/guides/human-participation/</loc>
          <lastmod>2026-07-06</lastmod>
     </url>
@@ -50,6 +70,10 @@
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/releases/v0.1.0/</loc>
+         <lastmod>2026-07-06</lastmod>
+    </url>
+    <url>
+         <loc>https://plexusone.github.io/omni-livekit/releases/v0.2.0/</loc>
          <lastmod>2026-07-06</lastmod>
     </url>
 </urlset>

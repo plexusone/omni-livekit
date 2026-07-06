@@ -1,0 +1,2190 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="LiveKit provider for OmniMeet and OmniVoice">
+      
+      
+        <meta name="author" content="PlexusOne">
+      
+      
+        <link rel="canonical" href="https://plexusone.github.io/omni-livekit/architecture/avatars/PLAN/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lip-Sync Avatar Feature - Implementation Plan - omni-livekit Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://plexusone.dev/css/plexusone-mkdocs.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lip-sync-avatar-feature-implementation-plan" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+<!-- PlexusOne Unified Navigation -->
+<div id="plexus-nav-root"></div>
+<script src="https://plexusone.dev/js/plexus-nav.js"></script>
+
+
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="omni-livekit Documentation" class="md-header__button md-logo" aria-label="omni-livekit Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            omni-livekit Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lip-Sync Avatar Feature - Implementation Plan
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/plexusone/omni-livekit" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    plexusone/omni-livekit
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="omni-livekit Documentation" class="md-nav__button md-logo" aria-label="omni-livekit Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    omni-livekit Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/plexusone/omni-livekit" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    plexusone/omni-livekit
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/human-participation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Human Participation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/voice-agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Voice Agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/omnimeet-integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OmniMeet Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../voice-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Voice Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../avatar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Static Image Avatar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/gateway/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gateway
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/room/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Room Client
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Releases
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Releases
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../releases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../releases/v0.2.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.2.0
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../releases/v0.1.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.1.0
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-phases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Phases
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Phases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-0-sdk-gap-analysis-1-2-days" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 0: SDK Gap Analysis (1-2 days)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 0: SDK Gap Analysis (1-2 days)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tasks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deliverables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deliverables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-core-avatar-infrastructure-3-5-days" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1: Core Avatar Infrastructure (3-5 days)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 1: Core Avatar Infrastructure (3-5 days)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-avatar-package-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Avatar Package Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-core-interfaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Core Interfaces
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-token-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Token Generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-error-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Error Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-datastream-audio-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 DataStream Audio Output
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-queue-audio-output-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 Queue Audio Output (Testing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deliverables_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deliverables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-first-provider-tavus-3-4-days" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2: First Provider - Tavus (3-4 days)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 2: First Provider - Tavus (3-4 days)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-tavus-api-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Tavus API Client
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-tavus-avatar-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Tavus Avatar Session
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-integration-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Integration Test
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deliverables_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deliverables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-second-provider-anam-2-3-days" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3: Second Provider - Anam (2-3 days)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 3: Second Provider - Anam (2-3 days)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-anam-api-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Anam API Client
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-anam-avatar-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Anam Avatar Session
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-integration-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Integration Test
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deliverables_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deliverables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-third-provider-simli-2-3-days" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 4: Third Provider - Simli (2-3 days)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 4: Third Provider - Simli (2-3 days)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-simli-api-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Simli API Client
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-simli-avatar-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Simli Avatar Session
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-integration-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Integration Test
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deliverables_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deliverables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-5-agent-integration-2-3-days" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 5: Agent Integration (2-3 days)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 5: Agent Integration (2-3 days)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-agent-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Agent Options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-agent-avatar-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Agent Avatar Methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-audio-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Audio Routing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deliverables_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deliverables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-6-documentation-polish-2-3-days" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 6: Documentation &amp; Polish (2-3 days)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 6: Documentation &amp; Polish (2-3 days)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-user-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 User Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-api-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 API Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-mkdocs-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 MkDocs Integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-readme-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 README Updates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deliverables_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deliverables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timeline-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timeline Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task Checklist
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Task Checklist">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-0-sdk-gap-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 0: SDK Gap Analysis ✅
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-core-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1: Core Infrastructure ✅
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-tavus-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2: Tavus Provider ✅
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-anam-provider-future-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3: Anam Provider (Future Work)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-simli-provider-future-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 4: Simli Provider (Future Work)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-5-agent-integration-future-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 5: Agent Integration (Future Work)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-6-documentation-partial-v020" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 6: Documentation (Partial - v0.2.0)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risk-mitigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risk Mitigation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Risk Mitigation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#risk-livekit-go-sdk-lacks-bytestreamrpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risk: LiveKit Go SDK lacks ByteStream/RPC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#risk-provider-api-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risk: Provider API changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#risk-latency-too-high" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risk: Latency too high
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#risk-integration-complexity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Risk: Integration complexity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#definition-of-done" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Definition of Done
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Definition of Done">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#per-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per Provider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overall-feature" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overall Feature
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-documents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related Documents
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="lip-sync-avatar-feature-implementation-plan">Lip-Sync Avatar Feature - Implementation Plan<a class="headerlink" href="#lip-sync-avatar-feature-implementation-plan" title="Permanent link">&para;</a></h1>
+<p><strong>Feature</strong>: Real-Time Lip-Sync Avatars for Voice Agents
+<strong>Status</strong>: Phase 0-2 Complete (v0.2.0), Phases 3-6 Future Work
+<strong>Author</strong>: PlexusOne
+<strong>Created</strong>: 2025-07-06
+<strong>Last Updated</strong>: 2026-07-06</p>
+<h2 id="implementation-phases">Implementation Phases<a class="headerlink" href="#implementation-phases" title="Permanent link">&para;</a></h2>
+<h3 id="phase-0-sdk-gap-analysis-1-2-days">Phase 0: SDK Gap Analysis (1-2 days)<a class="headerlink" href="#phase-0-sdk-gap-analysis-1-2-days" title="Permanent link">&para;</a></h3>
+<p>Before implementation, verify LiveKit Go SDK capabilities.</p>
+<h4 id="tasks">Tasks<a class="headerlink" href="#tasks" title="Permanent link">&para;</a></h4>
+<ul>
+<li>[ ] <strong>P0-1</strong>: Check ByteStream support in <code>livekit/server-sdk-go</code></li>
+<li>Search for <code>StreamBytes</code>, <code>ByteStreamWriter</code>, <code>DataStream</code></li>
+<li>
+<p>If missing, evaluate implementation effort</p>
+</li>
+<li>
+<p>[ ] <strong>P0-2</strong>: Check RPC support in <code>livekit/server-sdk-go</code></p>
+</li>
+<li>Search for <code>PerformRPC</code>, <code>RegisterRPCMethod</code>, <code>RPC</code></li>
+<li>
+<p>If missing, evaluate implementation effort</p>
+</li>
+<li>
+<p>[ ] <strong>P0-3</strong>: Check <code>lk.publish_on_behalf</code> attribute support</p>
+</li>
+<li>Verify token generation supports custom attributes</li>
+<li>
+<p>Test with a simple avatar-style participant</p>
+</li>
+<li>
+<p>[ ] <strong>P0-4</strong>: Document gaps and decide on approach</p>
+</li>
+<li>Option A: Contribute upstream to LiveKit</li>
+<li>Option B: Implement locally in omni-livekit</li>
+<li>Option C: Use alternative transport (DataChannel, WebSocket)</li>
+</ul>
+<h4 id="deliverables">Deliverables<a class="headerlink" href="#deliverables" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Gap analysis document</li>
+<li>Decision on implementation approach</li>
+<li>Updated timeline if gaps discovered</li>
+</ul>
+<hr />
+<h3 id="phase-1-core-avatar-infrastructure-3-5-days">Phase 1: Core Avatar Infrastructure (3-5 days)<a class="headerlink" href="#phase-1-core-avatar-infrastructure-3-5-days" title="Permanent link">&para;</a></h3>
+<p>Build the foundation that all avatar providers will use.</p>
+<h4 id="11-avatar-package-structure">1.1 Avatar Package Structure<a class="headerlink" href="#11-avatar-package-structure" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>avatar
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>touch<span class="w"> </span>avatar/doc.go
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>touch<span class="w"> </span>avatar/session.go
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>touch<span class="w"> </span>avatar/audio.go
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>touch<span class="w"> </span>avatar/rpc.go
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>touch<span class="w"> </span>avatar/token.go
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>touch<span class="w"> </span>avatar/errors.go
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>touch<span class="w"> </span>avatar/metrics.go
+</code></pre></div>
+<h4 id="12-core-interfaces">1.2 Core Interfaces<a class="headerlink" href="#12-core-interfaces" title="Permanent link">&para;</a></h4>
+<p><strong>File</strong>: <code>avatar/session.go</code></p>
+<ul>
+<li>[ ] Define <code>Session</code> interface</li>
+<li>[ ] Define <code>StartOptions</code> struct</li>
+<li>[ ] Define <code>SessionCallbacks</code> struct</li>
+<li>[ ] Define <code>Metrics</code> struct</li>
+</ul>
+<p><strong>File</strong>: <code>avatar/audio.go</code></p>
+<ul>
+<li>[ ] Define <code>AudioDestination</code> interface</li>
+<li>[ ] Define <code>PlaybackEvent</code> types</li>
+<li>[ ] Define <code>PlaybackCallback</code> type</li>
+</ul>
+<h4 id="13-token-generation">1.3 Token Generation<a class="headerlink" href="#13-token-generation" title="Permanent link">&para;</a></h4>
+<p><strong>File</strong>: <code>avatar/token.go</code></p>
+<ul>
+<li>[ ] Implement <code>GenerateAvatarToken()</code></li>
+<li>[ ] Support <code>lk.publish_on_behalf</code> attribute</li>
+<li>[ ] Support configurable TTL</li>
+<li>[ ] Add unit tests</li>
+</ul>
+<h4 id="14-error-types">1.4 Error Types<a class="headerlink" href="#14-error-types" title="Permanent link">&para;</a></h4>
+<p><strong>File</strong>: <code>avatar/errors.go</code></p>
+<ul>
+<li>[ ] Define sentinel errors</li>
+<li>[ ] Create error wrapping helpers</li>
+</ul>
+<h4 id="15-datastream-audio-output">1.5 DataStream Audio Output<a class="headerlink" href="#15-datastream-audio-output" title="Permanent link">&para;</a></h4>
+<p><strong>File</strong>: <code>avatar/datastream.go</code></p>
+<ul>
+<li>[ ] Implement <code>DataStreamAudioOutput</code> struct</li>
+<li>[ ] Implement <code>CaptureFrame()</code> method</li>
+<li>[ ] Implement <code>Flush()</code> method</li>
+<li>[ ] Implement <code>ClearBuffer()</code> method</li>
+<li>[ ] Register RPC handlers for playback callbacks</li>
+<li>[ ] Add unit tests with mock room</li>
+</ul>
+<h4 id="16-queue-audio-output-testing">1.6 Queue Audio Output (Testing)<a class="headerlink" href="#16-queue-audio-output-testing" title="Permanent link">&para;</a></h4>
+<p><strong>File</strong>: <code>avatar/queue.go</code></p>
+<ul>
+<li>[ ] Implement <code>QueueAudioOutput</code> for local testing</li>
+<li>[ ] In-memory queue without network</li>
+<li>[ ] Useful for unit tests and debugging</li>
+</ul>
+<h4 id="deliverables_1">Deliverables<a class="headerlink" href="#deliverables_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>avatar/</code> package with core interfaces</li>
+<li>Token generation with tests</li>
+<li>DataStreamAudioOutput with tests (mocked)</li>
+<li>QueueAudioOutput for testing</li>
+</ul>
+<hr />
+<h3 id="phase-2-first-provider-tavus-3-4-days">Phase 2: First Provider - Tavus (3-4 days)<a class="headerlink" href="#phase-2-first-provider-tavus-3-4-days" title="Permanent link">&para;</a></h3>
+<p>Implement the first avatar provider to validate the architecture.</p>
+<h4 id="21-tavus-api-client">2.1 Tavus API Client<a class="headerlink" href="#21-tavus-api-client" title="Permanent link">&para;</a></h4>
+<p><strong>File</strong>: <code>avatar/tavus/client.go</code></p>
+<ul>
+<li>[ ] Implement HTTP client for Tavus API</li>
+<li>[ ] <code>CreateConversation()</code> method</li>
+<li>[ ] <code>EndConversation()</code> method</li>
+<li>[ ] Error handling and retries</li>
+<li>[ ] Add unit tests with httptest</li>
+</ul>
+<h4 id="22-tavus-avatar-session">2.2 Tavus Avatar Session<a class="headerlink" href="#22-tavus-avatar-session" title="Permanent link">&para;</a></h4>
+<p><strong>File</strong>: <code>avatar/tavus/session.go</code></p>
+<ul>
+<li>[ ] Implement <code>AvatarSession</code> struct</li>
+<li>[ ] Implement <code>Session</code> interface</li>
+<li>[ ] <code>Start()</code>: Create conversation, generate token, configure audio</li>
+<li>[ ] <code>WaitForJoin()</code>: Wait for avatar participant</li>
+<li>[ ] <code>Close()</code>: End conversation, remove participant</li>
+<li>[ ] Add unit tests</li>
+</ul>
+<h4 id="23-integration-test">2.3 Integration Test<a class="headerlink" href="#23-integration-test" title="Permanent link">&para;</a></h4>
+<p><strong>File</strong>: <code>avatar/tavus/integration_test.go</code></p>
+<ul>
+<li>[ ] End-to-end test with real Tavus API</li>
+<li>[ ] Requires <code>TAVUS_API_KEY</code> env var</li>
+<li>[ ] Skip if credentials not available</li>
+</ul>
+<h4 id="deliverables_2">Deliverables<a class="headerlink" href="#deliverables_2" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Working Tavus integration</li>
+<li>Integration test passing</li>
+<li>Documentation for Tavus setup</li>
+</ul>
+<hr />
+<h3 id="phase-3-second-provider-anam-2-3-days">Phase 3: Second Provider - Anam (2-3 days)<a class="headerlink" href="#phase-3-second-provider-anam-2-3-days" title="Permanent link">&para;</a></h3>
+<p>Validate architecture with a second provider.</p>
+<h4 id="31-anam-api-client">3.1 Anam API Client<a class="headerlink" href="#31-anam-api-client" title="Permanent link">&para;</a></h4>
+<p><strong>File</strong>: <code>avatar/anam/client.go</code></p>
+<ul>
+<li>[ ] Implement HTTP client for Anam API</li>
+<li>[ ] <code>CreateSessionToken()</code> method</li>
+<li>[ ] <code>StartEngineSession()</code> method</li>
+<li>[ ] Error handling</li>
+</ul>
+<h4 id="32-anam-avatar-session">3.2 Anam Avatar Session<a class="headerlink" href="#32-anam-avatar-session" title="Permanent link">&para;</a></h4>
+<p><strong>File</strong>: <code>avatar/anam/session.go</code></p>
+<ul>
+<li>[ ] Implement <code>AvatarSession</code> struct</li>
+<li>[ ] Implement <code>Session</code> interface</li>
+<li>[ ] Provider-specific configuration</li>
+</ul>
+<h4 id="33-integration-test">3.3 Integration Test<a class="headerlink" href="#33-integration-test" title="Permanent link">&para;</a></h4>
+<p><strong>File</strong>: <code>avatar/anam/integration_test.go</code></p>
+<ul>
+<li>[ ] End-to-end test with real Anam API</li>
+</ul>
+<h4 id="deliverables_3">Deliverables<a class="headerlink" href="#deliverables_3" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Working Anam integration</li>
+<li>Validated that architecture supports multiple providers</li>
+</ul>
+<hr />
+<h3 id="phase-4-third-provider-simli-2-3-days">Phase 4: Third Provider - Simli (2-3 days)<a class="headerlink" href="#phase-4-third-provider-simli-2-3-days" title="Permanent link">&para;</a></h3>
+<p>Add a third provider for broader coverage.</p>
+<h4 id="41-simli-api-client">4.1 Simli API Client<a class="headerlink" href="#41-simli-api-client" title="Permanent link">&para;</a></h4>
+<p><strong>File</strong>: <code>avatar/simli/client.go</code></p>
+<ul>
+<li>[ ] Implement HTTP client for Simli API</li>
+<li>[ ] Token/session management</li>
+</ul>
+<h4 id="42-simli-avatar-session">4.2 Simli Avatar Session<a class="headerlink" href="#42-simli-avatar-session" title="Permanent link">&para;</a></h4>
+<p><strong>File</strong>: <code>avatar/simli/session.go</code></p>
+<ul>
+<li>[ ] Implement <code>AvatarSession</code> struct</li>
+<li>[ ] Implement <code>Session</code> interface</li>
+</ul>
+<h4 id="43-integration-test">4.3 Integration Test<a class="headerlink" href="#43-integration-test" title="Permanent link">&para;</a></h4>
+<p><strong>File</strong>: <code>avatar/simli/integration_test.go</code></p>
+<ul>
+<li>[ ] End-to-end test with real Simli API</li>
+</ul>
+<h4 id="deliverables_4">Deliverables<a class="headerlink" href="#deliverables_4" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Working Simli integration</li>
+<li>Three providers validated</li>
+</ul>
+<hr />
+<h3 id="phase-5-agent-integration-2-3-days">Phase 5: Agent Integration (2-3 days)<a class="headerlink" href="#phase-5-agent-integration-2-3-days" title="Permanent link">&para;</a></h3>
+<p>Integrate avatar support into the existing agent workflow.</p>
+<h4 id="51-agent-options">5.1 Agent Options<a class="headerlink" href="#51-agent-options" title="Permanent link">&para;</a></h4>
+<p><strong>File</strong>: <code>agent/options.go</code></p>
+<ul>
+<li>[ ] Add <code>AvatarConfig</code> to Options</li>
+<li>[ ] Add <code>AvatarProvider</code> field</li>
+<li>[ ] Add <code>AvatarAPIKey</code> field</li>
+</ul>
+<h4 id="52-agent-avatar-methods">5.2 Agent Avatar Methods<a class="headerlink" href="#52-agent-avatar-methods" title="Permanent link">&para;</a></h4>
+<p><strong>File</strong>: <code>agent/avatar.go</code></p>
+<ul>
+<li>[ ] Add <code>StartAvatar()</code> method</li>
+<li>[ ] Add <code>StopAvatar()</code> method</li>
+<li>[ ] Add <code>AvatarSession()</code> getter</li>
+<li>[ ] Handle avatar in Leave()</li>
+</ul>
+<h4 id="53-audio-routing">5.3 Audio Routing<a class="headerlink" href="#53-audio-routing" title="Permanent link">&para;</a></h4>
+<ul>
+<li>[ ] Modify audio output to support avatar destination</li>
+<li>[ ] Option to route TTS to avatar instead of direct publish</li>
+<li>[ ] Support interruption flow through avatar</li>
+</ul>
+<h4 id="54-examples">5.4 Examples<a class="headerlink" href="#54-examples" title="Permanent link">&para;</a></h4>
+<p><strong>File</strong>: <code>cmd/avatar-agent/main.go</code></p>
+<ul>
+<li>[ ] Example voice agent with avatar</li>
+<li>[ ] Environment variable configuration</li>
+<li>[ ] README with setup instructions</li>
+</ul>
+<h4 id="deliverables_5">Deliverables<a class="headerlink" href="#deliverables_5" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Avatar support in Agent struct</li>
+<li>Example application</li>
+<li>Updated documentation</li>
+</ul>
+<hr />
+<h3 id="phase-6-documentation-polish-2-3-days">Phase 6: Documentation &amp; Polish (2-3 days)<a class="headerlink" href="#phase-6-documentation-polish-2-3-days" title="Permanent link">&para;</a></h3>
+<p>Finalize documentation and developer experience.</p>
+<h4 id="61-user-documentation">6.1 User Documentation<a class="headerlink" href="#61-user-documentation" title="Permanent link">&para;</a></h4>
+<ul>
+<li>[ ] Update <code>docs/guides/voice-agent.md</code> with avatar section</li>
+<li>[ ] Create <code>docs/guides/lip-sync-avatars.md</code></li>
+<li>[ ] Update <code>docs/architecture/avatar.md</code> to cover lip-sync</li>
+</ul>
+<h4 id="62-api-documentation">6.2 API Documentation<a class="headerlink" href="#62-api-documentation" title="Permanent link">&para;</a></h4>
+<ul>
+<li>[ ] Create <code>docs/api/avatar.md</code></li>
+<li>[ ] Document each provider's configuration</li>
+<li>[ ] Add troubleshooting guide</li>
+</ul>
+<h4 id="63-mkdocs-integration">6.3 MkDocs Integration<a class="headerlink" href="#63-mkdocs-integration" title="Permanent link">&para;</a></h4>
+<ul>
+<li>[ ] Add new pages to <code>mkdocs.yml</code></li>
+<li>[ ] Build and verify site</li>
+</ul>
+<h4 id="64-readme-updates">6.4 README Updates<a class="headerlink" href="#64-readme-updates" title="Permanent link">&para;</a></h4>
+<ul>
+<li>[ ] Add avatar section to main README</li>
+<li>[ ] Update feature list</li>
+</ul>
+<h4 id="deliverables_6">Deliverables<a class="headerlink" href="#deliverables_6" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Complete documentation</li>
+<li>Updated MkDocs site</li>
+<li>README with avatar info</li>
+</ul>
+<hr />
+<h2 id="timeline-summary">Timeline Summary<a class="headerlink" href="#timeline-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Duration</th>
+<th>Dependencies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Phase 0: SDK Gap Analysis</td>
+<td>1-2 days</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Phase 1: Core Infrastructure</td>
+<td>3-5 days</td>
+<td>Phase 0</td>
+</tr>
+<tr>
+<td>Phase 2: Tavus Provider</td>
+<td>3-4 days</td>
+<td>Phase 1</td>
+</tr>
+<tr>
+<td>Phase 3: Anam Provider</td>
+<td>2-3 days</td>
+<td>Phase 1</td>
+</tr>
+<tr>
+<td>Phase 4: Simli Provider</td>
+<td>2-3 days</td>
+<td>Phase 1</td>
+</tr>
+<tr>
+<td>Phase 5: Agent Integration</td>
+<td>2-3 days</td>
+<td>Phase 2</td>
+</tr>
+<tr>
+<td>Phase 6: Documentation</td>
+<td>2-3 days</td>
+<td>Phase 5</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total Estimate</strong>: 15-23 days (3-5 weeks)</p>
+<p><strong>Note</strong>: Phases 2-4 (providers) can be parallelized if multiple developers are available.</p>
+<hr />
+<h2 id="task-checklist">Task Checklist<a class="headerlink" href="#task-checklist" title="Permanent link">&para;</a></h2>
+<h3 id="phase-0-sdk-gap-analysis">Phase 0: SDK Gap Analysis ✅<a class="headerlink" href="#phase-0-sdk-gap-analysis" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[x] P0-1: Check ByteStream support</li>
+<li>[x] P0-2: Check RPC support</li>
+<li>[x] P0-3: Check publish_on_behalf support</li>
+<li>[x] P0-4: Document gaps and decide approach</li>
+</ul>
+<h3 id="phase-1-core-infrastructure">Phase 1: Core Infrastructure ✅<a class="headerlink" href="#phase-1-core-infrastructure" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[x] P1-1: Create package structure</li>
+<li>[x] P1-2: Define Session interface</li>
+<li>[x] P1-3: Define AudioDestination interface</li>
+<li>[x] P1-4: Implement token generation</li>
+<li>[x] P1-5: Define error types</li>
+<li>[x] P1-6: Implement DataStreamAudioOutput</li>
+<li>[x] P1-7: Implement QueueAudioOutput</li>
+<li>[x] P1-8: Write unit tests</li>
+</ul>
+<h3 id="phase-2-tavus-provider">Phase 2: Tavus Provider ✅<a class="headerlink" href="#phase-2-tavus-provider" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[x] P2-1: Implement Tavus API client (via <a href="https://github.com/plexusone/tavus-go">tavus-go</a> SDK v0.2.0)</li>
+<li>[x] P2-2: Implement TavusAvatarSession</li>
+<li>[x] P2-3: Write unit tests</li>
+<li>[x] P2-4: Write integration test (skips without TAVUS_API_KEY)</li>
+<li>[x] P2-5: Document Tavus configuration</li>
+</ul>
+<h3 id="phase-3-anam-provider-future-work">Phase 3: Anam Provider (Future Work)<a class="headerlink" href="#phase-3-anam-provider-future-work" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] P3-1: Implement Anam API client</li>
+<li>[ ] P3-2: Implement AnamAvatarSession</li>
+<li>[ ] P3-3: Write tests</li>
+<li>[ ] P3-4: Document Anam configuration</li>
+</ul>
+<h3 id="phase-4-simli-provider-future-work">Phase 4: Simli Provider (Future Work)<a class="headerlink" href="#phase-4-simli-provider-future-work" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] P4-1: Implement Simli API client</li>
+<li>[ ] P4-2: Implement SimliAvatarSession</li>
+<li>[ ] P4-3: Write tests</li>
+<li>[ ] P4-4: Document Simli configuration</li>
+</ul>
+<h3 id="phase-5-agent-integration-future-work">Phase 5: Agent Integration (Future Work)<a class="headerlink" href="#phase-5-agent-integration-future-work" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] P5-1: Add AvatarConfig to agent options</li>
+<li>[ ] P5-2: Implement StartAvatar/StopAvatar</li>
+<li>[ ] P5-3: Integrate audio routing</li>
+<li>[ ] P5-4: Create example application</li>
+<li>[ ] P5-5: Write integration test</li>
+</ul>
+<h3 id="phase-6-documentation-partial-v020">Phase 6: Documentation (Partial - v0.2.0)<a class="headerlink" href="#phase-6-documentation-partial-v020" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] P6-1: Update voice-agent guide</li>
+<li>[ ] P6-2: Create lip-sync-avatars guide</li>
+<li>[ ] P6-3: Create avatar API reference</li>
+<li>[x] P6-4: Update mkdocs.yml (v0.2.0 release notes added)</li>
+<li>[x] P6-5: Update README (voice pipeline, Tavus avatars section added)</li>
+</ul>
+<hr />
+<h2 id="risk-mitigation">Risk Mitigation<a class="headerlink" href="#risk-mitigation" title="Permanent link">&para;</a></h2>
+<h3 id="risk-livekit-go-sdk-lacks-bytestreamrpc">Risk: LiveKit Go SDK lacks ByteStream/RPC<a class="headerlink" href="#risk-livekit-go-sdk-lacks-bytestreamrpc" title="Permanent link">&para;</a></h3>
+<p><strong>Mitigation</strong>: Phase 0 identifies this early. Options:</p>
+<ol>
+<li><strong>Contribute upstream</strong> (2-4 weeks): Submit PR to LiveKit</li>
+<li><strong>Implement locally</strong> (1-2 weeks): Build on DataChannel</li>
+<li><strong>WebSocket fallback</strong> (1 week): Direct WebSocket to avatar</li>
+</ol>
+<h3 id="risk-provider-api-changes">Risk: Provider API changes<a class="headerlink" href="#risk-provider-api-changes" title="Permanent link">&para;</a></h3>
+<p><strong>Mitigation</strong>: Abstract all providers behind <code>Session</code> interface. Pin API versions where possible.</p>
+<h3 id="risk-latency-too-high">Risk: Latency too high<a class="headerlink" href="#risk-latency-too-high" title="Permanent link">&para;</a></h3>
+<p><strong>Mitigation</strong>: Choose providers with proven low latency (Simli, Anam). Add latency metrics to detect issues early.</p>
+<h3 id="risk-integration-complexity">Risk: Integration complexity<a class="headerlink" href="#risk-integration-complexity" title="Permanent link">&para;</a></h3>
+<p><strong>Mitigation</strong>: Start with simplest provider (Anam has "10 minute quickstart"). Validate architecture before adding complexity.</p>
+<hr />
+<h2 id="definition-of-done">Definition of Done<a class="headerlink" href="#definition-of-done" title="Permanent link">&para;</a></h2>
+<h3 id="per-provider">Per Provider<a class="headerlink" href="#per-provider" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] API client implemented and tested</li>
+<li>[ ] Session interface implemented</li>
+<li>[ ] Unit tests passing</li>
+<li>[ ] Integration test passing (with real API)</li>
+<li>[ ] Configuration documented</li>
+<li>[ ] Error handling complete</li>
+</ul>
+<h3 id="overall-feature">Overall Feature<a class="headerlink" href="#overall-feature" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] All Phase 1-6 tasks complete</li>
+<li>[ ] At least 2 providers working</li>
+<li>[ ] Example application working</li>
+<li>[ ] Documentation complete</li>
+<li>[ ] MkDocs site updated</li>
+<li>[ ] README updated</li>
+<li>[ ] No critical bugs open</li>
+</ul>
+<hr />
+<h2 id="related-documents">Related Documents<a class="headerlink" href="#related-documents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../PRD/">PRD.md</a> - Product Requirements Document</li>
+<li><a href="../TRD/">TRD.md</a> - Technical Requirements Document</li>
+<li><a href="../ROADMAP/">ROADMAP.md</a> - Feature Roadmap</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/plexusone" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
