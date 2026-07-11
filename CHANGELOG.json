@@ -7,6 +7,34 @@
   "maintainers": ["plexusone"],
   "releases": [
     {
+      "version": "v0.3.0",
+      "date": "2026-07-11",
+      "commit": "baf395c",
+      "highlights": [
+        { "description": "bitHuman avatar provider for real-time animated avatars" },
+        { "description": "Provider-agnostic factory pattern with auto-registration" },
+        { "description": "Comprehensive avatar providers comparison guide" }
+      ],
+      "added": [
+        { "description": "Avatar provider factory with registry pattern for provider-agnostic session creation", "commit": "b6b159c" },
+        { "description": "Avatar setup utilities for session initialization", "commit": "aa1e761" },
+        { "description": "Tavus provider auto-registration via init()", "commit": "492adec" },
+        { "description": "bitHuman avatar provider with LiveKit integration", "commit": "965766a" },
+        { "description": "bitHuman client wrapper over bithuman-go SDK", "commit": "965766a" },
+        { "description": "DataStream audio output for bitHuman lip-sync", "commit": "965766a" },
+        { "description": "`Agent.Room()` method for avatar session integration", "commit": "7367f27" }
+      ],
+      "documentation": [
+        { "description": "Avatar providers comparison guide (Tavus, HeyGen, D-ID, bitHuman, Simli)", "commit": "19243f6" },
+        { "description": "Updated avatar API reference with factory pattern", "commit": "f76c101" },
+        { "description": "Updated Tavus guide with registration details", "commit": "f76c101" },
+        { "description": "README updates with avatar features", "commit": "cb2e27c" }
+      ],
+      "dependencies": [
+        { "description": "github.com/plexusone/bithuman-go v0.1.0", "commit": "baf395c" }
+      ]
+    },
+    {
       "version": "v0.2.0",
       "date": "2026-07-06",
       "commit": "946ab25",
