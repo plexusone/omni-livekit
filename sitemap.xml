@@ -2,86 +2,94 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://plexusone.github.io/omni-livekit/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/getting-started/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/quickstart/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/api/agent/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/api/avatar/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/api/gateway/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/api/room/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/architecture/avatar/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/architecture/voice-pipeline/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/architecture/avatars/PHASE0_GAP_ANALYSIS/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/architecture/avatars/PLAN/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/architecture/avatars/PRD/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/architecture/avatars/ROADMAP/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/architecture/avatars/TRD/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
+    </url>
+    <url>
+         <loc>https://plexusone.github.io/omni-livekit/guides/avatar-providers/</loc>
+         <lastmod>2026-07-11</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/guides/human-participation/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/guides/omnimeet-integration/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/guides/tavus-avatars/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/guides/voice-agent/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/releases/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/releases/v0.1.0/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/omni-livekit/releases/v0.2.0/</loc>
-         <lastmod>2026-07-06</lastmod>
+         <lastmod>2026-07-11</lastmod>
+    </url>
+    <url>
+         <loc>https://plexusone.github.io/omni-livekit/releases/v0.3.0/</loc>
+         <lastmod>2026-07-11</lastmod>
     </url>
 </urlset>
