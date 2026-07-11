@@ -1,11 +1,13 @@
 # Avatar API Reference
 
-The `avatar` package provides infrastructure for integrating lip-sync avatars with voice agents.
+The `avatar` package provides infrastructure for integrating avatars with voice agents, supporting both static images and live lip-sync providers.
 
 ## Package Structure
 
 ```
 avatar/
+├── factory.go      # Unified factory (NewSession, Setup)
+├── setup.go        # High-level setup helper
 ├── session.go      # Session interface
 ├── audio.go        # AudioDestination interface
 ├── datastream.go   # DataStreamAudioOutput
@@ -14,8 +16,127 @@ avatar/
 ├── errors.go       # Error types
 └── tavus/          # Tavus provider
     ├── client.go   # API client
-    └── session.go  # Session implementation
+    ├── session.go  # Session implementation
+    └── register.go # Auto-registration
 ```
+
+## Factory (Recommended)
+
+The factory provides a unified way to create avatar sessions regardless of provider.
+
+### Setup
+
+High-level helper that handles both static images and live avatars.
+
+```go
+func Setup(cfg SetupConfig) (*SetupResult, error)
+```
+
+**SetupConfig:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `Provider` | `string` | Avatar type: `"tavus"`, `"static"`, `""` (none) |
+| `StaticImage` | `StaticImageConfig` | Static image settings |
+| `Tavus` | `TavusConfig` | Tavus provider settings |
+| `LiveKitURL` | `string` | LiveKit server URL (for live avatars) |
+| `LiveKitAPIKey` | `string` | LiveKit API key (for live avatars) |
+| `LiveKitAPISecret` | `string` | LiveKit API secret (for live avatars) |
+
+**SetupResult:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `Mode` | `SetupMode` | `SetupModeNone`, `SetupModeStatic`, or `SetupModeLive` |
+| `Session` | `Session` | Live avatar session (nil for static/none) |
+| `StaticImage` | `*StaticImageResult` | Static image config (nil for live/none) |
+
+**Example:**
+
+```go
+import (
+    "github.com/plexusone/omni-livekit/avatar"
+    _ "github.com/plexusone/omni-livekit/avatar/tavus" // Register provider
+)
+
+result, err := avatar.Setup(avatar.SetupConfig{
+    Provider: avatar.ProviderTavus,
+    Tavus: avatar.TavusConfig{
+        APIKey: os.Getenv("TAVUS_API_KEY"),
+    },
+    LiveKitURL:       os.Getenv("LIVEKIT_URL"),
+    LiveKitAPIKey:    os.Getenv("LIVEKIT_API_KEY"),
+    LiveKitAPISecret: os.Getenv("LIVEKIT_API_SECRET"),
+})
+
+switch result.Mode {
+case avatar.SetupModeNone:
+    // Audio-only, no avatar
+case avatar.SetupModeStatic:
+    // Configure agent with result.StaticImage
+case avatar.SetupModeLive:
+    // Use result.Session for live avatar
+    defer result.Session.Close(ctx)
+}
+```
+
+### NewSession
+
+Low-level factory that creates a Session for registered providers.
+
+```go
+func NewSession(cfg Config) (Session, error)
+```
+
+**Config:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `Provider` | `string` | Provider name: `"tavus"`, etc. |
+| `Tavus` | `TavusConfig` | Tavus-specific config |
+| `Anam` | `AnamConfig` | Anam-specific config (future) |
+| `Simli` | `SimliConfig` | Simli-specific config (future) |
+
+**Example:**
+
+```go
+session, err := avatar.NewSession(avatar.Config{
+    Provider: avatar.ProviderTavus,
+    Tavus: avatar.TavusConfig{
+        APIKey: os.Getenv("TAVUS_API_KEY"),
+        PalID:  "your-pal-id",
+    },
+})
+```
+
+### Provider Registration
+
+Providers register themselves via `init()`:
+
+```go
+// In avatar/tavus/register.go
+func init() {
+    avatar.RegisterProvider("tavus", func(cfg avatar.Config) (avatar.Session, error) {
+        return NewSession(SessionConfig{...})
+    })
+}
+```
+
+Import the provider package to register it:
+
+```go
+import _ "github.com/plexusone/omni-livekit/avatar/tavus"
+```
+
+### Provider Constants
+
+| Constant | Value | Description |
+|----------|-------|-------------|
+| `ProviderNone` | `""` | No avatar (audio-only) |
+| `ProviderStatic` | `"static"` | Static image (not Session-based) |
+| `ProviderTavus` | `"tavus"` | Tavus live avatar |
+| `ProviderAnam` | `"anam"` | Anam avatar (future) |
+| `ProviderSimli` | `"simli"` | Simli avatar (future) |
 
 ## Core Interfaces
 
@@ -274,6 +395,7 @@ func (c *Client) SDK() *tavussdk.Client
 
 ## See Also
 
+- [Avatar Provider Comparison](../guides/avatar-providers.md) - Compare Tavus, HeyGen, D-ID, bitHuman, Simli
 - [Tavus Setup Guide](../guides/tavus-avatars.md)
 - [Technical Design](../architecture/avatars/TRD.md)
 - [Voice Pipeline](../architecture/voice-pipeline.md)

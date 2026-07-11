@@ -35,10 +35,12 @@ Tavus provides real-time lip-sync avatars that synchronize with your agent's spe
 The Tavus integration uses the [tavus-go](https://github.com/plexusone/tavus-go) SDK:
 
 ```bash
-go get github.com/plexusone/omni-livekit@v0.2.0
+go get github.com/plexusone/omni-livekit@latest
 ```
 
-## Quick Start
+## Quick Start (Recommended)
+
+Use the unified avatar factory for the simplest integration:
 
 ```go
 package main
@@ -46,34 +48,75 @@ package main
 import (
     "context"
     "os"
+    "time"
 
-    "github.com/plexusone/omni-livekit/avatar/tavus"
+    "github.com/plexusone/omni-livekit/avatar"
+    _ "github.com/plexusone/omni-livekit/avatar/tavus" // Register Tavus provider
 )
 
 func main() {
     ctx := context.Background()
 
-    // Create Tavus client
-    client, err := tavus.NewClient(tavus.ClientConfig{
-        APIKey: os.Getenv("TAVUS_API_KEY"),
+    // Set up Tavus avatar using the factory
+    result, err := avatar.Setup(avatar.SetupConfig{
+        Provider: avatar.ProviderTavus,
+        Tavus: avatar.TavusConfig{
+            APIKey: os.Getenv("TAVUS_API_KEY"),
+            PalID:  os.Getenv("TAVUS_PAL_ID"), // Optional, uses default
+        },
+        LiveKitURL:       os.Getenv("LIVEKIT_URL"),
+        LiveKitAPIKey:    os.Getenv("LIVEKIT_API_KEY"),
+        LiveKitAPISecret: os.Getenv("LIVEKIT_API_SECRET"),
     })
     if err != nil {
         panic(err)
     }
 
-    // Create a conversation (avatar session)
-    resp, err := client.CreateConversation(ctx, tavus.CreateConversationRequest{
-        PalID:        "your-pal-id",  // Or use tavus.DefaultPalID for testing
-        LiveKitURL:   os.Getenv("LIVEKIT_URL"),
-        LiveKitToken: avatarToken,    // Token with publish permissions
+    // Start the avatar session (after agent joins room)
+    err = result.Session.Start(ctx, avatar.StartOptions{
+        Room:             agentRoom,  // Your LiveKit room
+        AgentIdentity:    "my-agent",
+        LiveKitURL:       os.Getenv("LIVEKIT_URL"),
+        LiveKitAPIKey:    os.Getenv("LIVEKIT_API_KEY"),
+        LiveKitAPISecret: os.Getenv("LIVEKIT_API_SECRET"),
     })
     if err != nil {
         panic(err)
     }
+    defer result.Session.Close(ctx)
 
-    // Avatar joins the room and starts publishing video
-    fmt.Printf("Conversation started: %s\n", resp.ConversationID)
+    // Wait for avatar to join
+    if err := result.Session.WaitForJoin(ctx, 30*time.Second); err != nil {
+        panic(err)
+    }
+
+    // Stream TTS audio to avatar for lip-sync
+    audioOut := result.Session.AudioOutput()
+    // ... your TTS pipeline sends audio here
 }
+```
+
+## Direct Client Usage
+
+For more control, use the Tavus client directly:
+
+```go
+import "github.com/plexusone/omni-livekit/avatar/tavus"
+
+// Create Tavus client
+client, err := tavus.NewClient(tavus.ClientConfig{
+    APIKey: os.Getenv("TAVUS_API_KEY"),
+})
+
+// Create a conversation (avatar session)
+resp, err := client.CreateConversation(ctx, tavus.CreateConversationRequest{
+    PalID:        "your-pal-id",  // Or use tavus.DefaultPalID for testing
+    LiveKitURL:   os.Getenv("LIVEKIT_URL"),
+    LiveKitToken: avatarToken,    // Token with publish permissions
+})
+
+// Avatar joins the room and starts publishing video
+fmt.Printf("Conversation started: %s\n", resp.ConversationID)
 ```
 
 ## Configuration
