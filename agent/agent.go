@@ -400,6 +400,14 @@ func (a *Agent) LocalParticipant() *participant.Participant {
 	return a.local
 }
 
+// Room returns the underlying LiveKit room.
+// This is useful for advanced operations like avatar sessions.
+func (a *Agent) Room() *lksdk.Room {
+	a.mu.RLock()
+	defer a.mu.RUnlock()
+	return a.room
+}
+
 // RemoteParticipants returns all other participants in the meeting.
 func (a *Agent) RemoteParticipants() []participant.Participant {
 	a.mu.RLock()
