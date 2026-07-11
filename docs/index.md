@@ -16,7 +16,8 @@ omni-livekit enables voice AI agents to participate in LiveKit rooms via WebRTC,
 ## Features
 
 - **WebRTC Audio**: Low-latency voice communication (<200ms)
-- **Lip-Sync Avatars**: Real-time talking head video via Tavus integration
+- **Lip-Sync Avatars**: Real-time talking head video via Tavus and bitHuman
+- **Multiple Avatar Providers**: Tavus (photorealistic), bitHuman (animated characters)
 - **Voice Pipeline**: STT → LLM → TTS with flexible provider options
 - **Voice-to-Voice**: Lower latency mode with Deepgram, Google, or OpenAI
 - **OmniMeet Provider**: Full meeting abstraction support
@@ -111,4 +112,5 @@ Voice-to-voice eliminates the text intermediate step. Supported providers:
 - [Installation](getting-started.md) - Set up omni-livekit
 - [Quick Start](quickstart.md) - Create your first voice agent
 - [Human Participation](guides/human-participation.md) - How humans join meetings
-- [Tavus Avatars](guides/tavus-avatars.md) - Add lip-sync video to your agent
+- [Avatar Providers](guides/avatar-providers.md) - Compare avatar providers (Tavus, bitHuman, etc.)
+- [Tavus Avatars](guides/tavus-avatars.md) - Add photorealistic lip-sync video
