@@ -19,8 +19,8 @@
  [docs-mkdoc-svg]: https://img.shields.io/badge/Go-dev%20guide-blue.svg
  [docs-mkdoc-url]: https://plexusone.dev/omni-livekit
  [viz-svg]: https://img.shields.io/badge/visualizaton-Go-blue.svg
- [viz-url]: https://mango-dune-07a8b7110.1.azurestaticapps.net/?repo=plexusone%2Fomnillm
- [loc-svg]: https://tokei.rs/b1/github/plexusone/omnillm
+ [viz-url]: https://mango-dune-07a8b7110.1.azurestaticapps.net/?repo=plexusone%2Fomni-livekit
+ [loc-svg]: https://tokei.rs/b1/github/plexusone/omni-livekit
  [repo-url]: https://github.com/plexusone/omni-livekit
  [license-svg]: https://img.shields.io/badge/license-MIT-blue.svg
  [license-url]: https://github.com/plexusone/omni-livekit/blob/main/LICENSE
@@ -393,26 +393,105 @@ OmniVoice supports direct voice-to-voice with:
 
 Voice-to-voice eliminates the text intermediate step, reducing latency for real-time conversations.
 
-## Lip-Sync Avatars
+## Avatars
 
-For realistic talking head video, integrate with [Tavus](https://tavus.io/) using the [tavus-go](https://github.com/plexusone/tavus-go) SDK:
+The avatar package provides a unified interface for visual representations of voice agents.
+
+### Supported Providers
+
+| Provider | Type | Status | Best For |
+|----------|------|--------|----------|
+| `none` | Audio-only | ✅ Built-in | Voice-only agents |
+| `static` | Pre-encoded H.264 | ✅ Built-in | Simple visual presence |
+| [Tavus](https://tavus.io) | Realistic humans | ✅ Implemented | Video-trained digital twins |
+| [HeyGen](https://heygen.com) | Realistic humans | 🔜 Planned | Highest quality realism |
+| [D-ID](https://d-id.com) | Photo-to-avatar | 🔜 Planned | Quick setup from photo |
+| [bitHuman](https://bithuman.ai) | Animated + realistic | 🔜 Planned | Animated characters, edge/CPU |
+| [Simli](https://simli.com) | Realistic + animated | 🔜 Planned | Budget-friendly |
+
+See [Avatar Provider Comparison](docs/guides/avatar-providers.md) for detailed evaluation.
+
+### Quick Start with Factory
 
 ```go
-import "github.com/plexusone/omni-livekit/avatar/tavus"
+import (
+    "github.com/plexusone/omni-livekit/avatar"
+    _ "github.com/plexusone/omni-livekit/avatar/tavus" // Register Tavus provider
+)
 
-client, _ := tavus.NewClient(tavus.ClientConfig{
-    APIKey: os.Getenv("TAVUS_API_KEY"),
+// Configure avatar
+result, err := avatar.Setup(avatar.SetupConfig{
+    Provider: "tavus",  // or "static", "" (none)
+    Tavus: avatar.TavusConfig{
+        APIKey: os.Getenv("TAVUS_API_KEY"),
+        PalID:  os.Getenv("TAVUS_PAL_ID"),  // Optional
+    },
+    LiveKitURL:       os.Getenv("LIVEKIT_URL"),
+    LiveKitAPIKey:    os.Getenv("LIVEKIT_API_KEY"),
+    LiveKitAPISecret: os.Getenv("LIVEKIT_API_SECRET"),
 })
 
-// Create conversation with LiveKit transport
-resp, _ := client.CreateConversation(ctx, tavus.CreateConversationRequest{
-    PalID:        "your-pal-id",
-    LiveKitURL:   os.Getenv("LIVEKIT_URL"),
-    LiveKitToken: avatarToken,
+switch result.Mode {
+case avatar.SetupModeStatic:
+    // Apply static image to agent options
+    agentOpts.MediaMode = agent.AudioWithImage
+    agentOpts.Image.H264Path = result.StaticImage.H264Path
+
+case avatar.SetupModeLive:
+    // Start live avatar session after agent joins room
+    err := result.Session.Start(ctx, avatar.StartOptions{
+        Room:          agent.Room(),
+        AgentIdentity: "my-agent",
+        // ... LiveKit credentials
+    })
+    defer result.Session.Close(ctx)
+
+    // Wait for avatar to join
+    result.Session.WaitForJoin(ctx, 30*time.Second)
+
+    // Stream TTS audio to avatar for lip-sync
+    audioOut := result.Session.AudioOutput()
+    audioOut.CaptureFrame(ctx, ttsAudio)
+    audioOut.Flush(ctx)
+}
+```
+
+### Static Image Avatar
+
+For a simple visual presence without lip-sync:
+
+```go
+result, _ := avatar.Setup(avatar.SetupConfig{
+    Provider: avatar.ProviderStatic,
+    StaticImage: avatar.StaticImageConfig{
+        H264Path: "/path/to/avatar.h264",  // Pre-encoded H.264
+        // Or: UseDefault: true            // Use embedded default
+    },
+})
+```
+
+### Live Lip-Sync Avatar (Tavus)
+
+For realistic talking head video with [Tavus](https://tavus.io/):
+
+```go
+result, _ := avatar.Setup(avatar.SetupConfig{
+    Provider: avatar.ProviderTavus,
+    Tavus: avatar.TavusConfig{
+        APIKey: os.Getenv("TAVUS_API_KEY"),
+        PalID:  "your-pal-id",  // Or use default
+        FaceID: "optional-face-override",
+    },
+    // LiveKit credentials for avatar token generation
+    LiveKitURL:       os.Getenv("LIVEKIT_URL"),
+    LiveKitAPIKey:    os.Getenv("LIVEKIT_API_KEY"),
+    LiveKitAPISecret: os.Getenv("LIVEKIT_API_SECRET"),
 })
 ```
 
 The avatar joins the LiveKit room as a participant with synchronized lip movements.
+
+For animated characters or other avatar styles, see the [Avatar Provider Comparison](docs/guides/avatar-providers.md).
 
 ## OmniMeet Integration
 
