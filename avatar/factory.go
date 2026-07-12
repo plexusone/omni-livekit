@@ -10,6 +10,7 @@ const (
 	ProviderNone     = ""         // No avatar (audio-only mode)
 	ProviderTavus    = "tavus"    // Tavus conversational video
 	ProviderBitHuman = "bithuman" // bitHuman real-time avatars
+	ProviderHeyGen   = "heygen"   // HeyGen LiveAvatar real-time streaming
 	ProviderAnam     = "anam"     // Anam avatar (future)
 	ProviderSimli    = "simli"    // Simli avatar (future)
 	ProviderStatic   = "static"   // Static image (not a Session, handled separately)
@@ -19,7 +20,7 @@ const (
 // The Provider field determines which provider-specific config is used.
 type Config struct {
 	// Provider selects the avatar provider.
-	// Supported values: "tavus", "bithuman", "anam", "simli", "" (none/audio-only)
+	// Supported values: "tavus", "bithuman", "heygen", "anam", "simli", "" (none/audio-only)
 	// Note: "static" is not a Session provider; handle static images separately.
 	Provider string
 
@@ -30,6 +31,10 @@ type Config struct {
 	// BitHuman contains bitHuman-specific configuration.
 	// Used when Provider is "bithuman".
 	BitHuman BitHumanConfig
+
+	// HeyGen contains HeyGen LiveAvatar configuration.
+	// Used when Provider is "heygen".
+	HeyGen HeyGenConfig
 
 	// Anam contains Anam-specific configuration.
 	// Used when Provider is "anam".
@@ -101,6 +106,37 @@ type BitHumanConfig struct {
 	// AgentID is the bitHuman agent to use for the session.
 	// Required.
 	AgentID string
+
+	// AudioConfig configures the audio format.
+	// Default: 24kHz mono PCM16
+	AudioConfig AudioConfig
+}
+
+// HeyGenConfig contains configuration for the HeyGen LiveAvatar provider.
+type HeyGenConfig struct {
+	// APIKey is the LiveAvatar API key.
+	// Note: This is different from the HeyGen video generation API key.
+	// Get your key from: https://app.liveavatar.com/developers
+	// Required.
+	APIKey string
+
+	// BaseURL is the LiveAvatar API base URL.
+	// Default: https://api.liveavatar.com
+	BaseURL string
+
+	// AvatarID is the UUID of the avatar to use.
+	// Use liveavatar.SandboxAvatarID ("65f9e3c9-d48b-4118-b73a-4ae2e3cbb8f0") for testing.
+	// Required.
+	AvatarID string
+
+	// Sandbox enables sandbox mode (60s limit, no credits).
+	// Recommended for development and testing.
+	Sandbox bool
+
+	// VideoQuality sets the avatar video quality.
+	// Options: "very_high", "high", "medium", "low"
+	// Default: "high"
+	VideoQuality string
 
 	// AudioConfig configures the audio format.
 	// Default: 24kHz mono PCM16
