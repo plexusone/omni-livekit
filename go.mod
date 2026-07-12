@@ -11,6 +11,8 @@ require (
 	github.com/pion/webrtc/v4 v4.2.16
 	github.com/plexusone/bithuman-go v0.1.0
 	github.com/plexusone/heygen-go v0.1.0
+	github.com/plexusone/omniavatar v0.1.0
+	github.com/plexusone/omniavatar-core v0.1.0
 	github.com/plexusone/omnimeet-core v0.1.0
 	github.com/plexusone/omnivoice v0.13.0
 	github.com/plexusone/omnivoice-core v0.15.0
