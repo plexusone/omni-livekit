@@ -197,6 +197,8 @@ github.com/plexusone/bithuman-go v0.1.0 h1:/11rTArQCshNL5k0jZj0hmTCpc4rkKrScAgsJ
 github.com/plexusone/bithuman-go v0.1.0/go.mod h1:7x8URlC4Jqu83w9DQk+C+Ab/dWWFgYV5jkPafyg+PyM=
 github.com/plexusone/elevenlabs-go v0.13.0 h1:KrgrhJjLfNbIRFp8F880QmxW1/VSkfpUcXXWfUEe8tU=
 github.com/plexusone/elevenlabs-go v0.13.0/go.mod h1:iNDRYo/Ya4oLYuIXKRtGRzNY9fdN/ALaQI2nEb5O540=
+github.com/plexusone/heygen-go v0.1.0 h1:igJpBniX/32WpkWlvkoWy4YyWapwVAzo1Xp4ooguPug=
+github.com/plexusone/heygen-go v0.1.0/go.mod h1:WDrzkUmV27EBr4LgGyZOd2sQ99kqcOAD+3yBlZHtOdA=
 github.com/plexusone/ogen-tools v0.3.0 h1:UVNRxobvfcG8h/dD+Zy/KedtaCveT+V9w50MAEYy2tM=
 github.com/plexusone/ogen-tools v0.3.0/go.mod h1:fj6ekLGUiVQkS6NRSfxMvQTCJtK/xVRarCroMA0iCK0=
 github.com/plexusone/omni-deepgram v0.7.0 h1:5CAdKlT5nBMVCSYt259B24sR2zcsM2Q8qtUWJ4mVZUc=
