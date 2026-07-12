@@ -40,8 +40,75 @@ type Options struct {
 	// Image configuration (for AudioWithImage mode)
 	Image ImageConfig
 
+	// Avatar configuration (optional)
+	// When set, the agent uses an avatar provider for video output.
+	// This overrides the MediaMode for video (audio is still from agent).
+	Avatar *AvatarConfig
+
 	// Behavior
 	AutoSubscribe bool // Auto-subscribe to all tracks (default: true)
+}
+
+// AvatarConfig configures an AI avatar provider.
+type AvatarConfig struct {
+	// Provider name (e.g., "heygen", "tavus", "bithuman")
+	// Required.
+	Provider string
+
+	// HeyGen configuration (used when Provider is "heygen")
+	HeyGen *HeyGenAvatarConfig
+
+	// Tavus configuration (used when Provider is "tavus")
+	Tavus *TavusAvatarConfig
+
+	// BitHuman configuration (used when Provider is "bithuman")
+	BitHuman *BitHumanAvatarConfig
+}
+
+// HeyGenAvatarConfig configures HeyGen LiveAvatar.
+type HeyGenAvatarConfig struct {
+	// APIKey is the LiveAvatar API key.
+	// Get your key from: https://app.liveavatar.com/developers
+	// Required.
+	APIKey string
+
+	// AvatarID is the UUID of the avatar to use.
+	// Required.
+	AvatarID string
+
+	// Sandbox enables sandbox mode (60s limit, no credits).
+	// Recommended for development and testing.
+	Sandbox bool
+
+	// VideoQuality sets the avatar video quality.
+	// Options: "very_high", "high", "medium", "low"
+	// Default: "high"
+	VideoQuality string
+}
+
+// TavusAvatarConfig configures Tavus Conversational Video.
+type TavusAvatarConfig struct {
+	// APIKey is the Tavus API key.
+	// Required.
+	APIKey string
+
+	// PalID is the PAL (Personalized AI Likeness) to use.
+	// Optional - defaults to stock avatar.
+	PalID string
+
+	// FaceID is an optional face override.
+	FaceID string
+}
+
+// BitHumanAvatarConfig configures bitHuman Real-time Avatars.
+type BitHumanAvatarConfig struct {
+	// APIKey is the bitHuman API key.
+	// Required.
+	APIKey string
+
+	// AgentID is the bitHuman agent to use.
+	// Required.
+	AgentID string
 }
 
 // AudioConfig configures audio publishing.
