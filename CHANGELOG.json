@@ -7,6 +7,31 @@
   "maintainers": ["plexusone"],
   "releases": [
     {
+      "version": "v0.4.0",
+      "date": "2026-07-12",
+      "highlights": [
+        { "description": "OmniAvatar integration for unified avatar provider abstraction" },
+        { "description": "Avatar configuration in agent options for HeyGen, Tavus, and bitHuman" },
+        { "description": "LiveKit adapter wrapping omniavatar sessions with DataStream audio" }
+      ],
+      "added": [
+        { "description": "`avatar.LiveKitSession` adapter wrapping omniavatar sessions", "commit": "a490c2b" },
+        { "description": "`avatar.WrapSession()` for adapting omniavatar sessions to LiveKit", "commit": "a490c2b" },
+        { "description": "`avatar.StartOptions` with Room, AgentIdentity, and LiveKit credentials", "commit": "a490c2b" },
+        { "description": "`agent.AvatarConfig` for provider selection", "commit": "f2b0b5f" },
+        { "description": "`agent.HeyGenAvatarConfig` with sandbox and video quality options", "commit": "f2b0b5f" },
+        { "description": "`agent.TavusAvatarConfig` with PAL and face ID options", "commit": "f2b0b5f" },
+        { "description": "`agent.BitHumanAvatarConfig` with agent ID", "commit": "f2b0b5f" },
+        { "description": "`Agent.AvatarSession()` for accessing the active avatar session", "commit": "bf7cc59" },
+        { "description": "`Agent.AvatarAudioOutput()` for streaming TTS to avatar", "commit": "bf7cc59" },
+        { "description": "`Agent.HasAvatar()` for checking avatar availability", "commit": "bf7cc59" }
+      ],
+      "dependencies": [
+        { "description": "`github.com/plexusone/omniavatar` v0.1.0", "commit": "ac2b3c4" },
+        { "description": "`github.com/plexusone/omniavatar-core` v0.1.0", "commit": "ac2b3c4" }
+      ]
+    },
+    {
       "version": "v0.3.0",
       "date": "2026-07-11",
       "commit": "baf395c",
