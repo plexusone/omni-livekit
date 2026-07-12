@@ -14,12 +14,15 @@ import (
 	"github.com/pion/webrtc/v4"
 	pionmedia "github.com/pion/webrtc/v4/pkg/media"
 
+	"github.com/plexusone/omniavatar"
+	avcore "github.com/plexusone/omniavatar-core/avatar"
 	"github.com/plexusone/omnimeet-core/event"
 	"github.com/plexusone/omnimeet-core/meeting"
 	"github.com/plexusone/omnimeet-core/participant"
 	"github.com/plexusone/omnimeet-core/track"
 
 	"github.com/plexusone/omni-livekit/agent/assets"
+	"github.com/plexusone/omni-livekit/avatar"
 )
 
 // ConnectionState represents the agent's connection state.
@@ -48,6 +51,9 @@ type Agent struct {
 	audioWriter *audioWriter
 	videoWriter *videoWriter
 	imageWriter ImageWriter // interface for static image publishing
+
+	// Avatar support
+	avatarSession *avatar.LiveKitSession
 
 	// Event handlers
 	onParticipantJoined func(participant.Participant)
@@ -191,8 +197,8 @@ func (a *Agent) Join(ctx context.Context, roomName string) error {
 		}
 	}
 
-	// Start video based on media mode
-	if a.opts.MediaMode == AudioWithImage {
+	// Start video based on media mode (only if avatar is not configured)
+	if a.opts.Avatar == nil && a.opts.MediaMode == AudioWithImage {
 		var err error
 		// Check for pre-encoded H.264 data first (no CGO required at runtime)
 		if len(a.opts.Image.H264Data) > 0 || a.opts.Image.H264Path != "" {
@@ -212,6 +218,14 @@ func (a *Agent) Join(ctx context.Context, roomName string) error {
 		}
 	}
 
+	// Start avatar if configured
+	if a.opts.Avatar != nil {
+		if err := a.startAvatarLocked(ctx); err != nil {
+			slog.Default().Warn("failed to start avatar", "error", err)
+			// Continue without avatar - not a fatal error
+		}
+	}
+
 	return nil
 }
 
@@ -222,6 +236,14 @@ func (a *Agent) Leave(ctx context.Context) error {
 
 	if a.room == nil {
 		return nil
+	}
+
+	// Stop avatar session
+	if a.avatarSession != nil {
+		if err := a.avatarSession.Close(ctx); err != nil {
+			slog.Default().Warn("failed to close avatar session", "error", err)
+		}
+		a.avatarSession = nil
 	}
 
 	// Stop media tracks
@@ -827,6 +849,114 @@ func (a *Agent) handleDisconnected() {
 	a.state = StateDisconnected
 	a.mu.Unlock()
 	a.emitEvent(event.TypeDisconnected, nil)
+}
+
+// Avatar support methods
+
+// startAvatarLocked starts the avatar session. Must be called with lock held.
+func (a *Agent) startAvatarLocked(ctx context.Context) error {
+	if a.opts.Avatar == nil {
+		return nil
+	}
+
+	// Build provider options
+	var opts []omniavatar.ProviderOption
+
+	switch a.opts.Avatar.Provider {
+	case "heygen":
+		if a.opts.Avatar.HeyGen == nil {
+			return fmt.Errorf("HeyGen configuration required for heygen provider")
+		}
+		opts = []omniavatar.ProviderOption{
+			omniavatar.WithAPIKey(a.opts.Avatar.HeyGen.APIKey),
+			omniavatar.WithExtension("avatar_id", a.opts.Avatar.HeyGen.AvatarID),
+			omniavatar.WithExtension("sandbox", a.opts.Avatar.HeyGen.Sandbox),
+			omniavatar.WithExtension("video_quality", a.opts.Avatar.HeyGen.VideoQuality),
+		}
+	case "tavus":
+		if a.opts.Avatar.Tavus == nil {
+			return fmt.Errorf("Tavus configuration required for tavus provider")
+		}
+		opts = []omniavatar.ProviderOption{
+			omniavatar.WithAPIKey(a.opts.Avatar.Tavus.APIKey),
+			omniavatar.WithExtension("pal_id", a.opts.Avatar.Tavus.PalID),
+			omniavatar.WithExtension("face_id", a.opts.Avatar.Tavus.FaceID),
+		}
+	case "bithuman":
+		if a.opts.Avatar.BitHuman == nil {
+			return fmt.Errorf("bitHuman configuration required for bithuman provider")
+		}
+		opts = []omniavatar.ProviderOption{
+			omniavatar.WithAPIKey(a.opts.Avatar.BitHuman.APIKey),
+			omniavatar.WithExtension("agent_id", a.opts.Avatar.BitHuman.AgentID),
+		}
+	default:
+		return fmt.Errorf("unknown avatar provider: %s", a.opts.Avatar.Provider)
+	}
+
+	// Get provider from registry
+	provider, err := omniavatar.GetAvatarProvider(a.opts.Avatar.Provider, opts...)
+	if err != nil {
+		return fmt.Errorf("failed to get avatar provider: %w", err)
+	}
+
+	// Create session
+	session, err := provider.CreateSession(avcore.SessionConfig{
+		AudioConfig: avcore.DefaultAudioConfig(),
+	})
+	if err != nil {
+		return fmt.Errorf("failed to create avatar session: %w", err)
+	}
+
+	// Wrap with LiveKit adapter
+	lkSession := avatar.WrapSession(session)
+
+	// Start session
+	err = lkSession.Start(ctx, avatar.StartOptions{
+		Room:             a.room,
+		AgentIdentity:    a.local.Identity,
+		LiveKitURL:       a.opts.ServerURL,
+		LiveKitAPIKey:    a.opts.APIKey,
+		LiveKitAPISecret: a.opts.APISecret,
+	})
+	if err != nil {
+		return fmt.Errorf("failed to start avatar session: %w", err)
+	}
+
+	// Wait for avatar to join
+	if err := lkSession.WaitForJoin(ctx, 30*time.Second); err != nil {
+		_ = lkSession.Close(ctx)
+		return fmt.Errorf("avatar failed to join: %w", err)
+	}
+
+	a.avatarSession = lkSession
+	return nil
+}
+
+// AvatarSession returns the avatar session if one is active.
+// Returns nil if no avatar is configured or if it hasn't started yet.
+func (a *Agent) AvatarSession() *avatar.LiveKitSession {
+	a.mu.RLock()
+	defer a.mu.RUnlock()
+	return a.avatarSession
+}
+
+// AvatarAudioOutput returns the audio destination for streaming TTS audio to the avatar.
+// Returns nil if no avatar is configured or if it hasn't started yet.
+func (a *Agent) AvatarAudioOutput() avatar.AudioDestination {
+	a.mu.RLock()
+	defer a.mu.RUnlock()
+	if a.avatarSession == nil {
+		return nil
+	}
+	return a.avatarSession.AudioOutput()
+}
+
+// HasAvatar returns true if an avatar is configured and active.
+func (a *Agent) HasAvatar() bool {
+	a.mu.RLock()
+	defer a.mu.RUnlock()
+	return a.avatarSession != nil
 }
 
 // Helper functions
