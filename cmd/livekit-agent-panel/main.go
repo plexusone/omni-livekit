@@ -15,6 +15,11 @@
 //	export PANEL_TOPIC="The future of AI agents"
 //	export PANEL_SIZE=3  # 2-4 panelists (default: 3)
 //
+//	# Avatar configuration (optional - enables HeyGen LiveAvatar)
+//	export HEYGEN_API_KEY="your-liveavatar-api-key"
+//	export HEYGEN_AVATAR_ID="avatar-uuid"
+//	export HEYGEN_SANDBOX="true"  # Use sandbox mode (60s limit, no credits)
+//
 //	go run -tags opus ./cmd/livekit-agent-panel
 package main
 
@@ -33,6 +38,7 @@ import (
 	"time"
 
 	"github.com/plexusone/omni-livekit/agent"
+	"github.com/plexusone/omni-livekit/avatar"
 	"github.com/plexusone/omni-livekit/room"
 	"github.com/plexusone/omnimeet-core/participant"
 	"github.com/plexusone/omnivoice"
@@ -40,6 +46,9 @@ import (
 
 	// Import all omnivoice providers
 	_ "github.com/plexusone/omnivoice/providers/all"
+
+	// Register avatar providers
+	_ "github.com/plexusone/omni-livekit/avatar/heygen"
 )
 
 func main() {
@@ -75,6 +84,31 @@ func main() {
 	}
 	if panelSize > 4 {
 		panelSize = 4
+	}
+
+	// Avatar configuration (optional)
+	heygenAPIKey := os.Getenv("HEYGEN_API_KEY")
+	heygenAvatarID := os.Getenv("HEYGEN_AVATAR_ID")
+	heygenSandbox := os.Getenv("HEYGEN_SANDBOX") == "true"
+	avatarEnabled := heygenAPIKey != "" && heygenAvatarID != ""
+
+	var avatarConfig *avatar.Config
+	var lkConfig *LiveKitConfig
+	if avatarEnabled {
+		avatarConfig = &avatar.Config{
+			Provider: avatar.ProviderHeyGen,
+			HeyGen: avatar.HeyGenConfig{
+				APIKey:       heygenAPIKey,
+				AvatarID:     heygenAvatarID,
+				Sandbox:      heygenSandbox,
+				VideoQuality: "high",
+			},
+		}
+		lkConfig = &LiveKitConfig{
+			URL:       serverURL,
+			APIKey:    apiKey,
+			APISecret: apiSecret,
+		}
 	}
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -144,6 +178,15 @@ func main() {
 	fmt.Printf("Topic:      %s\n", topic)
 	fmt.Printf("Room:       %s\n", roomName)
 	fmt.Printf("Panelists:  %d\n", panelSize)
+	if avatarEnabled {
+		mode := "production"
+		if heygenSandbox {
+			mode = "sandbox"
+		}
+		fmt.Printf("Avatar:     HeyGen LiveAvatar (%s)\n", mode)
+	} else {
+		fmt.Printf("Avatar:     disabled (audio-only)\n")
+	}
 	fmt.Println()
 	fmt.Println("Panelists:")
 	for _, cfg := range panelistConfigs {
@@ -178,7 +221,14 @@ func main() {
 			log.Fatalf("Failed to create agent for %s: %v", cfg.Name, err)
 		}
 
-		panelists[i] = NewPanelist(cfg, ag, ttsProv, anthropicKey)
+		p := NewPanelist(cfg, ag, ttsProv, anthropicKey)
+
+		// Configure avatar if enabled
+		if avatarEnabled {
+			p.SetAvatarConfig(avatarConfig, lkConfig)
+		}
+
+		panelists[i] = p
 	}
 
 	// Create coordinator
@@ -280,6 +330,10 @@ func cleanup(_ context.Context, panelists []*Panelist, listener *agent.Agent, ro
 	cleanupCtx := context.Background()
 
 	for _, p := range panelists {
+		// Close avatar session if active
+		if err := p.Close(cleanupCtx); err != nil {
+			log.Printf("Error closing avatar for %s: %v", p.Config.Name, err)
+		}
 		if err := p.Agent.Leave(cleanupCtx); err != nil {
 			log.Printf("Error leaving room for %s: %v", p.Config.Name, err)
 		}

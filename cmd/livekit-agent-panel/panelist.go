@@ -7,8 +7,10 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/plexusone/omni-livekit/agent"
+	"github.com/plexusone/omni-livekit/avatar"
 	"github.com/plexusone/omnivoice-core/tts"
 )
 
@@ -53,6 +55,18 @@ type Panelist struct {
 	ttsProvider  tts.Provider
 	anthropicKey string
 	sampleRate   int
+
+	// Avatar support (optional)
+	avatarSession avatar.Session
+	avatarConfig  *avatar.Config
+	lkConfig      *LiveKitConfig // LiveKit credentials for avatar
+}
+
+// LiveKitConfig holds LiveKit credentials for avatar sessions.
+type LiveKitConfig struct {
+	URL       string
+	APIKey    string
+	APISecret string
 }
 
 // NewPanelist creates a new panelist with the given configuration.
@@ -64,6 +78,13 @@ func NewPanelist(cfg PanelistConfig, ag *agent.Agent, ttsProv tts.Provider, anth
 		anthropicKey: anthropicKey,
 		sampleRate:   48000,
 	}
+}
+
+// SetAvatarConfig configures the panelist to use an avatar.
+// Call this before StartAudio to enable avatar mode.
+func (p *Panelist) SetAvatarConfig(cfg *avatar.Config, lkCfg *LiveKitConfig) {
+	p.avatarConfig = cfg
+	p.lkConfig = lkCfg
 }
 
 // GenerateResponse generates a response from this panelist given the transcript and topic.
@@ -139,12 +160,8 @@ Respond as %s:`, p.Config.Name, topic, p.Config.Personality, transcript, questio
 	return result.Content[0].Text, nil
 }
 
-// Speak converts text to speech and sends it via the panelist's audio track.
+// Speak converts text to speech and sends it via the panelist's audio track or avatar.
 func (p *Panelist) Speak(ctx context.Context, text string) error {
-	if p.AudioWriter == nil {
-		return fmt.Errorf("audio writer not initialized")
-	}
-
 	// Synthesize speech using TTS provider with panelist's voice
 	result, err := p.ttsProvider.Synthesize(ctx, text, tts.SynthesisConfig{
 		VoiceID:      p.Config.Voice,
@@ -153,6 +170,36 @@ func (p *Panelist) Speak(ctx context.Context, text string) error {
 	})
 	if err != nil {
 		return fmt.Errorf("TTS synthesis: %w", err)
+	}
+
+	// If using avatar, send audio to avatar session
+	if p.avatarSession != nil {
+		audioOut := p.avatarSession.AudioOutput()
+		if audioOut == nil {
+			return fmt.Errorf("avatar audio output not initialized")
+		}
+
+		// Send audio in frames (20ms at 24kHz = 480 samples = 960 bytes)
+		frameSize := 960
+		for i := 0; i < len(result.Audio); i += frameSize {
+			end := i + frameSize
+			if end > len(result.Audio) {
+				end = len(result.Audio)
+			}
+			frame := result.Audio[i:end]
+
+			if err := audioOut.CaptureFrame(ctx, frame); err != nil {
+				return err
+			}
+		}
+
+		// Flush to signal end of utterance
+		return audioOut.Flush(ctx)
+	}
+
+	// Fallback to direct audio output
+	if p.AudioWriter == nil {
+		return fmt.Errorf("audio writer not initialized")
 	}
 
 	// Resample from provider's sample rate (usually 24kHz) to 48kHz
@@ -186,12 +233,60 @@ func (p *Panelist) Speak(ctx context.Context, text string) error {
 	return nil
 }
 
-// StartAudio initializes the panelist's audio track.
+// StartAudio initializes the panelist's audio track or avatar session.
 func (p *Panelist) StartAudio(ctx context.Context) error {
+	// If avatar is configured, start avatar session
+	if p.avatarConfig != nil && p.lkConfig != nil {
+		session, err := avatar.NewSession(*p.avatarConfig)
+		if err != nil {
+			return fmt.Errorf("failed to create avatar session: %w", err)
+		}
+
+		// Start the avatar session
+		room := p.Agent.Room()
+		if room == nil {
+			return fmt.Errorf("agent not joined to room")
+		}
+
+		err = session.Start(ctx, avatar.StartOptions{
+			Room:             room,
+			AgentIdentity:    p.Agent.LocalParticipant().Identity,
+			LiveKitURL:       p.lkConfig.URL,
+			LiveKitAPIKey:    p.lkConfig.APIKey,
+			LiveKitAPISecret: p.lkConfig.APISecret,
+		})
+		if err != nil {
+			return fmt.Errorf("failed to start avatar session: %w", err)
+		}
+
+		// Wait for avatar to join
+		if err := session.WaitForJoin(ctx, 30*time.Second); err != nil {
+			_ = session.Close(ctx)
+			return fmt.Errorf("avatar failed to join: %w", err)
+		}
+
+		p.avatarSession = session
+		return nil
+	}
+
+	// Fallback to direct audio output
 	writer, err := p.Agent.StartAudio(ctx)
 	if err != nil {
 		return err
 	}
 	p.AudioWriter = writer
 	return nil
+}
+
+// Close cleans up the panelist's resources.
+func (p *Panelist) Close(ctx context.Context) error {
+	if p.avatarSession != nil {
+		return p.avatarSession.Close(ctx)
+	}
+	return nil
+}
+
+// HasAvatar returns true if the panelist has an active avatar session.
+func (p *Panelist) HasAvatar() bool {
+	return p.avatarSession != nil
 }
