@@ -7,7 +7,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/livekit/media-sdk v0.0.0-20260623124604-40d3338a7426
 	github.com/livekit/protocol v1.49.0
-	github.com/livekit/server-sdk-go/v2 v2.18.0
+	github.com/livekit/server-sdk-go/v2 v2.18.1
 	github.com/pion/webrtc/v4 v4.2.16
 	github.com/plexusone/bithuman-go v0.1.0
 	github.com/plexusone/heygen-go v0.1.0
