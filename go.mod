@@ -10,9 +10,9 @@ require (
 	github.com/livekit/server-sdk-go/v2 v2.18.1
 	github.com/pion/webrtc/v4 v4.2.17
 	github.com/plexusone/bithuman-go v0.1.0
-	github.com/plexusone/heygen-go v0.1.0
+	github.com/plexusone/heygen-go v0.2.0
 	github.com/plexusone/omniavatar v0.1.0
-	github.com/plexusone/omniavatar-core v0.1.0
+	github.com/plexusone/omniavatar-core v0.4.0
 	github.com/plexusone/omnimeet-core v0.1.0
 	github.com/plexusone/omnivoice v0.13.0
 	github.com/plexusone/omnivoice-core v0.16.0
@@ -128,7 +128,7 @@ require (
 	golang.org/x/sys v0.47.0 // indirect
 	golang.org/x/text v0.40.0 // indirect
 	golang.org/x/time v0.15.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20260706201446-f0a921348800 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20260715232425-e75dac1f907d // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260724162435-b2f20204f0df // indirect
 	google.golang.org/grpc v1.82.1 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
