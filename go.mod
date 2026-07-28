@@ -8,7 +8,7 @@ require (
 	github.com/livekit/media-sdk v0.0.0-20260623124604-40d3338a7426
 	github.com/livekit/protocol v1.50.4
 	github.com/livekit/server-sdk-go/v2 v2.18.1
-	github.com/pion/webrtc/v4 v4.2.17
+	github.com/pion/webrtc/v4 v4.2.18
 	github.com/plexusone/bithuman-go v0.2.0
 	github.com/plexusone/heygen-go v0.2.0
 	github.com/plexusone/omniavatar v0.3.0
