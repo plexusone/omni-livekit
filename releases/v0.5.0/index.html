@@ -12,13 +12,13 @@
         <meta name="author" content="PlexusOne">
       
       
-        <link rel="canonical" href="https://plexusone.github.io/omni-livekit/guides/avatar-providers/">
+        <link rel="canonical" href="https://plexusone.github.io/omni-livekit/releases/v0.5.0/">
       
       
-        <link rel="prev" href="../voice-agent/">
+        <link rel="prev" href="../">
       
       
-        <link rel="next" href="../tavus-avatars/">
+        <link rel="next" href="../v0.4.0/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>Avatar Providers - omni-livekit Documentation</title>
+        <title>v0.5.0 - omni-livekit Documentation</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#avatar-provider-comparison" class="md-skip">
+        <a href="#v050" class="md-skip">
           Skip to content
         </a>
       
@@ -123,7 +123,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Avatar Providers
+              v0.5.0
             
           </span>
         </div>
@@ -411,8 +411,6 @@
       
   
   
-    
-  
   
   
     
@@ -425,11 +423,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -450,7 +450,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -468,7 +468,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../human-participation/" class="md-nav__link">
+      <a href="../../guides/human-participation/" class="md-nav__link">
         
   
   
@@ -496,7 +496,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../voice-agent/" class="md-nav__link">
+      <a href="../../guides/voice-agent/" class="md-nav__link">
         
   
   
@@ -521,37 +521,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Avatar Providers
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../guides/avatar-providers/" class="md-nav__link">
         
   
   
@@ -567,203 +540,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#quick-comparison" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Quick Comparison
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Architecture
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#provider-details" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Provider Details
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Provider Details">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#tavus" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tavus
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#heygen-liveavatar" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        HeyGen LiveAvatar
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#d-id" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        D-ID
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#bithuman" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        bitHuman
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#simli" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Simli
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#choosing-a-provider" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Choosing a Provider
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Choosing a Provider">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#for-realistic-human-avatars" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        For Realistic Human Avatars
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#for-animated-3d-characters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        For Animated / 3D Characters
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#for-edge-deployment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        For Edge Deployment
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#implementation-status" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Implementation Status
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#adding-a-new-provider" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Adding a New Provider
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        See Also
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -776,7 +552,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tavus-avatars/" class="md-nav__link">
+      <a href="../../guides/tavus-avatars/" class="md-nav__link">
         
   
   
@@ -804,7 +580,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../omnimeet-integration/" class="md-nav__link">
+      <a href="../../guides/omnimeet-integration/" class="md-nav__link">
         
   
   
@@ -1386,8 +1162,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -1398,13 +1176,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
         
           
           <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
@@ -1425,7 +1201,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1443,7 +1219,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../releases/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -1468,10 +1244,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../releases/v0.5.0/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.5.0
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1487,6 +1290,70 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#highlights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Highlights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#added" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Added
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fixed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fixed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1499,7 +1366,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../releases/v0.4.0/" class="md-nav__link">
+      <a href="../v0.4.0/" class="md-nav__link">
         
   
   
@@ -1527,7 +1394,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../releases/v0.3.0/" class="md-nav__link">
+      <a href="../v0.3.0/" class="md-nav__link">
         
   
   
@@ -1555,7 +1422,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../releases/v0.2.0/" class="md-nav__link">
+      <a href="../v0.2.0/" class="md-nav__link">
         
   
   
@@ -1583,7 +1450,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../releases/v0.1.0/" class="md-nav__link">
+      <a href="../v0.1.0/" class="md-nav__link">
         
   
   
@@ -1638,10 +1505,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#quick-comparison" class="md-nav__link">
+  <a href="#highlights" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Quick Comparison
+        Highlights
       
     </span>
   </a>
@@ -1649,10 +1516,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
+  <a href="#added" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Architecture
+        Added
       
     </span>
   </a>
@@ -1660,132 +1527,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#provider-details" class="md-nav__link">
+  <a href="#fixed" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Provider Details
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Provider Details">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#tavus" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tavus
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#heygen-liveavatar" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        HeyGen LiveAvatar
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#d-id" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        D-ID
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#bithuman" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        bitHuman
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#simli" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Simli
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#choosing-a-provider" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Choosing a Provider
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Choosing a Provider">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#for-realistic-human-avatars" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        For Realistic Human Avatars
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#for-animated-3d-characters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        For Animated / 3D Characters
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#for-edge-deployment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        For Edge Deployment
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#implementation-status" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Implementation Status
+        Fixed
       
     </span>
   </a>
@@ -1793,21 +1538,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#adding-a-new-provider" class="md-nav__link">
+  <a href="#dependencies" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Adding a New Provider
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        See Also
+        Dependencies
       
     </span>
   </a>
@@ -1834,359 +1568,42 @@
   
 
 
-<h1 id="avatar-provider-comparison">Avatar Provider Comparison<a class="headerlink" href="#avatar-provider-comparison" title="Permanent link">&para;</a></h1>
-<p>This guide compares avatar providers that integrate with LiveKit for real-time lip-sync video.</p>
-<h2 id="quick-comparison">Quick Comparison<a class="headerlink" href="#quick-comparison" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Provider</th>
-<th>Type</th>
-<th>LiveKit Plugin</th>
-<th>Latency</th>
-<th>Price</th>
-<th>Best For</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="#tavus">Tavus</a></td>
-<td>Realistic humans</td>
-<td>✅ Official</td>
-<td>~300ms</td>
-<td>~$0.05-0.10/min</td>
-<td>Video-trained clones</td>
-</tr>
-<tr>
-<td><a href="#heygen-liveavatar">HeyGen LiveAvatar</a></td>
-<td>Realistic humans</td>
-<td>✅ Official</td>
-<td>Sub-second</td>
-<td>Varies</td>
-<td>Highest quality realism</td>
-</tr>
-<tr>
-<td><a href="#d-id">D-ID</a></td>
-<td>Photo-to-avatar</td>
-<td>✅ Official</td>
-<td>Low</td>
-<td>~$0.10/min</td>
-<td>Quick setup from photo</td>
-</tr>
-<tr>
-<td><a href="#bithuman">bitHuman</a></td>
-<td>Animated + realistic</td>
-<td>✅ Official</td>
-<td>&lt;100ms</td>
-<td>Low</td>
-<td>Animated characters, edge deployment</td>
-</tr>
-<tr>
-<td><a href="#simli">Simli</a></td>
-<td>Realistic + animated</td>
-<td>✅ Official</td>
-<td>&lt;300ms</td>
-<td>&lt;$0.01/min</td>
-<td>Budget-friendly</td>
-</tr>
-</tbody>
-</table>
-<h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h2>
-<p>All providers follow the same LiveKit integration pattern:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────┐     ByteStream      ┌──────────────────┐
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│   Your Agent    │ ──────────────────► │  Avatar Provider │
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│  (audio output) │                     │   (lip-sync)     │
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>└─────────────────┘                     └────────┬─────────┘
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>                                                 │
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>                                          WebRTC video
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>                                                 │
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>┌─────────────────┐                     ┌────────▼─────────┐
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│  Human User     │ ◄────────────────── │   LiveKit Room   │
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│ (sees avatar)   │      video stream   │                  │
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>└─────────────────┘                     └──────────────────┘
-</code></pre></div>
-<h2 id="provider-details">Provider Details<a class="headerlink" href="#provider-details" title="Permanent link">&para;</a></h2>
-<h3 id="tavus">Tavus<a class="headerlink" href="#tavus" title="Permanent link">&para;</a></h3>
-<p><strong>Best for</strong>: Photorealistic digital twins trained from video.</p>
-<p><strong>Features</strong>:</p>
+<h1 id="v050">v0.5.0<a class="headerlink" href="#v050" title="Permanent link">&para;</a></h1>
+<p><strong>Release Date:</strong> 2026-08-08</p>
+<p>Room recording via LiveKit Egress, plus fixes for a build breakage introduced by the omniavatar-core v0.4.0 API restructuring.</p>
+<h2 id="highlights">Highlights<a class="headerlink" href="#highlights" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Train custom faces from 5+ minute video recordings</li>
-<li>High-fidelity lip-sync and facial expressions</li>
-<li>PAL system for personality configuration</li>
-<li>Native LiveKit transport support</li>
+<li>Room recording via LiveKit Egress with local file and S3 output</li>
+<li>Fixed build breakage from the omniavatar-core v0.4.0 API restructuring</li>
 </ul>
-<p><strong>Requirements</strong>:</p>
+<h2 id="added">Added<a class="headerlink" href="#added" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Tavus API key</li>
-<li>PAL ID (or use default stock PAL: <code>pb87e71797da</code>)</li>
-<li>Video footage for custom face training</li>
+<li><code>room.RecordingClient</code> for room recording via LiveKit Egress (<a href="https://github.com/plexusone/omni-livekit/commit/eac1bfe"><code>eac1bfe</code></a>)</li>
+<li><code>room.RecordingConfig</code> with layout, format, and local/S3 output options (<a href="https://github.com/plexusone/omni-livekit/commit/eac1bfe"><code>eac1bfe</code></a>)</li>
+<li><code>RecordingClient.StartRecording()</code> to start a room composite egress recording (<a href="https://github.com/plexusone/omni-livekit/commit/eac1bfe"><code>eac1bfe</code></a>)</li>
+<li><code>RecordingClient.StopRecording()</code> to end an active recording (<a href="https://github.com/plexusone/omni-livekit/commit/eac1bfe"><code>eac1bfe</code></a>)</li>
+<li><code>RecordingClient.ListRecordings()</code> to query active egress sessions for a room (<a href="https://github.com/plexusone/omni-livekit/commit/eac1bfe"><code>eac1bfe</code></a>)</li>
+<li>MP4 and OGG output formats via <code>room.RecordingFormat</code> (<a href="https://github.com/plexusone/omni-livekit/commit/eac1bfe"><code>eac1bfe</code></a>)</li>
+<li>Grid, speaker, and single-speaker layouts via <code>room.RecordingLayout</code> (<a href="https://github.com/plexusone/omni-livekit/commit/eac1bfe"><code>eac1bfe</code></a>)</li>
 </ul>
-<p><strong>omni-livekit support</strong>: ✅ Fully integrated</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="s">&quot;github.com/plexusone/omni-livekit/avatar/tavus&quot;</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nx">session</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">tavus</span><span class="p">.</span><span class="nx">NewSession</span><span class="p">(</span><span class="nx">tavus</span><span class="p">.</span><span class="nx">SessionConfig</span><span class="p">{</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nx">APIKey</span><span class="p">:</span><span class="w"> </span><span class="nx">os</span><span class="p">.</span><span class="nx">Getenv</span><span class="p">(</span><span class="s">&quot;TAVUS_API_KEY&quot;</span><span class="p">),</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nx">PalID</span><span class="p">:</span><span class="w">  </span><span class="s">&quot;your-pal-id&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="p">})</span>
-</code></pre></div>
-<p><strong>Resources</strong>:</p>
+<h2 id="fixed">Fixed<a class="headerlink" href="#fixed" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="https://docs.tavus.io/">Tavus Documentation</a></li>
-<li><a href="https://docs.livekit.io/agents/models/avatar/">LiveKit Tavus Plugin</a></li>
-<li><a href="../tavus-avatars/">omni-livekit Tavus Guide</a></li>
+<li><code>avatar.LiveKitSession</code> build failure: <code>avcore.Session</code>/<code>avcore.SessionCallbacks</code> now resolve from <code>omniavatar-core/live</code>, where those types actually live as of omniavatar-core v0.4.0 (<a href="https://github.com/plexusone/omni-livekit/commit/d40fbfd"><code>d40fbfd</code></a>)</li>
+<li><code>agent.startAvatarLocked</code> build failure: same <code>avcore</code> import fix, plus renamed the removed <code>omniavatar.GetAvatarProvider</code> call to <code>omniavatar.GetLiveProvider</code> (<a href="https://github.com/plexusone/omni-livekit/commit/531f5fd"><code>531f5fd</code></a>)</li>
+</ul>
+<h2 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>github.com/plexusone/omniavatar</code> v0.1.0 → v0.3.0 (<a href="https://github.com/plexusone/omni-livekit/commit/5fbb153"><code>5fbb153</code></a>)</li>
+<li><code>github.com/plexusone/omniavatar-core</code> v0.1.0 → v0.4.0 (<a href="https://github.com/plexusone/omni-livekit/commit/5fbb153"><code>5fbb153</code></a>)</li>
+<li><code>github.com/plexusone/heygen-go</code> v0.1.0 → v0.2.0 (<a href="https://github.com/plexusone/omni-livekit/commit/9e9e208"><code>9e9e208</code></a>)</li>
+<li><code>github.com/plexusone/omnivoice-core</code> v0.15.0 → v0.16.0 (<a href="https://github.com/plexusone/omni-livekit/commit/b2bf98a"><code>b2bf98a</code></a>)</li>
+<li><code>github.com/livekit/protocol</code> v1.49.0 → v1.50.4 (<a href="https://github.com/plexusone/omni-livekit/commit/58bbd83"><code>58bbd83</code></a>)</li>
+<li><code>github.com/livekit/server-sdk-go/v2</code> v2.17.0 → v2.18.1 (<a href="https://github.com/plexusone/omni-livekit/commit/05c46ce"><code>05c46ce</code></a>)</li>
+<li><code>github.com/pion/webrtc/v4</code> v4.2.16 → v4.2.18 (<a href="https://github.com/plexusone/omni-livekit/commit/ef8aed6"><code>ef8aed6</code></a>)</li>
+<li><code>github.com/livekit/media-sdk</code> bumped for compatibility with the above (<a href="https://github.com/plexusone/omni-livekit/commit/3ba8779"><code>3ba8779</code></a>)</li>
 </ul>
 <hr />
-<h3 id="heygen-liveavatar">HeyGen LiveAvatar<a class="headerlink" href="#heygen-liveavatar" title="Permanent link">&para;</a></h3>
-<p><strong>Best for</strong>: Highest quality realistic avatars with natural expressions.</p>
-<p><strong>Features</strong>:</p>
-<ul>
-<li>Avatar IV models with superior lip sync and micro-expressions</li>
-<li>Most natural idle behavior (blinks, micro-movements)</li>
-<li>600+ avatar library</li>
-<li>175+ language support</li>
-<li>FULL mode (HeyGen handles everything) or LITE mode (you handle LLM/TTS)</li>
-</ul>
-<p><strong>Quality</strong>: ⭐⭐⭐⭐⭐ - Best-in-class realism according to independent reviews.</p>
-<p><strong>Requirements</strong>:</p>
-<ul>
-<li>LiveAvatar API key from <a href="https://app.liveavatar.com">app.liveavatar.com</a></li>
-</ul>
-<p><strong>omni-livekit support</strong>: 🔜 Planned</p>
-<p><strong>Resources</strong>:</p>
-<ul>
-<li><a href="https://docs.liveavatar.com/">LiveAvatar Documentation</a></li>
-<li><a href="https://docs.livekit.io/agents/models/avatar/plugins/liveavatar/">LiveKit LiveAvatar Plugin</a></li>
-<li><a href="https://help.heygen.com/en/articles/12758516-introducing-liveavatar">HeyGen Help Center</a></li>
-</ul>
-<hr />
-<h3 id="d-id">D-ID<a class="headerlink" href="#d-id" title="Permanent link">&para;</a></h3>
-<p><strong>Best for</strong>: Quick setup - turn any photo into a talking avatar.</p>
-<p><strong>Features</strong>:</p>
-<ul>
-<li>Create avatar from any photo (no video training needed)</li>
-<li>Expressive v4 avatars with emotional responses</li>
-<li>Fast generation (~40 seconds from photo)</li>
-<li>Real-time focus with low latency</li>
-</ul>
-<p><strong>Limitations</strong>:</p>
-<ul>
-<li>Portrait framing only (no body, gestures, or scene composition)</li>
-<li>Lip sync can drift on longer segments</li>
-<li>Less realistic than video-trained alternatives</li>
-</ul>
-<p><strong>Requirements</strong>:</p>
-<ul>
-<li>D-ID API key</li>
-</ul>
-<p><strong>omni-livekit support</strong>: 🔜 Planned</p>
-<p><strong>Resources</strong>:</p>
-<ul>
-<li><a href="https://docs.d-id.com/">D-ID Documentation</a></li>
-<li><a href="https://docs.livekit.io/agents/models/avatar/plugins/did/">LiveKit D-ID Plugin</a></li>
-<li><a href="https://www.d-id.com/blog/d-ids-livekit-plug-in/">D-ID LiveKit Blog Post</a></li>
-</ul>
-<hr />
-<h3 id="bithuman">bitHuman<a class="headerlink" href="#bithuman" title="Permanent link">&para;</a></h3>
-<p><strong>Best for</strong>: Animated characters, edge deployment, CPU-only environments.</p>
-<p><strong>Features</strong>:</p>
-<ul>
-<li>Runs on-device (CPU only, no GPU required)</li>
-<li>Supports both realistic humans AND animated characters</li>
-<li>Animals, mythical creatures, playful characters</li>
-<li>&lt;100ms latency</li>
-<li>Privacy-focused (can run air-gapped)</li>
-<li>Works on Raspberry Pi, Chromebooks, Mac Mini</li>
-</ul>
-<p><strong>Use cases</strong>:</p>
-<ul>
-<li>Trade show kiosks</li>
-<li>Educational apps</li>
-<li>NPCs in games</li>
-<li>AI companions</li>
-<li>Voice agents with custom character faces</li>
-</ul>
-<p><strong>Requirements</strong>:</p>
-<ul>
-<li>bitHuman API key or self-hosted SDK</li>
-</ul>
-<p><strong>omni-livekit support</strong>: 🔜 Planned</p>
-<p><strong>Resources</strong>:</p>
-<ul>
-<li><a href="https://docs.bithuman.ai/introduction">bitHuman Documentation</a></li>
-<li><a href="https://docs.livekit.io/agents/models/avatar/plugins/bithuman/">LiveKit bitHuman Plugin</a></li>
-<li><a href="https://www.bithuman.ai/">bitHuman Website</a></li>
-</ul>
-<hr />
-<h3 id="simli">Simli<a class="headerlink" href="#simli" title="Permanent link">&para;</a></h3>
-<p><strong>Best for</strong>: Budget-friendly real-time avatars.</p>
-<p><strong>Features</strong>:</p>
-<ul>
-<li>Lowest cost (&lt;$0.01/min with Trinity-1 API)</li>
-<li>Face library (no training required)</li>
-<li>Configurable emotions</li>
-<li>Trinity (25 FPS) and Legacy (30 FPS) avatar types</li>
-<li>Gaussian splatting 3D technology</li>
-</ul>
-<p><strong>Limitations</strong>:</p>
-<ul>
-<li>Quality concerns noted in reviews (idle behavior artifacts, mechanical movements)</li>
-<li>Transitions between speaking/idle not as smooth</li>
-</ul>
-<p><strong>API Endpoints</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>POST https://api.simli.ai/startAudioToVideoSession
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>POST https://api.simli.ai/getIceServer
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>POST /createE2ESessionToken
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>POST /startE2ESession
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>POST /textToVideoStream
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>POST /audioToVideoStream
-</code></pre></div>
-<p><strong>Requirements</strong>:</p>
-<ul>
-<li>Simli API key</li>
-<li>Face ID (from library or custom)</li>
-</ul>
-<p><strong>omni-livekit support</strong>: 🔜 Planned</p>
-<p><strong>Resources</strong>:</p>
-<ul>
-<li><a href="https://docs.simli.com/overview">Simli Documentation</a></li>
-<li><a href="https://docs.livekit.io/agents/models/avatar/plugins/simli/">LiveKit Simli Plugin</a></li>
-<li><a href="https://github.com/simliai/">Simli GitHub</a></li>
-</ul>
-<hr />
-<h2 id="choosing-a-provider">Choosing a Provider<a class="headerlink" href="#choosing-a-provider" title="Permanent link">&para;</a></h2>
-<h3 id="for-realistic-human-avatars">For Realistic Human Avatars<a class="headerlink" href="#for-realistic-human-avatars" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Priority</th>
-<th>Recommended Provider</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Highest quality</td>
-<td>HeyGen LiveAvatar</td>
-</tr>
-<tr>
-<td>Custom digital twin</td>
-<td>Tavus</td>
-</tr>
-<tr>
-<td>Quick from photo</td>
-<td>D-ID</td>
-</tr>
-<tr>
-<td>Lowest cost</td>
-<td>Simli</td>
-</tr>
-</tbody>
-</table>
-<h3 id="for-animated-3d-characters">For Animated / 3D Characters<a class="headerlink" href="#for-animated-3d-characters" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Priority</th>
-<th>Recommended Provider</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Best quality</td>
-<td><strong>bitHuman</strong></td>
-</tr>
-<tr>
-<td>Edge/CPU deployment</td>
-<td><strong>bitHuman</strong></td>
-</tr>
-<tr>
-<td>Budget option</td>
-<td>Simli</td>
-</tr>
-</tbody>
-</table>
-<h3 id="for-edge-deployment">For Edge Deployment<a class="headerlink" href="#for-edge-deployment" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Environment</th>
-<th>Recommended Provider</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>No GPU available</td>
-<td>bitHuman</td>
-</tr>
-<tr>
-<td>Air-gapped</td>
-<td>bitHuman (self-hosted)</td>
-</tr>
-<tr>
-<td>Raspberry Pi / IoT</td>
-<td>bitHuman</td>
-</tr>
-</tbody>
-</table>
-<h2 id="implementation-status">Implementation Status<a class="headerlink" href="#implementation-status" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Provider</th>
-<th>omni-livekit Status</th>
-<th>Package</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Tavus</td>
-<td>✅ Implemented</td>
-<td><code>avatar/tavus</code></td>
-</tr>
-<tr>
-<td>HeyGen</td>
-<td>🔜 Planned</td>
-<td><code>avatar/heygen</code></td>
-</tr>
-<tr>
-<td>D-ID</td>
-<td>🔜 Planned</td>
-<td><code>avatar/did</code></td>
-</tr>
-<tr>
-<td>bitHuman</td>
-<td>🔜 Planned</td>
-<td><code>avatar/bithuman</code></td>
-</tr>
-<tr>
-<td>Simli</td>
-<td>🔜 Planned</td>
-<td><code>avatar/simli</code></td>
-</tr>
-</tbody>
-</table>
-<h2 id="adding-a-new-provider">Adding a New Provider<a class="headerlink" href="#adding-a-new-provider" title="Permanent link">&para;</a></h2>
-<p>All avatar providers implement the <code>avatar.Session</code> interface:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">type</span><span class="w"> </span><span class="nx">Session</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="nx">Start</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">opts</span><span class="w"> </span><span class="nx">StartOptions</span><span class="p">)</span><span class="w"> </span><span class="kt">error</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nx">WaitForJoin</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">timeout</span><span class="w"> </span><span class="nx">time</span><span class="p">.</span><span class="nx">Duration</span><span class="p">)</span><span class="w"> </span><span class="kt">error</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nx">Close</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span><span class="w"> </span><span class="kt">error</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nx">AudioOutput</span><span class="p">()</span><span class="w"> </span><span class="nx">AudioDestination</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="p">}</span>
-</code></pre></div>
-<p>To add a new provider:</p>
-<ol>
-<li>Create <code>avatar/&lt;provider&gt;/</code> directory</li>
-<li>Implement <code>Session</code> interface</li>
-<li>Create <code>register.go</code> with <code>init()</code> to auto-register</li>
-<li>Add config to <code>avatar.Config</code> struct</li>
-</ol>
-<p>See <a href="../../avatar/tavus/">avatar/tavus/</a> for reference implementation.</p>
-<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="../tavus-avatars/">Tavus Setup Guide</a></li>
-<li><a href="../../api/avatar/">Avatar API Reference</a></li>
-<li><a href="../../architecture/voice-pipeline/">Voice Pipeline Architecture</a></li>
-</ul>
+<p><a href="../CHANGELOG.md">Full Changelog</a> | <a href="https://github.com/plexusone/omni-livekit/compare/v0.4.0...v0.5.0">Compare</a></p>
 
 
 
