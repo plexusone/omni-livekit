@@ -15,7 +15,7 @@ import (
 	pionmedia "github.com/pion/webrtc/v4/pkg/media"
 
 	"github.com/plexusone/omniavatar"
-	avcore "github.com/plexusone/omniavatar-core/avatar"
+	avcore "github.com/plexusone/omniavatar-core/live"
 	"github.com/plexusone/omnimeet-core/event"
 	"github.com/plexusone/omnimeet-core/meeting"
 	"github.com/plexusone/omnimeet-core/participant"
@@ -895,7 +895,7 @@ func (a *Agent) startAvatarLocked(ctx context.Context) error {
 	}
 
 	// Get provider from registry
-	provider, err := omniavatar.GetAvatarProvider(a.opts.Avatar.Provider, opts...)
+	provider, err := omniavatar.GetLiveProvider(a.opts.Avatar.Provider, opts...)
 	if err != nil {
 		return fmt.Errorf("failed to get avatar provider: %w", err)
 	}
