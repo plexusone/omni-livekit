@@ -7,7 +7,7 @@ import (
 	lksdk "github.com/livekit/server-sdk-go/v2"
 
 	"github.com/plexusone/omniavatar"
-	avcore "github.com/plexusone/omniavatar-core/avatar"
+	avcore "github.com/plexusone/omniavatar-core/live"
 )
 
 // LiveKitSession wraps an omniavatar Session with LiveKit-specific functionality.
