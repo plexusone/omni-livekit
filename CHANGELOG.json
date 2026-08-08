@@ -7,6 +7,37 @@
   "maintainers": ["plexusone"],
   "releases": [
     {
+      "version": "v0.5.0",
+      "date": "2026-08-08",
+      "highlights": [
+        { "description": "Room recording via LiveKit Egress with local file and S3 output" },
+        { "description": "Fixed build breakage from the omniavatar-core v0.4.0 API restructuring" }
+      ],
+      "added": [
+        { "description": "`room.RecordingClient` for room recording via LiveKit Egress", "commit": "eac1bfe" },
+        { "description": "`room.RecordingConfig` with layout, format, and local/S3 output options", "commit": "eac1bfe" },
+        { "description": "`RecordingClient.StartRecording()` to start a room composite egress recording", "commit": "eac1bfe" },
+        { "description": "`RecordingClient.StopRecording()` to end an active recording", "commit": "eac1bfe" },
+        { "description": "`RecordingClient.ListRecordings()` to query active egress sessions for a room", "commit": "eac1bfe" },
+        { "description": "MP4 and OGG output formats via `room.RecordingFormat`", "commit": "eac1bfe" },
+        { "description": "Grid, speaker, and single-speaker layouts via `room.RecordingLayout`", "commit": "eac1bfe" }
+      ],
+      "fixed": [
+        { "description": "`avatar.LiveKitSession` build failure: `avcore.Session`/`avcore.SessionCallbacks` now resolve from `omniavatar-core/live`, where those types actually live as of omniavatar-core v0.4.0", "commit": "d40fbfd" },
+        { "description": "`agent.startAvatarLocked` build failure: same `avcore` import fix, plus renamed the removed `omniavatar.GetAvatarProvider` call to `omniavatar.GetLiveProvider`", "commit": "531f5fd" }
+      ],
+      "dependencies": [
+        { "description": "`github.com/plexusone/omniavatar` v0.1.0 → v0.3.0", "commit": "5fbb153" },
+        { "description": "`github.com/plexusone/omniavatar-core` v0.1.0 → v0.4.0", "commit": "5fbb153" },
+        { "description": "`github.com/plexusone/heygen-go` v0.1.0 → v0.2.0", "commit": "9e9e208" },
+        { "description": "`github.com/plexusone/omnivoice-core` v0.15.0 → v0.16.0", "commit": "b2bf98a" },
+        { "description": "`github.com/livekit/protocol` v1.49.0 → v1.50.4", "commit": "58bbd83" },
+        { "description": "`github.com/livekit/server-sdk-go/v2` v2.17.0 → v2.18.1", "commit": "05c46ce" },
+        { "description": "`github.com/pion/webrtc/v4` v4.2.16 → v4.2.18", "commit": "ef8aed6" },
+        { "description": "`github.com/livekit/media-sdk` bumped for compatibility with the above", "commit": "3ba8779" }
+      ]
+    },
+    {
       "version": "v0.4.0",
       "date": "2026-07-12",
       "highlights": [
