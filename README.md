@@ -493,6 +493,35 @@ The avatar joins the LiveKit room as a participant with synchronized lip movemen
 
 For animated characters or other avatar styles, see the [Avatar Provider Comparison](docs/guides/avatar-providers.md).
 
+## Recording
+
+Record rooms to a local file or S3 via LiveKit Egress:
+
+```go
+import "github.com/plexusone/omni-livekit/room"
+
+recorder := room.NewRecordingClient(
+    os.Getenv("LIVEKIT_URL"),
+    os.Getenv("LIVEKIT_API_KEY"),
+    os.Getenv("LIVEKIT_API_SECRET"),
+)
+
+info, err := recorder.StartRecording(ctx, room.RecordingConfig{
+    RoomName: "my-meeting",
+    Layout:   room.LayoutGrid, // or LayoutSpeaker, LayoutSingleSpeaker
+    Format:   room.FormatMP4,  // or FormatOGG
+    FilePath: "/recordings/my-meeting.mp4", // or use S3: &room.S3Config{...}
+})
+if err != nil {
+    log.Fatal(err)
+}
+
+// ... later
+recorder.StopRecording(ctx, info.EgressID)
+```
+
+See the [Room Client API](docs/api/room.md#recording) for the full `RecordingConfig`/`S3Config` reference.
+
 ## OmniMeet Integration
 
 This package also provides the LiveKit provider for [OmniMeet](https://github.com/plexusone/omnimeet-core), the PlexusOne meeting abstraction.

@@ -66,6 +66,75 @@ func (c *Client) GetParticipant(ctx context.Context, roomName, identity string) 
 func (c *Client) RemoveParticipant(ctx context.Context, roomName, identity string) error
 ```
 
+### Recording
+
+Package `room` also provides `RecordingClient` for recording rooms via LiveKit Egress.
+
+```go
+func NewRecordingClient(serverURL, apiKey, apiSecret string) *RecordingClient
+
+// StartRecording starts recording a room.
+func (c *RecordingClient) StartRecording(ctx context.Context, cfg RecordingConfig) (*RecordingInfo, error)
+
+// StopRecording stops an active recording.
+func (c *RecordingClient) StopRecording(ctx context.Context, egressID string) error
+
+// ListRecordings lists active recordings for a room.
+func (c *RecordingClient) ListRecordings(ctx context.Context, roomName string) ([]*RecordingInfo, error)
+```
+
+`RecordingConfig` selects the output format and destination:
+
+```go
+type RecordingConfig struct {
+    RoomName  string          // Room to record
+    Layout    RecordingLayout // LayoutGrid, LayoutSpeaker (default), LayoutSingleSpeaker
+    Format    RecordingFormat // FormatMP4 (default) or FormatOGG
+    FilePath  string          // Local file output (use this or S3)
+    S3        *S3Config       // S3 upload (use this or FilePath)
+    Width     int             // Video width (default: 1920)
+    Height    int             // Video height (default: 1080)
+    AudioOnly bool            // Record audio only, no video
+}
+```
+
+Example:
+
+```go
+recorder := room.NewRecordingClient(
+    os.Getenv("LIVEKIT_URL"),
+    os.Getenv("LIVEKIT_API_KEY"),
+    os.Getenv("LIVEKIT_API_SECRET"),
+)
+
+info, err := recorder.StartRecording(ctx, room.RecordingConfig{
+    RoomName: "my-meeting",
+    Layout:   room.LayoutGrid,
+    Format:   room.FormatMP4,
+    FilePath: "/recordings/my-meeting.mp4",
+})
+if err != nil {
+    log.Fatal(err)
+}
+
+// ... later
+err = recorder.StopRecording(ctx, info.EgressID)
+```
+
+To upload directly to S3 instead of a local path, set `S3` instead of `FilePath`:
+
+```go
+info, err := recorder.StartRecording(ctx, room.RecordingConfig{
+    RoomName: "my-meeting",
+    S3: &room.S3Config{
+        AccessKey: os.Getenv("AWS_ACCESS_KEY_ID"),
+        Secret:    os.Getenv("AWS_SECRET_ACCESS_KEY"),
+        Region:    "us-east-1",
+        Bucket:    "my-recordings-bucket",
+    },
+})
+```
+
 ## Example
 
 ```go
