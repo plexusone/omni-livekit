@@ -6,7 +6,7 @@ require (
 	github.com/gen2brain/x264-go v0.4.0
 	github.com/google/uuid v1.6.0
 	github.com/livekit/media-sdk v0.0.0-20260806112830-961bf6f93af6
-	github.com/livekit/protocol v1.50.4
+	github.com/livekit/protocol v1.51.0
 	github.com/livekit/server-sdk-go/v2 v2.18.1
 	github.com/pion/webrtc/v4 v4.2.19
 	github.com/plexusone/bithuman-go v0.2.0
@@ -59,7 +59,7 @@ require (
 	github.com/lithammer/shortuuid/v4 v4.2.0 // indirect
 	github.com/livekit/mageutil v0.0.0-20250511045019-0f1ff63f7731 // indirect
 	github.com/livekit/mediatransportutil v0.0.0-20260727210231-81a5287a7109 // indirect
-	github.com/livekit/psrpc v0.7.3 // indirect
+	github.com/livekit/psrpc v0.7.5 // indirect
 	github.com/mackerelio/go-osstat v0.2.8 // indirect
 	github.com/magefile/mage v1.17.2 // indirect
 	github.com/mattn/go-colorable v0.1.15 // indirect
@@ -70,6 +70,7 @@ require (
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/ogen-go/ogen v1.24.0 // indirect
 	github.com/openai/openai-go v1.12.0 // indirect
+	github.com/petermattis/goid v0.0.0-20260725062400-500c67a39b75 // indirect
 	github.com/pion/datachannel v1.6.2 // indirect
 	github.com/pion/dtls/v3 v3.1.5 // indirect
 	github.com/pion/ice/v4 v4.4.1 // indirect
@@ -131,7 +132,7 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20260807164820-c8921c73eeea // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260807164820-c8921c73eeea // indirect
 	google.golang.org/grpc v1.83.0 // indirect
-	google.golang.org/protobuf v1.36.11 // indirect
+	google.golang.org/protobuf v1.36.12 // indirect
 	gopkg.in/hraban/opus.v2 v2.0.0-20230925203106-0188a62cb302 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
