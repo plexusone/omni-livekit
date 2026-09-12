@@ -5,7 +5,7 @@ go 1.26.4
 require (
 	github.com/gen2brain/x264-go v0.4.0
 	github.com/google/uuid v1.6.0
-	github.com/livekit/media-sdk v0.0.0-20260806112830-961bf6f93af6
+	github.com/livekit/media-sdk v0.1.1
 	github.com/livekit/protocol v1.50.4
 	github.com/livekit/server-sdk-go/v2 v2.18.1
 	github.com/pion/webrtc/v4 v4.2.20
