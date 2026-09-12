@@ -6,7 +6,7 @@ require (
 	github.com/gen2brain/x264-go v0.4.0
 	github.com/google/uuid v1.6.0
 	github.com/livekit/media-sdk v0.1.1
-	github.com/livekit/protocol v1.50.4
+	github.com/livekit/protocol v1.51.0
 	github.com/livekit/server-sdk-go/v2 v2.18.1
 	github.com/pion/webrtc/v4 v4.2.20
 	github.com/plexusone/bithuman-go v0.2.0
@@ -70,6 +70,7 @@ require (
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/ogen-go/ogen v1.24.0 // indirect
 	github.com/openai/openai-go v1.12.0 // indirect
+	github.com/petermattis/goid v0.0.0-20260725062400-500c67a39b75 // indirect
 	github.com/pion/datachannel v1.6.2 // indirect
 	github.com/pion/dtls/v3 v3.1.8 // indirect
 	github.com/pion/ice/v4 v4.4.2 // indirect
